@@ -64,6 +64,10 @@
     <Compile Include="LopTrinhBay\ManHinh\DatSan\LichDatSan.xaml.cs">
       <DependentUpon>LichDatSan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\QuanLySan\frmQuanLySan.xaml.cs">
+      <DependentUpon>frmQuanLySan.xaml</DependentUpon>
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,13 +98,16 @@
     <Folder Include="LopTrinhBay\ManHinh\BaoCao\" />
     <Folder Include="LopTrinhBay\ManHinh\HeThong\" />
     <Folder Include="LopTrinhBay\ManHinh\KhachHoiVien\" />
-    <Folder Include="LopTrinhBay\ManHinh\QuanLySan\" />
     <Folder Include="LopTrinhBay\ManHinh\ThanhToan\" />
     <Folder Include="LopTrinhBay\ManHinh\TongQuat\" />
     <Folder Include="LopTrinhBay\ManHinh\XacThuc\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="LopTrinhBay\ManHinh\DatSan\LichDatSan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\QuanLySan\frmQuanLySan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
