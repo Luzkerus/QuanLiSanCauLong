@@ -447,7 +447,7 @@
                                 <StackPanel Grid.Column="1" Margin="12,0,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Sân 3" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColText}"/>
-                                        <Border Style="{StaticResource Badge}" Background="{StaticResource P illDat}" Margin="10,0,0,0">
+                                        <Border Style="{StaticResource Badge}" Background="{StaticResource PillDat}" Margin="10,0,0,0">
                                             <TextBlock Text="Đặt" />
                                         </Border>
                                     </StackPanel>
