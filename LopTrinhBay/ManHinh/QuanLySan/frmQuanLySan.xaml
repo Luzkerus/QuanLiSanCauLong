@@ -1,19 +1,23 @@
-﻿<Window x:Class="QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan.frmQuanLySan" 
+﻿<Window x:Class="QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan.frmQuanLySan"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Quản lý sân" Width="1280" Height="760" Background="#F6FDF9"
+        Title="Quản lý sân"
+        MinWidth="1200" MinHeight="700"
+        WindowState="Maximized"
+        Background="#F6FDF9"
         WindowStartupLocation="CenterScreen">
 
-    <!-- ====== RESOURCES (màu & styles) ====== -->
+    <!-- ====== RESOURCES ====== -->
     <Window.Resources>
+        <!-- Màu dùng chung -->
         <SolidColorBrush x:Key="ColText"     Color="#21382D"/>
         <SolidColorBrush x:Key="ColSub"      Color="#6B7E74"/>
         <SolidColorBrush x:Key="ColBorder"   Color="#E1F0E9"/>
         <SolidColorBrush x:Key="ColCard"     Color="White"/>
-
         <SolidColorBrush x:Key="PillTrong"   Color="#E5F8EE"/>
         <SolidColorBrush x:Key="PillDat"     Color="#FFF3E5"/>
         <SolidColorBrush x:Key="PillChoi"    Color="#E5F4FF"/>
@@ -40,7 +44,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
-        <!-- Nút “+ Thêm sân mới” -->
+        <!-- Nút solid -->
         <Style x:Key="BtnSolid" TargetType="Border">
             <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="Background" Value="#28A745"/>
@@ -105,9 +109,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
-            <!-- sidebar -->
             <ColumnDefinition Width="*"/>
-            <!-- content -->
         </Grid.ColumnDefinitions>
 
         <!-- ===== Sidebar ===== -->
@@ -115,11 +117,8 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- logo -->
                     <RowDefinition Height="*"/>
-                    <!-- menu -->
                     <RowDefinition Height="Auto"/>
-                    <!-- admin -->
                 </Grid.RowDefinitions>
 
                 <!-- Logo -->
@@ -183,15 +182,17 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Admin dưới cùng -->
-                <Border Grid.Row="2" Margin="10,8,10,12" Padding="12" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" CornerRadius="12">
+                <!-- Admin -->
+                <Border Grid.Row="2" Margin="10,8,10,12" Padding="12"
+                        BorderBrush="{StaticResource ColBorder}" BorderThickness="1" CornerRadius="12">
                     <DockPanel>
                         <Ellipse Width="32" Height="32" Fill="#2BB673" DockPanel.Dock="Left"/>
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock Text="Admin User" FontWeight="SemiBold" />
                             <TextBlock Text="Quản lý" Foreground="#889" FontSize="12"/>
                         </StackPanel>
-                        <Border HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="12" BorderThickness="1" BorderBrush="{StaticResource ColBorder}"
+                        <Border HorizontalAlignment="Right" VerticalAlignment="Center"
+                                CornerRadius="12" BorderThickness="1" BorderBrush="{StaticResource ColBorder}"
                                 Padding="6,4" Margin="8,0,0,0">
                             <TextBlock Text="↦" />
                         </Border>
@@ -204,17 +205,25 @@
         <Grid Grid.Column="1" Margin="16,10,16,16" x:Name="ContentHost">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- header -->
+                <!-- Header: Search + Bell + Date -->
                 <RowDefinition Height="Auto"/>
-                <!-- intro + stats -->
+                <!-- Title + Add -->
+                <RowDefinition Height="Auto"/>
+                <!-- Description + Stats -->
                 <RowDefinition Height="*"/>
-                <!-- list cards -->
+                <!-- List -->
             </Grid.RowDefinitions>
 
             <!-- Header -->
-            <DockPanel Grid.Row="0">
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Search -->
                 <Border Background="White" CornerRadius="10" BorderBrush="{StaticResource ColBorder}"
-                        BorderThickness="1" Padding="10" Width="360" DockPanel.Dock="Left">
+                        BorderThickness="1" Padding="10" Width="360" HorizontalAlignment="Left">
                     <Grid>
                         <DockPanel>
                             <TextBlock Text="🔎" Margin="0,0,6,0"/>
@@ -227,36 +236,62 @@
                     </Grid>
                 </Border>
 
-                <Border Style="{StaticResource BtnSolid}" Margin="8,0,0,0" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <!-- Bell + Today -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                    <Border Width="36" Height="36" CornerRadius="18" Background="White"
+                            BorderBrush="{StaticResource ColBorder}" BorderThickness="1"
+                            HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <TextBlock Text="🔔" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Foreground="#7A8A83" VerticalAlignment="Center">
+                        <TextBlock.Text>
+                            <!-- Binding element syntax: an toàn với StringFormat -->
+                            <Binding Source="{x:Static sys:DateTime.Now}" StringFormat="{}{0:dddd, dd/MM/yyyy}"/>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                </StackPanel>
+            </Grid>
+
+            <!-- Title + Add button -->
+            <Grid Grid.Row="1" Margin="0,12,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Quản lý sân" FontSize="16" FontWeight="SemiBold"
+                           Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
+                <Border Grid.Column="1" Style="{StaticResource BtnSolid}">
                     <TextBlock Text="+  Thêm sân mới" Foreground="White" />
                 </Border>
-            </DockPanel>
+            </Grid>
 
-            <!-- Intro + stats -->
-            <StackPanel Grid.Row="1" Margin="0,12,0,10">
-                <TextBlock Text="Quản lý sân" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
-                <TextBlock Text="Quản lý thông tin và trạng thái các sân cầu lông" Foreground="#789" Margin="0,2,0,10"/>
+            <!-- Description + Stats -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,10">
+                <TextBlock Text="Quản lý thông tin và trạng thái các sân cầu lông"
+                           Foreground="#789" Margin="0,0,0,8"/>
 
-                <UniformGrid Columns="4" Rows="1" Margin="0,4,0,0">
-                    <Border Style="{StaticResource CardBorder}" Padding="14,8">
+                <UniformGrid Columns="4" Rows="1">
+                    <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
                         <StackPanel>
                             <TextBlock Text="Tổng số sân" Foreground="#678"/>
                             <TextBlock Text="6" FontSize="18" FontWeight="Bold"/>
                         </StackPanel>
                     </Border>
-                    <Border Style="{StaticResource CardBorder}" Padding="14,8">
+                    <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
                         <StackPanel>
                             <TextBlock Text="Đang hoạt động" Foreground="#678"/>
                             <TextBlock Text="6" FontSize="18" FontWeight="Bold"/>
                         </StackPanel>
                     </Border>
-                    <Border Style="{StaticResource CardBorder}" Padding="14,8">
+                    <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
                         <StackPanel>
                             <TextBlock Text="Đang được đặt" Foreground="#678"/>
                             <TextBlock Text="4" FontSize="18" FontWeight="Bold"/>
                         </StackPanel>
                     </Border>
-                    <Border Style="{StaticResource CardBorder}" Padding="14,8">
+                    <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
                         <StackPanel>
                             <TextBlock Text="Đang bảo trì" Foreground="#678"/>
                             <TextBlock Text="0" FontSize="18" FontWeight="Bold"/>
@@ -265,366 +300,422 @@
                 </UniformGrid>
             </StackPanel>
 
-            <!-- Danh sách thẻ sân: 2 cột, mỗi cột 3 thẻ -->
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <!-- Danh sách thẻ sân: 3 cột x 2 hàng như ảnh -->
+            <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+                <UniformGrid Columns="3" Rows="2" Margin="0,0,0,8">
+                    <!-- ============ CARD TEMPLATE (copy 6 lần với nội dung khác) ============ -->
+                    <!-- Sân 1 -->
+                    <Border Style="{StaticResource CardBorder}" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                    <!-- ===== Cột trái ===== -->
-                    <StackPanel Grid.Column="0">
+                            <!-- Header: icon + tên + badge -->
+                            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,4">
+                                <Grid Width="36" Height="36" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <Ellipse>
+                                        <Ellipse.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F2C94C" Offset="0"/>
+                                                <GradientStop Color="#E6A500" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Text="🏆" FontSize="16"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
 
-                        <!-- Card Sân 1 – Đang chơi -->
-                        <Border Style="{StaticResource CardBorder}" Margin="10" Height="160">
-                            <Grid>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="Sân 1" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                                    <Border Background="#DFF7EA" CornerRadius="10" Padding="8,2" Margin="0,4,0,0"
+                                HorizontalAlignment="Left">
+                                        <TextBlock Text="Đang chơi" FontSize="12" Foreground="#1E7F4C"/>
+                                    </Border>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <!-- Giá ngày thường -->
+                            <Grid Grid.Row="1" Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
-                                <!-- Icon -->
-                                <ContentPresenter ContentTemplate="{StaticResource TrophyIcon}" Margin="2"/>
-
-                                <!-- Nội dung -->
-                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Sân 1" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColText}"/>
-                                        <Border Style="{StaticResource Badge}" Background="{StaticResource PillChoi}" Margin="10,0,0,0">
-                                            <TextBlock Text="Đang chơi" />
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Grid Margin="0,12,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="80.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="100.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="120.000đ/giờ"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                        <TextBlock Text="🔧" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Bảo trì: 15/11/2025" Foreground="#777"/>
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <!-- Actions -->
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,6,0">
-                                    <Border Style="{StaticResource IconRound}" Background="#E6F6EE" ToolTip="Chỉnh sửa">
-                                        <TextBlock Text="✎" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <Border Style="{StaticResource IconRound}" Background="#FDE8EA" Margin="0" ToolTip="Xóa">
-                                        <TextBlock Text="🗑" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </StackPanel>
+                                <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="80.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
                             </Grid>
-                        </Border>
 
-                        <!-- Card Sân 4 – Đang chơi -->
-                        <Border Style="{StaticResource CardBorder}" Margin="10" Height="160">
-                            <Grid>
+                            <!-- Giá cuối tuần -->
+                            <Grid Grid.Row="2" Margin="0,4,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
-                                <ContentPresenter ContentTemplate="{StaticResource TrophyIcon}" Margin="2"/>
-
-                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Sân 4" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColText}"/>
-                                        <Border Style="{StaticResource Badge}" Background="{StaticResource PillChoi}" Margin="10,0,0,0">
-                                            <TextBlock Text="Đang chơi" />
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Grid Margin="0,12,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="80.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="100.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="120.000đ/giờ"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                        <TextBlock Text="🔧" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Bảo trì: 25/11/2025" Foreground="#777"/>
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,6,0">
-                                    <Border Style="{StaticResource IconRound}" Background="#E6F6EE">
-                                        <TextBlock Text="✎" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <Border Style="{StaticResource IconRound}" Background="#FDE8EA" Margin="0">
-                                        <TextBlock Text="🗑" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </StackPanel>
+                                <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="100.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
                             </Grid>
-                        </Border>
 
-                        <!-- Card Sân 5 – Đang chơi -->
-                        <Border Style="{StaticResource CardBorder}" Margin="10" Height="160">
-                            <Grid>
+                            <!-- Giá lễ tết -->
+                            <Grid Grid.Row="3" Margin="0,4,0,8">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
-                                <ContentPresenter ContentTemplate="{StaticResource TrophyIcon}" Margin="2"/>
-
-                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Sân 5" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColText}"/>
-                                        <Border Style="{StaticResource Badge}" Background="{StaticResource PillChoi}" Margin="10,0,0,0">
-                                            <TextBlock Text="Đang chơi" />
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Grid Margin="0,12,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="80.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="100.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="120.000đ/giờ"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                        <TextBlock Text="🔧" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Bảo trì: 22/11/2025" Foreground="#777"/>
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,6,0">
-                                    <Border Style="{StaticResource IconRound}" Background="#E6F6EE">
-                                        <TextBlock Text="✎" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <Border Style="{StaticResource IconRound}" Background="#FDE8EA" Margin="0">
-                                        <TextBlock Text="🗑" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </StackPanel>
+                                <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="120.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
                             </Grid>
-                        </Border>
-                    </StackPanel>
 
-                    <!-- ===== Cột phải ===== -->
-                    <StackPanel Grid.Column="1">
+                            <!-- Divider + Bảo trì -->
+                            <StackPanel Grid.Row="4">
+                                <Rectangle Height="1" Fill="{StaticResource ColBorder}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔧" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Bảo trì: 15/11/2025" Foreground="#777"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
 
-                        <!-- Card Sân 2 – Trống -->
-                        <Border Style="{StaticResource CardBorder}" Margin="10" Height="160">
-                            <Grid>
+                    <!-- Sân 2 -->
+                    <Border Style="{StaticResource CardBorder}" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,4">
+                                <Grid Width="36" Height="36" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <Ellipse>
+                                        <Ellipse.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F2C94C" Offset="0"/>
+                                                <GradientStop Color="#E6A500" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Text="🏆" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="Sân 2" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                                    <Border Background="#EDF3FF" CornerRadius="10" Padding="8,2" Margin="0,4,0,0">
+                                        <TextBlock Text="Trống" FontSize="12" Foreground="#3C5AA8"/>
+                                    </Border>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <Grid Grid.Row="1" Margin="0,6,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
-                                <ContentPresenter ContentTemplate="{StaticResource TrophyIcon}" Margin="2"/>
-
-                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Sân 2" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColText}"/>
-                                        <Border Style="{StaticResource Badge}" Background="{StaticResource PillTrong}" Margin="10,0,0,0">
-                                            <TextBlock Text="Trống" />
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Grid Margin="0,12,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="80.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="100.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="120.000đ/giờ"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                        <TextBlock Text="🔧" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Bảo trì: 20/11/2025" Foreground="#777"/>
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,6,0">
-                                    <Border Style="{StaticResource IconRound}" Background="#E6F6EE">
-                                        <TextBlock Text="✎" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <Border Style="{StaticResource IconRound}" Background="#FDE8EA" Margin="0">
-                                        <TextBlock Text="🗑" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </StackPanel>
+                                <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="80.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
                             </Grid>
-                        </Border>
-
-                        <!-- Card Sân 3 – Đặt -->
-                        <Border Style="{StaticResource CardBorder}" Margin="10" Height="160">
-                            <Grid>
+                            <Grid Grid.Row="2" Margin="0,4,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
-                                <ContentPresenter ContentTemplate="{StaticResource TrophyIcon}" Margin="2"/>
-
-                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Sân 3" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColText}"/>
-                                        <Border Style="{StaticResource Badge}" Background="{StaticResource PillDat}" Margin="10,0,0,0">
-                                            <TextBlock Text="Đặt" />
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Grid Margin="0,12,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="80.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="100.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="120.000đ/giờ"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                        <TextBlock Text="🔧" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Bảo trì: 18/11/2025" Foreground="#777"/>
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,6,0">
-                                    <Border Style="{StaticResource IconRound}" Background="#E6F6EE">
-                                        <TextBlock Text="✎" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <Border Style="{StaticResource IconRound}" Background="#FDE8EA" Margin="0">
-                                        <TextBlock Text="🗑" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </StackPanel>
+                                <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="100.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
                             </Grid>
-                        </Border>
-
-                        <!-- Card Sân 6 – Trống -->
-                        <Border Style="{StaticResource CardBorder}" Margin="10" Height="160">
-                            <Grid>
+                            <Grid Grid.Row="3" Margin="0,4,0,8">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
-                                <ContentPresenter ContentTemplate="{StaticResource TrophyIcon}" Margin="2"/>
-
-                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Sân 6" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColText}"/>
-                                        <Border Style="{StaticResource Badge}" Background="{StaticResource PillTrong}" Margin="10,0,0,0">
-                                            <TextBlock Text="Trống" />
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Grid Margin="0,12,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="80.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="100.000đ/giờ"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="120.000đ/giờ"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                        <TextBlock Text="🔧" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Bảo trì: 01/12/2025" Foreground="#777"/>
-                                    </StackPanel>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,6,0">
-                                    <Border Style="{StaticResource IconRound}" Background="#E6F6EE">
-                                        <TextBlock Text="✎" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <Border Style="{StaticResource IconRound}" Background="#FDE8EA" Margin="0">
-                                        <TextBlock Text="🗑" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </StackPanel>
+                                <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="120.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
                             </Grid>
-                        </Border>
-                    </StackPanel>
-                </Grid>
+
+                            <StackPanel Grid.Row="4">
+                                <Rectangle Height="1" Fill="{StaticResource ColBorder}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔧" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Bảo trì: 20/11/2025" Foreground="#777"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Sân 3 -->
+                    <Border Style="{StaticResource CardBorder}" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,4">
+                                <Grid Width="36" Height="36" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <Ellipse>
+                                        <Ellipse.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F2C94C" Offset="0"/>
+                                                <GradientStop Color="#E6A500" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Text="🏆" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="Sân 3" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                                    <Border Background="#FFF4E3" CornerRadius="10" Padding="8,2" Margin="0,4,0,0">
+                                        <TextBlock Text="Đặt" FontSize="12" Foreground="#B76B00"/>
+                                    </Border>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <Grid Grid.Row="1" Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="80.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="100.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Margin="0,4,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="120.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <StackPanel Grid.Row="4">
+                                <Rectangle Height="1" Fill="{StaticResource ColBorder}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔧" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Bảo trì: 18/11/2025" Foreground="#777"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Sân 4 -->
+                    <Border Style="{StaticResource CardBorder}" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,4">
+                                <Grid Width="36" Height="36" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <Ellipse>
+                                        <Ellipse.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F2C94C" Offset="0"/>
+                                                <GradientStop Color="#E6A500" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Text="🏆" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="Sân 4" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                                    <Border Background="#DFF7EA" CornerRadius="10" Padding="8,2" Margin="0,4,0,0">
+                                        <TextBlock Text="Đang chơi" FontSize="12" Foreground="#1E7F4C"/>
+                                    </Border>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <Grid Grid.Row="1" Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="80.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="100.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Margin="0,4,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="120.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <StackPanel Grid.Row="4">
+                                <Rectangle Height="1" Fill="{StaticResource ColBorder}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔧" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Bảo trì: 25/11/2025" Foreground="#777"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Sân 5 -->
+                    <Border Style="{StaticResource CardBorder}" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,4">
+                                <Grid Width="36" Height="36" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <Ellipse>
+                                        <Ellipse.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F2C94C" Offset="0"/>
+                                                <GradientStop Color="#E6A500" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Text="🏆" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="Sân 5" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                                    <Border Background="#DFF7EA" CornerRadius="10" Padding="8,2" Margin="0,4,0,0">
+                                        <TextBlock Text="Đang chơi" FontSize="12" Foreground="#1E7F4C"/>
+                                    </Border>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <Grid Grid.Row="1" Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="80.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="100.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Margin="0,4,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="120.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <StackPanel Grid.Row="4">
+                                <Rectangle Height="1" Fill="{StaticResource ColBorder}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔧" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Bảo trì: 22/11/2025" Foreground="#777"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Sân 6 -->
+                    <Border Style="{StaticResource CardBorder}" Margin="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,4">
+                                <Grid Width="36" Height="36" Margin="0,0,10,0" DockPanel.Dock="Left">
+                                    <Ellipse>
+                                        <Ellipse.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F2C94C" Offset="0"/>
+                                                <GradientStop Color="#E6A500" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Text="🏆" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="Sân 6" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                                    <Border Background="#EDF3FF" CornerRadius="10" Padding="8,2" Margin="0,4,0,0">
+                                        <TextBlock Text="Trống" FontSize="12" Foreground="#3C5AA8"/>
+                                    </Border>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <Grid Grid.Row="1" Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="80.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="100.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Margin="0,4,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
+                                <TextBlock Text="120.000đ/giờ" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <StackPanel Grid.Row="4">
+                                <Rectangle Height="1" Fill="{StaticResource ColBorder}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔧" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Bảo trì: 01/12/2025" Foreground="#777"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <!-- ===================== /6 CARDS ===================== -->
+                </UniformGrid>
             </ScrollViewer>
 
-            <!-- ========== OVERLAY CHỈNH SỬA SÂN (UI thuần, chưa gắn sự kiện) ========== -->
-            <!-- Đổi Visibility="Visible" nếu muốn xem popup -->
-            <Grid x:Name="EditOverlay" Grid.RowSpan="3" Background="#66000000" Visibility="Collapsed">
+
+            <!-- ===== Overlay chỉnh sửa (UI thuần, chưa gắn sự kiện) ===== -->
+            <Grid x:Name="EditOverlay" Grid.RowSpan="4" Background="#66000000" Visibility="Collapsed">
                 <Border Width="520" Height="400" CornerRadius="12" Background="White"
                         BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Padding="20"
                         HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -645,13 +736,11 @@
 
                         <!-- Body -->
                         <StackPanel Grid.Row="1" Margin="0,16,0,0" >
-                            <!-- Tên sân -->
                             <TextBlock Text="Tên sân" Margin="0,0,0,6"/>
                             <Border CornerRadius="8" Background="#F6F8F7" Padding="8,6" Margin="0,0,0,10">
                                 <TextBox Text="Sân 1" BorderThickness="0" Background="Transparent"/>
                             </Border>
 
-                            <!-- Trạng thái -->
                             <TextBlock Text="Trạng thái" Margin="0,2,0,6"/>
                             <Border CornerRadius="8" Background="#F6F8F7" Padding="8,2" Margin="0,0,0,10">
                                 <ComboBox BorderThickness="0" Background="Transparent" SelectedIndex="0">
@@ -662,7 +751,6 @@
                                 </ComboBox>
                             </Border>
 
-                            <!-- Giá -->
                             <TextBlock Text="Giá" Margin="0,2,0,6"/>
                             <UniformGrid Columns="3" Rows="1" Margin="0,0,0,10">
                                 <StackPanel Margin="0,0,8,0">
@@ -685,7 +773,6 @@
                                 </StackPanel>
                             </UniformGrid>
 
-                            <!-- Lịch bảo trì tiếp theo -->
                             <TextBlock Text="Lịch bảo trì tiếp theo" Margin="0,2,0,6"/>
                             <UniformGrid Columns="2" Rows="1">
                                 <Border CornerRadius="8" Background="#F6F8F7" Padding="6,4" Margin="0,0,8,0">
@@ -710,7 +797,6 @@
                     </Grid>
                 </Border>
             </Grid>
-            <!-- ====== /OVERLAY ====== -->
         </Grid>
     </Grid>
 </Window>
