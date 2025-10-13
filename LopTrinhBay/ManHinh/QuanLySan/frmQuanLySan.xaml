@@ -160,6 +160,14 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- Thanh toán -->
+                    <Border Style="{StaticResource MenuItemNormal}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="💳" Margin="4,0,8,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Thanh toán" VerticalAlignment="Center" Foreground="{StaticResource ColText}"/>
+                        </StackPanel>
+                    </Border>
+
                     <Border Style="{StaticResource MenuItemNormal}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🧾" VerticalAlignment="Center" Margin="4,0,8,0"/>

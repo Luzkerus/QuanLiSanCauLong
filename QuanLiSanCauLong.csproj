@@ -61,6 +61,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LopTrinhBay\ManHinh\DatSan\frmTaoLichDat.xaml.cs">
+      <DependentUpon>frmTaoLichDat.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\DatSan\LichDatSan.xaml.cs">
       <DependentUpon>LichDatSan.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,10 @@
     <Folder Include="LopTrinhBay\ManHinh\XacThuc\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="LopTrinhBay\ManHinh\DatSan\frmTaoLichDat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LopTrinhBay\ManHinh\DatSan\LichDatSan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
