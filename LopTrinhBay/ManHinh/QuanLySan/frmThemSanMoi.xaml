@@ -18,6 +18,8 @@
         <SolidColorBrush x:Key="ColBorder"   Color="#E6EFEA"/>
         <SolidColorBrush x:Key="ColField"    Color="#F6F8F7"/>
         <SolidColorBrush x:Key="ColPrimary"  Color="#19B774"/>
+        <SolidColorBrush x:Key="ColDamPrimary"  Color="#0D7049	"/>
+        
         <SolidColorBrush x:Key="ColDanger"   Color="#F3F5F4"/>
 
         <!-- bóng đổ -->
@@ -113,8 +115,22 @@
                                Foreground="{StaticResource ColText}"
                                DockPanel.Dock="Left" VerticalAlignment="Center"/>
                     <!-- nút đóng -->
-                    <Border Width="28" Height="28" CornerRadius="14" Background="{StaticResource ColField}"
+                    <Border Width="28" Height="28" CornerRadius="14"  MouseLeftButtonDown="BtnDongForm"
                             DockPanel.Dock="Right">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <!-- Màu mặc định -->
+                                <Setter Property="Background" Value="{StaticResource ColField}" />
+
+                                <!-- Khi rê chuột -->
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF6347"/>
+                                        <!-- đỏ nhạt -->
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <TextBlock Text="✕" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Foreground="{StaticResource ColSub}" />
                     </Border>
@@ -193,10 +209,40 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0" Style="{StaticResource BtnGhost}" Margin="0,0,10,0">
+                    <Border Grid.Column="0" Margin="0,0,10,0" MouseLeftButtonDown="BtnDongForm">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource BtnGhost}" >
+                                <!-- Màu mặc định -->
+                                <Setter Property="Background" Value="{StaticResource ColField}" />
+
+                                <!-- Khi rê chuột -->
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF6347"/>
+                                        <!-- đỏ nhạt -->
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <TextBlock Text="Hủy" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
-                    <Border Grid.Column="1" Style="{StaticResource BtnPrimary}">
+                    <Border Grid.Column="1" >
+                        <Border.Style>
+                            <Style TargetType="Border"  BasedOn="{StaticResource BtnPrimary}">
+                                <!-- Màu mặc định -->
+                                <Setter Property="Background" Value="{StaticResource ColPrimary}"/>
+                                <!-- Xanh -->
+                               
+
+                                <!-- Khi rê chuột -->
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource ColDamPrimary}"/>
+                                        <!-- Xanh đậm hơn -->
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <TextBlock Text="Thêm mới" Foreground="White"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>

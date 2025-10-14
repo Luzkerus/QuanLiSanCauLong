@@ -22,10 +22,23 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         public frmThemSanMoi()
         {
             InitializeComponent();
+            this.Opacity = 0; // bắt đầu mờ hoàn toàn
+
+            // Khi form load thì chạy animation
+            this.Loaded += (s, e) =>
+            {
+                var fadeIn = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250));
+                this.BeginAnimation(Window.OpacityProperty, fadeIn);
+            };
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void BtnDongForm(object sender, MouseButtonEventArgs e)
+        {
+            this.Close(); // Đóng form hiện tại
         }
     }
 }

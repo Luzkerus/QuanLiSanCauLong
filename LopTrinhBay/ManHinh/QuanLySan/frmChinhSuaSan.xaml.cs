@@ -28,5 +28,9 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         {
 
         }
+        private void BtnDongForm(object sender, MouseButtonEventArgs e)
+        {
+            this.Close(); // Đóng form hiện tại
+        }
     }
 }
