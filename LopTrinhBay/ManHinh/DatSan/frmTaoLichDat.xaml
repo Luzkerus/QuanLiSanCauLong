@@ -1,4 +1,4 @@
-﻿<Window x:Class="QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan.TaoLichDat"
+﻿<Window x:Class="QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan.frmTaoLichDat"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Tạo đơn đặt sân"
