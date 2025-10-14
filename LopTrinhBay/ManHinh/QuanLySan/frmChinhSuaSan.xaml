@@ -7,7 +7,7 @@
         Title="Chỉnh sửa sân"
         MinWidth="620" MinHeight="420"
         Width="720" Height="460"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" 
         Background="Transparent" WindowStyle="None" AllowsTransparency="True">
 
     <!-- ====== RESOURCES ====== -->

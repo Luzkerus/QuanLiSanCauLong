@@ -59,6 +59,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         {
             // Mở cửa sổ thêm sân
             frmThemSanMoi themSanMoiWindow = new frmThemSanMoi();
+            themSanMoiWindow.Owner = this; // Đặt cửa sổ cha
             themSanMoiWindow.ShowDialog();
         }
 
@@ -74,6 +75,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 
         private void btn_Sua(object sender, RoutedEventArgs e) { 
             frmChinhSuaSan ChinhSuaSanWindow = new frmChinhSuaSan();
+            ChinhSuaSanWindow.Owner = this; // Đặt cửa sổ cha
             ChinhSuaSanWindow.ShowDialog();
         }
 
