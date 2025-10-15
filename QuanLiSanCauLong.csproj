@@ -84,6 +84,9 @@
     <Compile Include="LopTrinhBay\ManHinh\QuanLySan\frmThemSanMoi.xaml.cs">
       <DependentUpon>frmThemSanMoi.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\TongQuan\frmTongQuan.xaml.cs">
+      <DependentUpon>frmTongQuan.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -136,6 +139,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\QuanLySan\frmThemSanMoi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\TongQuan\frmTongQuan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
