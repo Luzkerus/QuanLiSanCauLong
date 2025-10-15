@@ -20,7 +20,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
     /// </summary>
     public partial class frmQuanLySan : Window
     {
-        string connectionString = "Data Source=LUZKER;Initial Catalog=QuanLiSanCauLong;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+        string connectionString = "Data Source=.;Initial Catalog=QuanLiSanCauLong;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
         public List<San> DanhSachSan { get; set; }
         public int TongSoSan => DanhSachSan?.Count ?? 0;
         public int TongSoSanKhongBaoTri =>
