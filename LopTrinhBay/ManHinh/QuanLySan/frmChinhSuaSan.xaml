@@ -242,7 +242,7 @@
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="Thêm mới" Foreground="White"
+                        <TextBlock Text="Cập nhật" Foreground="White"
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>

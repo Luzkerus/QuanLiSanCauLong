@@ -22,6 +22,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         public frmChinhSuaSan()
         {
             InitializeComponent();
+            this.Loaded += (s, e) =>
+            {
+                var fadeIn = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250));
+                this.BeginAnimation(Window.OpacityProperty, fadeIn);
+            };
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

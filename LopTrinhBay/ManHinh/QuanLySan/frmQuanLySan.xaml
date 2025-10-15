@@ -418,7 +418,7 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="Ngày thường:" Foreground="{StaticResource ColText}"/>
-                                        <TextBlock Text="{Binding GiaNgayThuong}" Grid.Column="1"
+                                        <TextBlock Text="{Binding GiaNgayThuong, StringFormat={}{0}đ/giờ}" Grid.Column="1"
                                    HorizontalAlignment="Right"/>
                                     </Grid>
 
@@ -428,7 +428,7 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="Cuối tuần:" Foreground="{StaticResource ColText}"/>
-                                        <TextBlock Text="{Binding GiaCuoiTuan}" Grid.Column="1"
+                                        <TextBlock Text="{Binding GiaCuoiTuan, StringFormat={}{0}đ/giờ}" Grid.Column="1"
                                    HorizontalAlignment="Right"/>
                                     </Grid>
 
@@ -438,7 +438,7 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="Lễ tết:" Foreground="{StaticResource ColText}"/>
-                                        <TextBlock Text="{Binding GiaLeTet}" Grid.Column="1"
+                                        <TextBlock Text="{Binding GiaLeTet, StringFormat={}{0}đ/giờ}" Grid.Column="1"
                                    HorizontalAlignment="Right"/>
                                     </Grid>
 
