@@ -61,6 +61,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LopDuLieu\San.cs" />
+    <Compile Include="LopNghiepVu\SanBLL.cs" />
     <Compile Include="LopTrinhBay\ManHinh\DatSan\frmTaoLichDat.xaml.cs">
       <DependentUpon>frmTaoLichDat.xaml</DependentUpon>
     </Compile>
@@ -77,6 +79,7 @@
     <Compile Include="LopTrinhBay\ManHinh\QuanLySan\frmThemSanMoi.xaml.cs">
       <DependentUpon>frmThemSanMoi.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
