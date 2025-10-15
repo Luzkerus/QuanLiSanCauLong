@@ -296,7 +296,7 @@
                 <TextBlock Text="Quản lý thông tin và trạng thái các sân cầu lông"
                            Foreground="#789" Margin="0,0,0,8"/>
 
-                <UniformGrid Columns="4" Rows="1">
+                <UniformGrid Columns="3" Rows="1">
                     <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
                         <StackPanel>
                             <TextBlock Text="Tổng số sân" Foreground="#678"/>
@@ -309,12 +309,7 @@
                             <TextBlock Text="{Binding TongSoSanKhongBaoTri}" FontSize="18" FontWeight="Bold"/>
                         </StackPanel>
                     </Border>
-                    <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
-                        <StackPanel>
-                            <TextBlock Text="Đang được đặt" Foreground="#678"/>
-                            <TextBlock Text="{Binding TongSoSanDat}" FontSize="18" FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
+                    
                     <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
                         <StackPanel>
                             <TextBlock Text="Đang bảo trì"  Foreground="#678"/>
