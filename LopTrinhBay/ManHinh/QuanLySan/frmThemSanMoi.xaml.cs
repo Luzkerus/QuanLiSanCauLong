@@ -49,6 +49,48 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(txtTenSan.Text))
+                {
+                    MessageBox.Show("Vui lòng nhập tên sân.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtTenSan.Focus();
+                    return;
+                }
+
+                if (cboTrangThai.SelectedItem == null)
+                {
+                    MessageBox.Show("Vui lòng chọn trạng thái của sân.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    cboTrangThai.Focus();
+                    return;
+                }
+
+                if (!decimal.TryParse(txtGiaNgayThuong.Text, out decimal giaNgayThuong) || giaNgayThuong <= 0)
+                {
+                    MessageBox.Show("Giá ngày thường không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtGiaNgayThuong.Focus();
+                    return;
+                }
+
+                if (!decimal.TryParse(txtGiaCuoiTuan.Text, out decimal giaCuoiTuan) || giaCuoiTuan <= 0)
+                {
+                    MessageBox.Show("Giá cuối tuần không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtGiaCuoiTuan.Focus();
+                    return;
+                }
+
+                if (!decimal.TryParse(txtGiaLeTet.Text, out decimal giaLeTet) || giaLeTet <= 0)
+                {
+                    MessageBox.Show("Giá lễ tết không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtGiaLeTet.Focus();
+                    return;
+                }
+
+                if (dpNgayBaoTri.SelectedDate == null)
+                {
+                    MessageBox.Show("Vui lòng chọn ngày bảo trì.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    dpNgayBaoTri.Focus();
+                    return;
+                }
+
                 San san = new San
                 {
                     TenSan = txtTenSan.Text.Trim(),
@@ -69,12 +111,12 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
                 }
                 else
                 {
-                    MessageBox.Show("Thêm sân thất bại!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Không thể thêm sân. Vui lòng kiểm tra lại dữ liệu.", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Đã xảy ra lỗi trong quá trình thêm sân. Vui lòng thử lại sau.", "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
