@@ -147,10 +147,8 @@
                     <!-- Trạng thái -->
                     <TextBlock Style="{StaticResource FieldLabel}" Text="Trạng thái" Margin="0,14,0,6"/>
                     <Border Style="{StaticResource PillField}" Padding="10,4">
-                        <ComboBox Style="{StaticResource FlatCombo}" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
-                            <ComboBoxItem Content="Trống"/>
-                            <ComboBoxItem Content="Đặt"/>
-                            <ComboBoxItem Content="Đang chơi"/>
+                        <ComboBox Style="{StaticResource FlatCombo}" SelectionChanged="ComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Đang hoạt động"/>
                             <ComboBoxItem Content="Bảo trì"/>
                         </ComboBox>
                     </Border>

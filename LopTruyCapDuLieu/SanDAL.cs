@@ -39,5 +39,28 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
 
             return dsSan;
         }
+        public bool ThemSanMoi(San san)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO dbo.San 
+                         (TenSan, TrangThai, GiaNgayThuong, GiaCuoiTuan, GiaLeTet, NgayBaoTri)
+                         VALUES (@TenSan, @TrangThai, @GiaNgayThuong, @GiaCuoiTuan, @GiaLeTet, @NgayBaoTri)";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@TenSan", san.TenSan);
+                cmd.Parameters.AddWithValue("@TrangThai", san.TrangThai);
+                cmd.Parameters.AddWithValue("@GiaNgayThuong", san.GiaNgayThuong);
+                cmd.Parameters.AddWithValue("@GiaCuoiTuan", san.GiaCuoiTuan);
+                cmd.Parameters.AddWithValue("@GiaLeTet", san.GiaLeTet);
+                cmd.Parameters.AddWithValue("@NgayBaoTri",
+    san.NgayBaoTri == DateTime.MinValue ? (object)DBNull.Value : san.NgayBaoTri);
+
+
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+                return rows > 0;
+            }
+        }
     }
 }

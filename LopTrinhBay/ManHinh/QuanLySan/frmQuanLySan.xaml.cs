@@ -36,7 +36,12 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         {
             frmThemSanMoi themSanMoiWindow = new frmThemSanMoi();
             themSanMoiWindow.Owner = this;
-            themSanMoiWindow.ShowDialog();
+            bool? result = themSanMoiWindow.ShowDialog(); // chờ form con đóng lại
+
+            if (result == true)
+            {
+                TaiLaiDanhSachSan(); // load lại danh sách khi thêm thành công
+            }
         }
 
         private void btn_Sua(object sender, RoutedEventArgs e)
@@ -50,5 +55,19 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         {
             MessageBox.Show("Nút Xóa hoạt động!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        private void TaiLaiDanhSachSan()
+        {
+            try
+            {
+                DanhSachSan = sanBLL.LayTatCaSan();
+                DataContext = null;   // reset binding
+                DataContext = this;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải lại danh sách: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }
