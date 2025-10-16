@@ -1,9 +1,10 @@
-﻿using System;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using QuanLiSanCauLong.LopNghiepVu;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using QuanLiSanCauLong.LopDuLieu;
-using QuanLiSanCauLong.LopNghiepVu;
+using System.Windows.Controls;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 {
@@ -51,10 +52,6 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             ChinhSuaSanWindow.ShowDialog();
         }
 
-        private void btn_Xoa(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Nút Xóa hoạt động!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
         private void TaiLaiDanhSachSan()
         {
             try
@@ -68,6 +65,49 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
                 MessageBox.Show("Lỗi tải lại danh sách: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void btn_Xoa(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Lấy đối tượng San từ Button (nút trong ItemTemplate)
+                Button btn = sender as Button;
+                San san = btn?.DataContext as San;
+
+                if (san == null)
+                {
+                    MessageBox.Show("Không xác định được sân cần xóa.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Hỏi xác nhận
+                MessageBoxResult result = MessageBox.Show(
+                    $"Bạn có chắc chắn muốn xóa sân \"{san.TenSan}\" không?",
+                    "Xác nhận xóa",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool xoaThanhCong = sanBLL.XoaSan(san.MaSan);
+
+                    if (xoaThanhCong)
+                    {
+                        MessageBox.Show($"✅ Đã xóa sân \"{san.TenSan}\" thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                        TaiLaiDanhSachSan(); // Cập nhật lại danh sách hiển thị
+                    }
+                    else
+                    {
+                        MessageBox.Show($"❌ Không thể xóa sân \"{san.TenSan}\"!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xóa sân: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
     }
 }

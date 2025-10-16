@@ -62,5 +62,18 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return rows > 0;
             }
         }
+        public bool XoaSan(int maSan)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "DELETE FROM San WHERE MaSan = @MaSan";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@MaSan", maSan);
+
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
     }
 }

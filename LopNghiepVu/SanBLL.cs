@@ -29,6 +29,14 @@ namespace QuanLiSanCauLong.LopNghiepVu
 
             return sanDAL.ThemSanMoi(san);
         }
+        public bool XoaSan(int maSan)
+        {
+            if (maSan <= 0)
+                throw new Exception("Mã sân không hợp lệ.");
+
+            return sanDAL.XoaSan(maSan);
+        }
+
 
     }
 }
