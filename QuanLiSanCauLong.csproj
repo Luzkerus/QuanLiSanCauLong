@@ -61,10 +61,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BanKhoChoThue\DanhSachHang.cs" />
-    <Compile Include="BaoCao\BaoCaoTongQuat.cs" />
-    <Compile Include="HeThong\CaiDatView.cs" />
-    <Compile Include="HeThong\NhanVienView.cs" />
     <Compile Include="KhachHoiVien\DanhSachKhach.cs" />
     <Compile Include="LopDuLieu\San.cs" />
     <Compile Include="LopNghiepVu\SanBLL.cs" />
@@ -109,9 +105,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LopTrinhBay\ManHinh\BanKhoChoThue\" />
