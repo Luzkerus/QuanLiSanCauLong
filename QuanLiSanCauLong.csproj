@@ -61,7 +61,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KhachHoiVien\DanhSachKhach.cs" />
     <Compile Include="LopDuLieu\San.cs" />
     <Compile Include="LopNghiepVu\SanBLL.cs" />
     <Compile Include="LopTrinhBay\ManHinh\DatSan\frmTaoLichDat.xaml.cs">
