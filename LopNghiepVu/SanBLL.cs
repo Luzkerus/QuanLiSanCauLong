@@ -36,6 +36,17 @@ namespace QuanLiSanCauLong.LopNghiepVu
 
             return sanDAL.XoaSan(maSan);
         }
+        public bool CapNhatSan(San san)
+        {
+            if (san.MaSan <= 0)
+                throw new Exception("Mã sân không hợp lệ.");
+            if (string.IsNullOrWhiteSpace(san.TenSan))
+                throw new Exception("Tên sân không được để trống.");
+            if (san.GiaNgayThuong <= 0 || san.GiaCuoiTuan <= 0 || san.GiaLeTet <= 0)
+                throw new Exception("Giá sân phải lớn hơn 0.");
+
+            return sanDAL.CapNhatSan(san);
+        }
 
 
     }

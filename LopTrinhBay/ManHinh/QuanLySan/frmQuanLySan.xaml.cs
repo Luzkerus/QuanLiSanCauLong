@@ -47,9 +47,23 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 
         private void btn_Sua(object sender, RoutedEventArgs e)
         {
-            frmChinhSuaSan ChinhSuaSanWindow = new frmChinhSuaSan();
-            ChinhSuaSanWindow.Owner = this;
-            ChinhSuaSanWindow.ShowDialog();
+            Button btn = sender as Button;
+            San sanDuocChon = btn?.DataContext as San;  // Lấy sân gắn với nút sửa
+
+            if (sanDuocChon == null)
+            {
+                MessageBox.Show("Không xác định được sân cần sửa!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            frmChinhSuaSan formSua = new frmChinhSuaSan(sanDuocChon);
+            formSua.Owner = this;
+            bool? result = formSua.ShowDialog();
+
+            if (result == true)
+            {
+                TaiLaiDanhSachSan(); // Reload danh sách sau khi sửa thành công
+            }
         }
 
         private void TaiLaiDanhSachSan()

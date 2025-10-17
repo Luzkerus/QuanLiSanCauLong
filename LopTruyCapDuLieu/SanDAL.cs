@@ -75,5 +75,34 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
         }
 
+        public bool CapNhatSan(San san)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"UPDATE dbo.San
+                         SET TenSan = @TenSan,
+                             TrangThai = @TrangThai,
+                             GiaNgayThuong = @GiaNgayThuong,
+                             GiaCuoiTuan = @GiaCuoiTuan,
+                             GiaLeTet = @GiaLeTet,
+                             NgayBaoTri = @NgayBaoTri
+                         WHERE MaSan = @MaSan";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@MaSan", san.MaSan);
+                cmd.Parameters.AddWithValue("@TenSan", san.TenSan);
+                cmd.Parameters.AddWithValue("@TrangThai", san.TrangThai);
+                cmd.Parameters.AddWithValue("@GiaNgayThuong", san.GiaNgayThuong);
+                cmd.Parameters.AddWithValue("@GiaCuoiTuan", san.GiaCuoiTuan);
+                cmd.Parameters.AddWithValue("@GiaLeTet", san.GiaLeTet);
+                cmd.Parameters.AddWithValue("@NgayBaoTri",
+                    san.NgayBaoTri == null ? (object)DBNull.Value : san.NgayBaoTri);
+
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+
     }
 }

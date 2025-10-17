@@ -141,13 +141,13 @@
                     <!-- Tên sân -->
                     <TextBlock Style="{StaticResource FieldLabel}" Text="Tên sân"/>
                     <Border Style="{StaticResource PillField}">
-                        <TextBox Style="{StaticResource WatermarkTextBox}" Tag="Sân 1"/>
+                        <TextBox x:Name="txtTenSan" Style="{StaticResource WatermarkTextBox}" Tag="Sân 1"/>
                     </Border>
 
                     <!-- Trạng thái -->
                     <TextBlock Style="{StaticResource FieldLabel}" Text="Trạng thái" Margin="0,14,0,6"/>
                     <Border Style="{StaticResource PillField}" Padding="10,4">
-                        <ComboBox Style="{StaticResource FlatCombo}" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBox x:Name="cboTrangThai" Style="{StaticResource FlatCombo}" SelectionChanged="ComboBox_SelectionChanged">
                             <ComboBoxItem Content="Đang hoạt động"/>
                             <ComboBoxItem Content="Bảo trì"/>
                         </ComboBox>
@@ -164,7 +164,7 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Style="{StaticResource WatermarkTextBox}" Tag="80000"/>
+                                    <TextBox x:Name="txtGiaNgayThuong" Style="{StaticResource WatermarkTextBox}" Tag="80000"/>
                                     <!-- spinner icon minh hoạ -->
                                     <Border Grid.Column="1" Width="26" Height="20" CornerRadius="6"
                                             Background="White" BorderBrush="{StaticResource ColBorder}"
@@ -179,7 +179,7 @@
                         <StackPanel Margin="0,0,10,0">
                             <TextBlock Style="{StaticResource FieldLabel}" Text="Giá cuối tuần"/>
                             <Border Style="{StaticResource PillField}">
-                                <TextBox Style="{StaticResource WatermarkTextBox}" Tag="100000" />
+                                <TextBox x:Name="txtGiaCuoiTuan" Style="{StaticResource WatermarkTextBox}" Tag="100000" />
                             </Border>
                         </StackPanel>
 
@@ -187,7 +187,7 @@
                         <StackPanel>
                             <TextBlock Style="{StaticResource FieldLabel}" Text="Giá lễ tết"/>
                             <Border Style="{StaticResource PillField}">
-                                <TextBox Style="{StaticResource WatermarkTextBox}" Tag="120000" />
+                                <TextBox x:Name="txtGiaLeTet" Style="{StaticResource WatermarkTextBox}" Tag="120000" />
                             </Border>
                         </StackPanel>
                     </UniformGrid>
@@ -195,7 +195,7 @@
                     <!-- Lịch bảo trì -->
                     <TextBlock Style="{StaticResource FieldLabel}" Text="Lịch bảo trì tiếp theo" Margin="0,16,0,6"/>
                     <Border Style="{StaticResource PillField}">
-                        <DatePicker BorderThickness="0" Background="Transparent" />
+                        <DatePicker x:Name="dpNgayBaoTri" BorderThickness="0" Background="Transparent" />
                     </Border>
                 </StackPanel>
 
@@ -223,7 +223,7 @@
                         </Border.Style>
                         <TextBlock Text="Hủy" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
-                    <Border Grid.Column="1" >
+                    <Border Grid.Column="1" MouseLeftButtonDown="btnCapNhat">
                         <Border.Style>
                             <Style TargetType="Border"  BasedOn="{StaticResource BtnPrimary}">
                                 <!-- Màu mặc định -->
@@ -240,7 +240,7 @@
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="Cập nhật" Foreground="White"
+                        <TextBlock Text="Cập nhật" Foreground="White" 
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
