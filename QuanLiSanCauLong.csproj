@@ -69,6 +69,9 @@
     <Compile Include="LopTrinhBay\ManHinh\DatSan\LichDatSan.xaml.cs">
       <DependentUpon>LichDatSan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\KhachHoiVien\frmKhachHoiVien.xaml.cs">
+      <DependentUpon>frmKhachHoiVien.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\QuanLySan\frmChinhSuaSan.xaml.cs">
       <DependentUpon>frmChinhSuaSan.xaml</DependentUpon>
     </Compile>
@@ -109,7 +112,6 @@
     <Folder Include="LopTrinhBay\ManHinh\BanKhoChoThue\" />
     <Folder Include="LopTrinhBay\ManHinh\BaoCao\" />
     <Folder Include="LopTrinhBay\ManHinh\HeThong\" />
-    <Folder Include="LopTrinhBay\ManHinh\KhachHoiVien\" />
     <Folder Include="LopTrinhBay\ManHinh\ThanhToan\" />
     <Folder Include="LopTrinhBay\ManHinh\XacThuc\" />
   </ItemGroup>
@@ -119,6 +121,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\DatSan\LichDatSan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\KhachHoiVien\frmKhachHoiVien.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
