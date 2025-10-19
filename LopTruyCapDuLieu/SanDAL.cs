@@ -8,7 +8,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
     public class SanDAL
     {
         private readonly string connectionString =
-            "Data Source=.;Initial Catalog=QuanLiSanCauLong;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+"Data Source=localhost\\SQLEXPRESS;Initial Catalog=QuanLiSanCauLong;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
 
         public List<San> LayTatCaSan()
         {
