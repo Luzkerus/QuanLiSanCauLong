@@ -4,23 +4,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhachHoiVien
 {
     public partial class frmKhachHoiVien : Window, INotifyPropertyChanged
     {
-        public ObservableCollection<CustomerVm> Customers { get; } = new();
+        public ObservableCollection<CustomerVm> Customers { get; } = new ObservableCollection<CustomerVm>();
         public ICollectionView CustomersView { get; private set; }
 
         // KPI
@@ -87,7 +81,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhachHoiVien
 
         private bool FilterCustomer(object obj)
         {
-            if (obj is not CustomerVm c) return false;
+            var c = obj as CustomerVm;
+            if (c == null) return false;
 
             // tab filter
             if (FilterHoiVien && c.LoaiKH != "HoiVien") return false;
@@ -159,7 +154,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhachHoiVien
         public DateTime NgayDangKy { get; }
 
         public string Initials => !(string.IsNullOrWhiteSpace(TenKH))
-            ? string.Join("", TenKH.Split(' ').Where(p => p.Length > 0).TakeLast(2).Select(p => p[0])).ToUpper()
+            ? string.Join("", TenKH.Split(' ').Where(p => p.Length > 0).Reverse().Take(2).Reverse().Select(p => p[0])).ToUpper()
             : "KH";
 
         // Badge colors

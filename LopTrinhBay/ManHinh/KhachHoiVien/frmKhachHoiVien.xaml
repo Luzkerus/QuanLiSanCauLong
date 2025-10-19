@@ -1,7 +1,7 @@
 ﻿<Window x:Class="QuanLiSanCauLong.LopTrinhBay.ManHinh.KhachHoiVien.frmKhachHoiVien"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Khách hàng & Hội viên" Height="800" Width="1300"
+        Title="Khách hàng &amp; Hội viên" Height="800" Width="1300"
         WindowStartupLocation="CenterScreen" Background="#F6FDF9">
 	<Window.Resources>
 		<!-- Colors -->
@@ -71,7 +71,7 @@
 
 		<!-- Top bar -->
 		<DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,8">
-			<TextBlock Text="Quản lý khách hàng & Hội viên" Foreground="{StaticResource ColText}"
+			<TextBlock Text="Quản lý khách hàng &amp; Hội viên" Foreground="{StaticResource ColText}"
                        FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" />
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" >
 				<Button Style="{StaticResource GhostBtn}" Click="BtnAdd_OnClick" Background="#0FBF84" Foreground="White">
@@ -117,10 +117,11 @@
 					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
-				<TextBox Grid.Column="0" Height="36" Margin="0,0,8,0"
+                <TextBox Grid.Column="0" Height="36" Margin="0,0,8,0"
                          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                         PlaceholderText="Tìm kiếm theo tên, SĐT, email..." />
-				<ToggleButton Grid.Column="1" Margin="4,0" Width="110" Height="36"
+                         x:Name="SearchBox"
+                         ToolTip="Tìm kiếm theo tên, SĐT, email..." />
+                <ToggleButton Grid.Column="1" Margin="4,0" Width="110" Height="36"
                               IsChecked="{Binding FilterAll, Mode=TwoWay}"
                               Content="Tất cả"/>
 				<ToggleButton Grid.Column="2" Margin="4,0" Width="110" Height="36"
@@ -135,7 +136,7 @@
 		<!-- List -->
 		<Border Grid.Row="3" Style="{StaticResource Card}">
 			<ScrollViewer VerticalScrollBarVisibility="Auto">
-				<ItemsControl ItemsSource="{Binding Path=CustomersView}">
+				<ItemsControl ItemsSource="{Binding CustomersView}">
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
 							<Border BorderBrush="#EEF6F2" BorderThickness="0,0,0,1" Padding="10">
