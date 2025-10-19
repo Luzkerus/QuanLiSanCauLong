@@ -54,6 +54,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         {
             try
             {
+                // Kiểm tra dữ liệu nhập liệu
                 if (string.IsNullOrWhiteSpace(txtTenSan.Text))
                 {
                     MessageBox.Show("Vui lòng nhập tên sân.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
