@@ -122,6 +122,9 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             }
         }
 
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
+        }
     }
 }

@@ -274,19 +274,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Search -->
-                <Border Background="White" CornerRadius="10" BorderBrush="{StaticResource ColBorder}"
-                        BorderThickness="1" Padding="10" Width="360" HorizontalAlignment="Left">
-                    <Grid>
-                        <DockPanel>
-                            <TextBlock Text="🔎" Margin="0,0,6,0"/>
-                            <TextBox x:Name="txtSearch" BorderThickness="0" Background="Transparent"
-                                     FontSize="13" VerticalContentAlignment="Center"/>
-                        </DockPanel>
-                        <TextBlock Text="Tìm kiếm..." Foreground="#9AA7A0"
-                                   Margin="22,0,0,0" VerticalAlignment="Center"
-                                   IsHitTestVisible="False" Style="{StaticResource WatermarkTextStyle}"/>
-                    </Grid>
-                </Border>
+
 
                 <!-- Bell + Today -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
@@ -306,21 +294,22 @@
             <!-- Title + Buttons -->
             <Grid Grid.Row="1" Margin="0,12,0,10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="78*"/>
+                    <ColumnDefinition Width="73*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="0,0,105,0">
                     <TextBlock Text="Tổng quan hệ thống" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
                     <TextBlock Text="Chào mừng trở lại! Đây là tổng quan hoạt động hôm nay." Foreground="{StaticResource ColSub}" FontSize="12"/>
                 </StackPanel>
 
-                <Border Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource BtnOutline}">
-                    <TextBlock Text="Xuất báo cáo" Foreground="#2BB673" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Border Grid.Column="1" Margin="427,0,10,0" Style="{StaticResource BtnOutline}" Grid.ColumnSpan="2">
+                    <TextBlock Text="Xuất báo cáo" Foreground="#2BB673" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,0,0,0"/>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource BtnSolid}" MouseLeftButtonDown="btnDatSanMoi">
+                <Border Grid.Column="2" Style="{StaticResource BtnSolid}" MouseLeftButtonDown="btnDatSanMoi" Grid.ColumnSpan="2" Margin="105,0,0,0">
                     <TextBlock Text="Đặt sân mới" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
             </Grid>
