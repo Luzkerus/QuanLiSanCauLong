@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
+namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan
 {
     /// <summary>
-    /// Interaction logic for LichDatSan.xaml
+    /// Interaction logic for ucThanhToan.xaml
     /// </summary>
-    public partial class LichDatSan : Window
+    public partial class ucThanhToan : UserControl
     {
-        public LichDatSan()
+        public ucThanhToan()
         {
             InitializeComponent();
         }
