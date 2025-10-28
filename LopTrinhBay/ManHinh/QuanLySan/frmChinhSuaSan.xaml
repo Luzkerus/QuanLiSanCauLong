@@ -153,45 +153,6 @@
                         </ComboBox>
                     </Border>
 
-                    <!-- 3 cột giá -->
-                    <UniformGrid Columns="3" Rows="1" Margin="0,16,0,0">
-                        <!-- Giá ngày thường -->
-                        <StackPanel Margin="0,0,10,0">
-                            <TextBlock Style="{StaticResource FieldLabel}" Text="Giá ngày thường"/>
-                            <Border Style="{StaticResource PillField}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="txtGiaNgayThuong" Style="{StaticResource WatermarkTextBox}" Tag="80000"/>
-                                    <!-- spinner icon minh hoạ -->
-                                    <Border Grid.Column="1" Width="26" Height="20" CornerRadius="6"
-                                            Background="White" BorderBrush="{StaticResource ColBorder}"
-                                            BorderThickness="1" Margin="6,0,0,0" VerticalAlignment="Center">
-                                        <TextBlock Text="▴▾" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Border>
-                                </Grid>
-                            </Border>
-                        </StackPanel>
-
-                        <!-- Giá cuối tuần -->
-                        <StackPanel Margin="0,0,10,0">
-                            <TextBlock Style="{StaticResource FieldLabel}" Text="Giá cuối tuần"/>
-                            <Border Style="{StaticResource PillField}">
-                                <TextBox x:Name="txtGiaCuoiTuan" Style="{StaticResource WatermarkTextBox}" Tag="100000" />
-                            </Border>
-                        </StackPanel>
-
-                        <!-- Giá lễ tết -->
-                        <StackPanel>
-                            <TextBlock Style="{StaticResource FieldLabel}" Text="Giá lễ tết"/>
-                            <Border Style="{StaticResource PillField}">
-                                <TextBox x:Name="txtGiaLeTet" Style="{StaticResource WatermarkTextBox}" Tag="120000" />
-                            </Border>
-                        </StackPanel>
-                    </UniformGrid>
-
                     <!-- Lịch bảo trì -->
                     <TextBlock Style="{StaticResource FieldLabel}" Text="Lịch bảo trì tiếp theo" Margin="0,16,0,6"/>
                     <Border Style="{StaticResource PillField}">

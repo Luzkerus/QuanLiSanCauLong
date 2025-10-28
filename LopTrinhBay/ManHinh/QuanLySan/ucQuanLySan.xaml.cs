@@ -3,12 +3,23 @@ using QuanLiSanCauLong.LopNghiepVu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 {
-    public partial class frmQuanLySan : Window
+    /// <summary>
+    /// Interaction logic for ucQuanLySan.xaml
+    /// </summary>
+    public partial class ucQuanLySan : UserControl
     {
         private SanBLL sanBLL = new SanBLL();
         public List<San> DanhSachSan { get; set; }
@@ -17,7 +28,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         public int TongSoSanKhongBaoTri => DanhSachSan?.Count(s => s.TrangThai != "Bảo trì") ?? 0;
         public int TongSoSanBaoTri => DanhSachSan?.Count(s => s.TrangThai == "Bảo trì") ?? 0;
 
-        public frmQuanLySan()
+        public ucQuanLySan()
         {
             InitializeComponent();
 
@@ -36,7 +47,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         private void btnThemSanMoi(object sender, RoutedEventArgs e)
         {
             frmThemSanMoi themSanMoiWindow = new frmThemSanMoi();
-            themSanMoiWindow.Owner = this;
+        
             bool? result = themSanMoiWindow.ShowDialog(); // chờ form con đóng lại
 
             if (result == true)
@@ -57,7 +68,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             }
 
             frmChinhSuaSan formSua = new frmChinhSuaSan(sanDuocChon);
-            formSua.Owner = this;
+     
             bool? result = formSua.ShowDialog();
 
             if (result == true)

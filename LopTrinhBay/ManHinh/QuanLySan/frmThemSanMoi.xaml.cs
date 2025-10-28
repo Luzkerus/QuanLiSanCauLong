@@ -63,26 +63,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
                     return;
                 }
 
-                if (!decimal.TryParse(txtGiaNgayThuong.Text, out decimal giaNgayThuong) || giaNgayThuong <= 0)
-                {
-                    MessageBox.Show("Giá ngày thường không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    txtGiaNgayThuong.Focus();
-                    return;
-                }
 
-                if (!decimal.TryParse(txtGiaCuoiTuan.Text, out decimal giaCuoiTuan) || giaCuoiTuan <= 0)
-                {
-                    MessageBox.Show("Giá cuối tuần không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    txtGiaCuoiTuan.Focus();
-                    return;
-                }
-
-                if (!decimal.TryParse(txtGiaLeTet.Text, out decimal giaLeTet) || giaLeTet <= 0)
-                {
-                    MessageBox.Show("Giá lễ tết không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    txtGiaLeTet.Focus();
-                    return;
-                }
 
                 if (dpNgayBaoTri.SelectedDate == null)
                 {
@@ -95,9 +76,6 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
                 {
                     TenSan = txtTenSan.Text.Trim(),
                     TrangThai = ((ComboBoxItem)cboTrangThai.SelectedItem).Content.ToString(),
-                    GiaNgayThuong = decimal.Parse(txtGiaNgayThuong.Text),
-                    GiaCuoiTuan = decimal.Parse(txtGiaCuoiTuan.Text),
-                    GiaLeTet = decimal.Parse(txtGiaLeTet.Text),
                     NgayBaoTri = dpNgayBaoTri.SelectedDate
                 };
 

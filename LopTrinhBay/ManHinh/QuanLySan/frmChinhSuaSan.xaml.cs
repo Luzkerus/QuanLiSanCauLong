@@ -36,9 +36,6 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             // Hiển thị thông tin sân hiện tại
             txtTenSan.Text = sanCanSua.TenSan;
             cboTrangThai.Text = sanCanSua.TrangThai;
-            txtGiaNgayThuong.Text = sanCanSua.GiaNgayThuong.ToString();
-            txtGiaCuoiTuan.Text = sanCanSua.GiaCuoiTuan.ToString();
-            txtGiaLeTet.Text = sanCanSua.GiaLeTet.ToString();
             dpNgayBaoTri.SelectedDate = sanCanSua.NgayBaoTri;
         }
 
@@ -69,26 +66,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
                     return;
                 }
 
-                if (!decimal.TryParse(txtGiaNgayThuong.Text, out decimal giaNgayThuong) || giaNgayThuong <= 0)
-                {
-                    MessageBox.Show("Giá ngày thường không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    txtGiaNgayThuong.Focus();
-                    return;
-                }
 
-                if (!decimal.TryParse(txtGiaCuoiTuan.Text, out decimal giaCuoiTuan) || giaCuoiTuan <= 0)
-                {
-                    MessageBox.Show("Giá cuối tuần không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    txtGiaCuoiTuan.Focus();
-                    return;
-                }
-
-                if (!decimal.TryParse(txtGiaLeTet.Text, out decimal giaLeTet) || giaLeTet <= 0)
-                {
-                    MessageBox.Show("Giá lễ tết không hợp lệ. Vui lòng nhập số hợp lệ.", "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    txtGiaLeTet.Focus();
-                    return;
-                }
 
                 if (dpNgayBaoTri.SelectedDate == null)
                 {
@@ -100,9 +78,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
                 // Cập nhật thông tin sân từ các trường nhập liệu
                 sanHienTai.TenSan = txtTenSan.Text;
                 sanHienTai.TrangThai = cboTrangThai.Text;
-                sanHienTai.GiaNgayThuong = decimal.Parse(txtGiaNgayThuong.Text);
-                sanHienTai.GiaCuoiTuan = decimal.Parse(txtGiaCuoiTuan.Text);
-                sanHienTai.GiaLeTet = decimal.Parse(txtGiaLeTet.Text);
+
                 sanHienTai.NgayBaoTri = dpNgayBaoTri.SelectedDate;
                 // Gọi phương thức cập nhật sân trong BLL
                 bool ketQua = sanBLL.CapNhatSan(sanHienTai);
