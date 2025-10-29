@@ -7,9 +7,13 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
 {
     public class SanDAL
     {
-        private readonly string connectionString =
-"Data Source=localhost;Initial Catalog=QuanLiSanCauLong;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+        private readonly string connectionString;
 
+        public SanDAL()
+        {
+            ConnectStringDAL connect = new ConnectStringDAL();
+            connectionString = connect.GetConnectionString();
+        }
         public List<San> LayTatCaSan()
         {
             CapNhatTrangThaiTuDong();
@@ -111,7 +115,35 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 cmd.ExecuteNonQuery();
             }
         }
+        public bool KiemTraTenSanTonTai(string tenSan)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM dbo.San WHERE TenSan = @TenSan";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@TenSan", tenSan);
 
+                conn.Open();
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
+        // 🔹 Kiểm tra khi sửa (loại trừ chính nó)
+        public bool KiemTraTenSanTonTaiKhiSua(string tenSan, int maSan)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM dbo.San WHERE TenSan = @TenSan AND MaSan <> @MaSan";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@TenSan", tenSan);
+                cmd.Parameters.AddWithValue("@MaSan", maSan);
+
+                conn.Open();
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
 
     }
 }

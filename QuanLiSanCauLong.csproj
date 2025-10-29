@@ -117,6 +117,7 @@
     <Compile Include="LopTrinhBay\ManHinh\TongQuan\ucTongQuan.xaml.cs">
       <DependentUpon>ucTongQuan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTruyCapDuLieu\ConnectString.cs" />
     <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
