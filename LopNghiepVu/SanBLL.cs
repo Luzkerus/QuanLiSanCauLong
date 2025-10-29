@@ -24,8 +24,7 @@ namespace QuanLiSanCauLong.LopNghiepVu
             // Có thể thêm kiểm tra nghiệp vụ ở đây, ví dụ:
             if (string.IsNullOrWhiteSpace(san.TenSan))
                 throw new Exception("Tên sân không được để trống.");
-            if (san.GiaNgayThuong <= 0 || san.GiaCuoiTuan <= 0 || san.GiaLeTet <= 0)
-                throw new Exception("Giá sân phải lớn hơn 0.");
+
 
             return sanDAL.ThemSanMoi(san);
         }
@@ -42,8 +41,7 @@ namespace QuanLiSanCauLong.LopNghiepVu
                 throw new Exception("Mã sân không hợp lệ.");
             if (string.IsNullOrWhiteSpace(san.TenSan))
                 throw new Exception("Tên sân không được để trống.");
-            if (san.GiaNgayThuong <= 0 || san.GiaCuoiTuan <= 0 || san.GiaLeTet <= 0)
-                throw new Exception("Giá sân phải lớn hơn 0.");
+
 
             return sanDAL.CapNhatSan(san);
         }

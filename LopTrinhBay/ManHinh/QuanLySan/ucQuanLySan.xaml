@@ -101,7 +101,7 @@
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                    <TextBlock Text="🗓  Đặt sân mới" Foreground="White" Padding="12,6"/>
+                    <TextBlock Text="🗓  Thêm sân mới" Foreground="White" Padding="12,6"/>
                 </Border>
 
             </StackPanel>
@@ -215,6 +215,9 @@
                                             <Border Style="{StaticResource TrangThaiPill}" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding TrangThai}" FontSize="12" FontWeight="SemiBold"/>
                                             </Border>
+                                            <TextBlock Text="{Binding NgayBaoTri, StringFormat={}{0:dd/MM/yyyy}}" FontWeight="SemiBold" Foreground="{StaticResource ColText}" 
+    VerticalAlignment="Center"/>
+
 
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                                 <Button Padding="4" Background="Transparent" BorderThickness="0" Click="btn_Sua">
