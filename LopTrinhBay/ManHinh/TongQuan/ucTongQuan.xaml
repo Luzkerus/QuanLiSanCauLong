@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="1200"
+             d:DesignHeight="700" d:DesignWidth="1080"
              Background="#F6FDF9">
 
     <!-- =================== RESOURCES =================== -->
@@ -117,13 +117,14 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,12,0">
-                <TextBlock Text="Tổng quan hệ thống" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                <TextBlock Text="Tổng quan hệ thống" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
                 <TextBlock Text="Chào mừng trở lại! Đây là tổng quan hoạt động hôm nay."
                            Foreground="{StaticResource ColSub}" FontSize="12"/>
             </StackPanel>
 
             <Border Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource BtnOutline}">
                 <TextBlock Text="Xuất báo cáo" FontSize="14" Foreground="#2BB673"
+                           
                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
 
@@ -138,38 +139,91 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
 
-                <!-- KPI 4 thẻ -->
-                <UniformGrid Columns="4" Margin="0,0,0,12">
+                <!-- KPI 4 thẻ (có icon) -->
+                <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,12">
+                    <!-- Doanh thu hôm nay -->
                     <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
-                        <StackPanel>
-                            <TextBlock Text="Doanh thu hôm nay" FontSize="14" Foreground="#678"/>
-                            <TextBlock Text="{Binding DoanhThuHomNay, StringFormat={}{0:N0}đ}" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding BienDongDoanhThu}" Foreground="#16A34A" Margin="0,6,0,0"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Doanh thu hôm nay" FontSize="14" Foreground="#678"/>
+                                <TextBlock Text="{Binding DoanhThuHomNay, StringFormat={}{0:N0}đ}"
+                           FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding BienDongDoanhThu}" Foreground="#16A34A" Margin="0,6,0,0"/>
+                            </StackPanel>
+
+                            <!-- Icon -->
+                            <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                                <TextBlock Text="💵" FontSize="16" Height="26" VerticalAlignment="Top"/>
+                            </Border>
+                        </Grid>
                     </Border>
+
+                    <!-- Số lượt đặt sân -->
                     <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
-                        <StackPanel>
-                            <TextBlock Text="Số lượt đặt sân" FontSize="14" Foreground="#678"/>
-                            <TextBlock Text="{Binding SoLuotDatSan}" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding BienDongLuotDat}" Foreground="#16A34A" Margin="0,6,0,0"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Số lượt đặt sân" FontSize="14" Foreground="#678"/>
+                                <TextBlock Text="{Binding SoLuotDatSan}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding BienDongLuotDat}" Foreground="#16A34A" Margin="0,6,0,0"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                                <TextBlock Text="🗓️" FontSize="16"/>
+                            </Border>
+                        </Grid>
                     </Border>
+
+                    <!-- Hội viên mới -->
                     <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
-                        <StackPanel>
-                            <TextBlock Text="Hội viên mới" FontSize="14" Foreground="#678"/>
-                            <TextBlock Text="{Binding HoiVienMoi}" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding BienDongHoiVien}" Foreground="#16A34A" Margin="0,6,0,0"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Hội viên mới" FontSize="14" Foreground="#678"/>
+                                <TextBlock Text="{Binding HoiVienMoi}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding BienDongHoiVien}" Foreground="#16A34A" Margin="0,6,0,0"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                                <TextBlock Text="👥" FontSize="16" Height="23" VerticalAlignment="Top"/>
+                            </Border>
+                        </Grid>
                     </Border>
+
+                    <!-- Tỉ lệ lấp đầy -->
                     <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
-                        <StackPanel>
-                            <TextBlock Text="Tỉ lệ lấp đầy" FontSize="14" Foreground="#678"/>
-                            <TextBlock Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding BienDongLapDay}" Foreground="#DC2626" Margin="0,6,0,0"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Tỉ lệ lấp đầy" FontSize="14" Foreground="#678"/>
+                                <TextBlock Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}"
+                           FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding BienDongLapDay}" Foreground="#DC2626" Margin="0,6,0,0"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                                <TextBlock Text="📈" FontSize="16"/>
+                            </Border>
+                        </Grid>
                     </Border>
                 </UniformGrid>
-
                 <!-- Tình trạng sân + Top hội viên -->
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
@@ -181,7 +235,7 @@
                     <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="8">
                         <StackPanel>
                             <DockPanel Margin="0,0,0,8">
-                                <TextBlock Text="🟡" DockPanel.Dock="Left" Margin="0,0,6,0"/>
+                                <TextBlock Text="" DockPanel.Dock="Left" Margin="0,0,6,0"/>
                                 <TextBlock Text="Tình trạng sân" FontWeight="SemiBold"/>
                             </DockPanel>
 

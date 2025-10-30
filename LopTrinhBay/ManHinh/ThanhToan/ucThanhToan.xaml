@@ -4,19 +4,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="720"
+             d:DesignWidth="1080" d:DesignHeight="800"
              Background="#F7FAF9">
 
-    <!-- ===== Resources ===== -->
+    <!-- ========= RESOURCES ========= -->
     <UserControl.Resources>
         <!-- Palette -->
         <SolidColorBrush x:Key="ColText"  Color="#21382D"/>
         <SolidColorBrush x:Key="ColSub"   Color="#6B7E74"/>
-        <SolidColorBrush x:Key="ColCard"  Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ColCard"  Color="White"/>
         <SolidColorBrush x:Key="ColLine"  Color="#E8F0EC"/>
-        <SolidColorBrush x:Key="ColMint"  Color="#E8FFF4"/>
 
-        <!-- Card wrapper -->
+        <!-- KPI badge colors -->
+        <SolidColorBrush x:Key="BadgeYellowBg" Color="#FFF8E1"/>
+        <SolidColorBrush x:Key="BadgeYellowBd" Color="#FFE7A3"/>
+        <SolidColorBrush x:Key="BadgeBlueBg"   Color="#E9F1FF"/>
+        <SolidColorBrush x:Key="BadgeBlueBd"   Color="#CFE0FF"/>
+        <SolidColorBrush x:Key="BadgeGreenBg"  Color="#E6FFF2"/>
+        <SolidColorBrush x:Key="BadgeGreenBd"  Color="#CFF5E3"/>
+        <SolidColorBrush x:Key="BadgePurpleBg" Color="#F4E9FF"/>
+        <SolidColorBrush x:Key="BadgePurpleBd" Color="#E2CFFF"/>
+
+        <!-- Card -->
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource ColCard}"/>
             <Setter Property="CornerRadius" Value="14"/>
@@ -26,26 +35,41 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
-        <!-- Nút viền mảnh (ghost) bo góc + icon bên trái -->
-        <Style x:Key="GhostButton" TargetType="Button">
+        <!-- Ghost gray button (for lịch sử hóa đơn) -->
+        <Style x:Key="GrayGhostButton" TargetType="Button">
+            <Setter Property="Background" Value="#F2F4F7"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="#E8F0EC" BorderThickness="1">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Padding" Value="14,8"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#21382D"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E5E7EB"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.6"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
-        <!-- Dòng pending ở panel phải -->
+        <!-- Outline button mặc định -->
+        <Style x:Key="GhostButton" TargetType="Button" BasedOn="{StaticResource GrayGhostButton}">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <!-- Pending item bên phải -->
         <DataTemplate x:Key="PendingItemTemplate">
             <Border BorderBrush="#F3E7C3" BorderThickness="1" CornerRadius="12" Padding="12" Background="#FFFBF1" Margin="0,0,0,12">
                 <StackPanel>
@@ -61,7 +85,7 @@
                         <TextBlock Text="Tổng:" FontWeight="SemiBold"/>
                         <TextBlock DockPanel.Dock="Right" Text="{Binding TongStr}" FontWeight="Bold"/>
                     </DockPanel>
-                    <Button Content="Thanh toán"
+                    <Button Content="Mở để thanh toán"
                             Command="{Binding DataContext.PayPendingCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                             CommandParameter="{Binding}" Margin="0,8,0,0"
                             Background="#2BB673" Foreground="White" Padding="12,8" />
@@ -69,7 +93,7 @@
             </Border>
         </DataTemplate>
 
-        <!-- Dòng thức uống -->
+        <!-- Dòng hàng nước (POS) -->
         <DataTemplate x:Key="DrinkRowTemplate">
             <Grid Margin="0,6,0,0">
                 <Grid.ColumnDefinitions>
@@ -87,7 +111,7 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <!-- ===== Layout ===== -->
+    <!-- ========= LAYOUT ========= -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -97,40 +121,38 @@
             <RowDefinition/>
             <!-- Main -->
             <RowDefinition Height="Auto"/>
-            <!-- Action buttons -->
+            <!-- Action -->
             <RowDefinition Height="Auto"/>
             <!-- Footer -->
         </Grid.RowDefinitions>
 
-        <!-- ===== Header (title + ghost button sát phải) ===== -->
+        <!-- ===== Header ===== -->
         <Grid Grid.Row="0" Margin="12,14,12,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Tiêu đề bên trái -->
             <StackPanel Grid.Column="0">
-                <TextBlock Text="Thanh toán &amp; Hóa đơn" FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="Thanh toán &amp; Hóa đơn" FontSize="24" FontWeight="Bold"/>
                 <TextBlock Text="Xử lý thanh toán và quản lý hóa đơn" Foreground="#6B7E74"/>
             </StackPanel>
 
-            <!-- Nút Lịch sử hóa đơn sát lề phải -->
+            <!-- Nút lịch sử hóa đơn xám nhạt + hover đậm -->
             <Button Grid.Column="1"
-                    Style="{StaticResource GhostButton}"
+                    Style="{StaticResource GrayGhostButton}"
                     Command="{Binding OpenLichSuCommand}"
                     HorizontalAlignment="Right"
-                    Margin="0"
                     Padding="14,8"
-                    Width="160">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    Width="170">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>
                     <TextBlock Text="Lịch sử hóa đơn" FontSize="14"/>
                 </StackPanel>
             </Button>
         </Grid>
 
-        <!-- ===== KPI (4 thẻ, không có nút) ===== -->
+        <!-- ===== KPI (4 thẻ có icon giống ảnh) ===== -->
         <Grid Margin="12,10,12,0" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -139,35 +161,67 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!-- KPI 1: Chờ thanh toán -->
             <Border Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="Chờ thanh toán" Foreground="{StaticResource ColSub}"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding SoChoThanhToan}" FontSize="22" FontWeight="Bold" Margin="0,0,8,0"/>
-                        <TextBlock Text="đơn" Foreground="{StaticResource ColSub}"/>
+                <DockPanel LastChildFill="True">
+                    <StackPanel>
+                        <TextBlock Text="Chờ thanh toán" Foreground="{StaticResource ColSub}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding SoChoThanhToan}" FontSize="22" FontWeight="Bold" Margin="0,0,8,0"/>
+                            <TextBlock Text="đơn" Foreground="{StaticResource ColSub}"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
+                    <Border DockPanel.Dock="Right" Margin="12,0,0,0" Padding="8"
+                            Background="{StaticResource BadgeYellowBg}" BorderBrush="{StaticResource BadgeYellowBd}" BorderThickness="1"
+                            CornerRadius="10" VerticalAlignment="Center">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="16"/>
+                    </Border>
+                </DockPanel>
             </Border>
 
+            <!-- KPI 2: Tổng chờ -->
             <Border Grid.Column="1" Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="Tổng chờ" Foreground="{StaticResource ColSub}"/>
-                    <TextBlock Text="{Binding TongChoStr}" FontSize="22" FontWeight="Bold"/>
-                </StackPanel>
+                <DockPanel>
+                    <StackPanel>
+                        <TextBlock Text="Tổng chờ" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="{Binding TongChoStr}" FontSize="22" FontWeight="Bold"/>
+                    </StackPanel>
+                    <Border DockPanel.Dock="Right" Margin="12,0,0,0" Padding="8"
+                            Background="{StaticResource BadgeBlueBg}" BorderBrush="{StaticResource BadgeBlueBd}" BorderThickness="1"
+                            CornerRadius="10" VerticalAlignment="Center">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="16"/>
+                    </Border>
+                </DockPanel>
             </Border>
 
+            <!-- KPI 3: Đã thu hôm nay -->
             <Border Grid.Column="2" Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="Đã thu hôm nay" Foreground="{StaticResource ColSub}"/>
-                    <TextBlock Text="{Binding DaThuHomNayStr}" FontSize="22" FontWeight="Bold"/>
-                </StackPanel>
+                <DockPanel>
+                    <StackPanel>
+                        <TextBlock Text="Đã thu hôm nay" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="{Binding DaThuHomNayStr}" FontSize="22" FontWeight="Bold"/>
+                    </StackPanel>
+                    <Border DockPanel.Dock="Right" Margin="12,0,0,0" Padding="8"
+                            Background="{StaticResource BadgeGreenBg}" BorderBrush="{StaticResource BadgeGreenBd}" BorderThickness="1"
+                            CornerRadius="10" VerticalAlignment="Center">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="16"/>
+                    </Border>
+                </DockPanel>
             </Border>
 
+            <!-- KPI 4: Hóa đơn hôm nay -->
             <Border Grid.Column="3" Style="{StaticResource CardStyle}">
-                <StackPanel>
-                    <TextBlock Text="Hóa đơn hôm nay" Foreground="{StaticResource ColSub}"/>
-                    <TextBlock Text="{Binding SoHoaDonHomNay}" FontSize="22" FontWeight="Bold"/>
-                </StackPanel>
+                <DockPanel>
+                    <StackPanel>
+                        <TextBlock Text="Hóa đơn hôm nay" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="{Binding SoHoaDonHomNay}" FontSize="22" FontWeight="Bold"/>
+                    </StackPanel>
+                    <Border DockPanel.Dock="Right" Margin="12,0,0,0" Padding="8"
+                            Background="{StaticResource BadgePurpleBg}" BorderBrush="{StaticResource BadgePurpleBd}" BorderThickness="1"
+                            CornerRadius="10" VerticalAlignment="Center">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" FontSize="16"/>
+                    </Border>
+                </DockPanel>
             </Border>
         </Grid>
 
@@ -182,7 +236,7 @@
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
 
-                    <!-- Khách -->
+                    <!-- Thông tin khách -->
                     <Border Style="{StaticResource CardStyle}">
                         <StackPanel>
                             <TextBlock Text="Tạo hóa đơn mới" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
@@ -205,31 +259,53 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Sân đã chơi -->
+                    <!-- Chi tiết đặt sân (checkbox từng dòng) -->
                     <Border Style="{StaticResource CardStyle}">
                         <StackPanel>
-                            <TextBlock Text="Sân đã chơi" FontWeight="SemiBold" Margin="0,0,0,6"/>
-                            <Border Background="#EBFFF4" CornerRadius="10" Padding="12">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="220"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Margin="0,0,12,0">
-                                        <TextBlock Text="Chọn sân (đơn Playing/Hoàn tất)" Foreground="{StaticResource ColSub}" />
-                                        <ComboBox ItemsSource="{Binding DanhSachDonSan}"
-                                                  SelectedItem="{Binding DonSanChon}"
-                                                  DisplayMemberPath="MoTa" />
+                            <DockPanel>
+                                <TextBlock Text="Chi tiết đặt sân (đang chơi / đã hoàn tất)" FontWeight="SemiBold" />
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Width="331">
+                                    <CheckBox Content="Chọn tất cả"
+                                              IsChecked="{Binding ChonTatCaChiTiet}"
+                                              Command="{Binding ToggleChonTatCaCommand}"/>
+                                    <!-- Tùy chọn thanh toán -->
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <RadioButton Content="Thanh toán toàn bộ"
+                                                     GroupName="PayMode" Margin="0,0,12,0"
+                                                     IsChecked="{Binding IsThanhToanToanBo}"/>
+                                        <RadioButton Content="Chỉ các dòng đã chọn"
+                                                     GroupName="PayMode"
+                                                     IsChecked="{Binding IsThanhToanChon}"/>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Giá sân tạm tính" Foreground="{StaticResource ColSub}" />
-                                        <TextBox Text="{Binding GiaSanTamTinhStr}" Padding="10" IsReadOnly="True"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
+                                </StackPanel>
+                            </DockPanel>
 
-                            <CheckBox Content="Thuê vợt (gộp vào hóa đơn)"
-                                      IsChecked="{Binding GopThueVot}" Margin="0,10,0,0"/>
+                            <!-- DataGrid: ChiTietDatSanList
+                                 Mỗi item: { IsChecked(bool), San, Ngay, GioBatDau, GioKetThuc, TienStr } -->
+                            <DataGrid ItemsSource="{Binding ChiTietDatSanList}"
+                                      AutoGenerateColumns="False" HeadersVisibility="Column"
+                                      CanUserAddRows="False" CanUserDeleteRows="False"
+                                      Margin="0,8,0,0" RowHeight="34"
+                                      GridLinesVisibility="Horizontal"
+                                      BorderBrush="{StaticResource ColLine}" BorderThickness="1" >
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="42">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="#" HorizontalAlignment="Center"/>
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Sân" Binding="{Binding San}" Width="*" />
+                                    <DataGridTextColumn Header="Ngày" Binding="{Binding Ngay}" Width="120"/>
+                                    <DataGridTextColumn Header="Bắt đầu" Binding="{Binding GioBatDau}" Width="90"/>
+                                    <DataGridTextColumn Header="Kết thúc" Binding="{Binding GioKetThuc}" Width="90"/>
+                                    <DataGridTextColumn Header="Tiền" Binding="{Binding TienStr}" Width="120"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </StackPanel>
                     </Border>
 
@@ -246,7 +322,7 @@
                     </Border>
 
                     <!-- Tổng cộng -->
-                    <Border Style="{StaticResource CardStyle}" Background="{StaticResource ColMint}">
+                    <Border Style="{StaticResource CardStyle}" Background="#E8FFF4">
                         <StackPanel>
                             <TextBlock Text="Tổng cộng:" Foreground="{StaticResource ColSub}" />
                             <TextBlock Text="{Binding TongThanhToanStr}" FontSize="22" FontWeight="Bold"/>
@@ -258,36 +334,33 @@
             <!-- RIGHT -->
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <TextBlock Text="Chờ thanh toán" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <TextBlock Text="    Chờ thanh toán" FontWeight="Bold" Margin="0,0,0,6"/>
                     <ItemsControl ItemsSource="{Binding PendingInvoices}" ItemTemplate="{StaticResource PendingItemTemplate}"/>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
 
-        <!-- ===== Action buttons: Tạo HĐ + Thanh toán (căn phải) ===== -->
+        <!-- ===== Action buttons ===== -->
         <Border Grid.Row="3" Margin="12" Style="{StaticResource CardStyle}">
-            <StackPanel Orientation="Horizontal"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                <!-- Nút 1: Tạo hóa đơn -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <!-- Tạo hóa đơn nháp (nếu cần) -->
                 <Button Style="{StaticResource GhostButton}"
-                Padding="20,12"
-                Command="{Binding CreateInvoiceCommand}"
-                Margin="0,0,12,0"
-                Width="150">
+                        Padding="20,12"
+                        Command="{Binding CreateInvoiceCommand}"
+                        Margin="0,0,12,0"
+                        Width="170">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>
                         <TextBlock Text="Tạo hóa đơn"/>
                     </StackPanel>
                 </Button>
 
-                <!-- Nút 2: Thanh toán -->
+                <!-- Thanh toán: nếu IsThanhToanChon=true sẽ dùng các dòng đã tick -->
                 <Button Background="#2BB673"
-                Foreground="White"
-                Padding="20,12"
-                Command="{Binding PayNowCommand}"
-                Margin="0,0,12,0"
-                Width="150">
+                        Foreground="White"
+                        Padding="20,12"
+                        Command="{Binding PayNowCommand}"
+                        Width="170">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>
                         <TextBlock Text="Thanh toán"/>
@@ -295,7 +368,6 @@
                 </Button>
             </StackPanel>
         </Border>
-
 
         <!-- ===== Footer ===== -->
         <Border Grid.Row="4" Margin="12" Style="{StaticResource CardStyle}">
@@ -305,12 +377,15 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="{StaticResource ColLine}" BorderThickness="1" CornerRadius="10" Padding="10" Margin="0,4,12,4">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding MaDisplay}" FontWeight="SemiBold" Margin="0,0,12,0"/>
                                     <TextBlock Text="{Binding TenKH}" Foreground="{StaticResource ColSub}" Margin="0,0,12,0"/>
                                     <TextBlock Text="{Binding TongStr}" FontWeight="Bold" Margin="0,0,12,0"/>
                                     <Border Background="#EAFBF2" Padding="6,2" CornerRadius="10" >
-                                        <TextBlock Text="Đã thanh toán" FontSize="12"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0" FontSize="12"/>
+                                            <TextBlock Text="Đã thanh toán" FontSize="12"/>
+                                        </StackPanel>
                                     </Border>
                                 </StackPanel>
                             </Border>

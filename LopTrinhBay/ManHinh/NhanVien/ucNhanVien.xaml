@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="720"
+             d:DesignWidth="1080" d:DesignHeight="700"
              Background="#F7FAF9">
 
     <!-- ===== Resources / Palette ===== -->

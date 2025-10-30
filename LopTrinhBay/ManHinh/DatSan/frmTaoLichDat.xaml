@@ -7,6 +7,7 @@
         SizeToContent="WidthAndHeight"
         WindowStyle="None"
         AllowsTransparency="True"
+        MinWidth="880" MinHeight="600"
         Background="Transparent">
 
     <!-- Colors -->
@@ -41,296 +42,348 @@
             </DockPanel>
 
             <!-- Body -->
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="1">
 
-                <!-- Tên khách -->
-                <StackPanel Grid.Row="0" Grid.Column="0" Margin="6,2,6,10">
-                    <TextBlock Text="Tên khách hàng" Margin="2,0,0,4"/>
-                    <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FAFEFC" Padding="8,6">
-                        <TextBox x:Name="txtTenKH" BorderThickness="0" Background="Transparent" Text="Nguyễn Văn A"/>
-                    </Border>
-                </StackPanel>
+                <!-- THÔNG TIN KHÁCH HÀNG (đưa lên đầu) -->
+                <Border CornerRadius="10" BorderBrush="#CFE4FF" BorderThickness="1"
+                        Background="#EDF6FF" Padding="10" Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="Thông tin khách hàng" FontWeight="SemiBold" Foreground="{StaticResource ColText}" Margin="0,0,0,6"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                <!-- Số điện thoại -->
-                <StackPanel Grid.Row="0" Grid.Column="1" Margin="6,2,6,10">
-                    <TextBlock Text="Số điện thoại" Margin="2,0,0,4"/>
-                    <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FAFEFC" Padding="8,6">
-                        <TextBox x:Name="txtSDT" BorderThickness="0" Background="Transparent" Text="0901234567"/>
-                    </Border>
-                </StackPanel>
+                            <!-- Số điện thoại -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Số điện thoại" Margin="2,0,0,4"/>
+                                <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1" Background="White" Padding="8,6">
+                                    <TextBox x:Name="txtSDT" BorderThickness="0" Background="Transparent" />
+                                </Border>
+                            </StackPanel>
 
-                <!-- Chọn sân -->
-                <StackPanel Grid.Row="1" Grid.Column="0" Margin="6,2,6,10">
-                    <TextBlock Text="Chọn sân" Margin="2,0,0,4"/>
-                    <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="4,2">
-                        <ComboBox x:Name="cboSan" BorderThickness="0" MinHeight="34" SelectedIndex="0">
-                            <ComboBoxItem>Sân 1</ComboBoxItem>
-                            <ComboBoxItem>Sân 2</ComboBoxItem>
-                            <ComboBoxItem>Sân 3</ComboBoxItem>
-                            <ComboBoxItem>Sân 4</ComboBoxItem>
-                            <ComboBoxItem>Sân 5</ComboBoxItem>
-                            <ComboBoxItem>Sân 6</ComboBoxItem>
-                        </ComboBox>
-                    </Border>
-                </StackPanel>
+                            <!-- Tên khách -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Tên khách hàng" Margin="2,0,0,4"/>
+                                <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1" Background="White" Padding="8,6">
+                                    <TextBox x:Name="txtTenKH" BorderThickness="0" Background="Transparent" />
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
 
-                <!-- Ngày đặt -->
-                <StackPanel Grid.Row="1" Grid.Column="1" Margin="6,2,6,10">
-                    <TextBlock Text="Ngày đặt" Margin="2,0,0,4"/>
-                    <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="4,0">
-                        <DatePicker x:Name="dtNgayDat" BorderThickness="0" Height="38" RenderTransformOrigin="0.497,0.517" Width="203"/>
-                    </Border>
-                </StackPanel>
+                <!-- HÀNG 1: Ngày đặt + Sân -->
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <!-- Giờ bắt đầu -->
-                <StackPanel Grid.Row="2" Grid.Column="0" Margin="6,2,6,10">
-                    <TextBlock Text="Giờ bắt đầu" Margin="2,0,0,4"/>
-                    <Grid>
-                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,4">
-                            <DockPanel>
-                                <TextBlock x:Name="lblStartTime" Text="--:--" VerticalAlignment="Center" Foreground="#444"/>
-                                <ToggleButton x:Name="btnStartClock" Content="🕓" Width="28" Height="28" Margin="4,0,0,0"
-                                              BorderThickness="0" Background="Transparent" DockPanel.Dock="Right"/>
-                            </DockPanel>
+                    <!-- Ngày đặt -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Ngày đặt" Margin="2,0,0,4"/>
+                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="4,0">
+                            <DatePicker x:Name="dtNgayDat" BorderThickness="0" Height="38" Width="Auto"/>
                         </Border>
+                    </StackPanel>
 
-                        <!-- Popup giờ/phút -->
-                        <Popup IsOpen="{Binding IsChecked, ElementName=btnStartClock}"
-                               PlacementTarget="{Binding ElementName=btnStartClock}" Placement="Bottom" StaysOpen="False">
-                            <Border Background="#333" CornerRadius="6" Padding="6">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="60"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <!-- Cột giờ 00-23 -->
-                                    <ListBox Width="50" Height="200" Foreground="White">
-                                        <ListBoxItem>00</ListBoxItem>
-                                        <ListBoxItem>01</ListBoxItem>
-                                        <ListBoxItem>02</ListBoxItem>
-                                        <ListBoxItem>03</ListBoxItem>
-                                        <ListBoxItem>04</ListBoxItem>
-                                        <ListBoxItem>05</ListBoxItem>
-                                        <ListBoxItem>06</ListBoxItem>
-                                        <ListBoxItem>07</ListBoxItem>
-                                        <ListBoxItem>08</ListBoxItem>
-                                        <ListBoxItem>09</ListBoxItem>
-                                        <ListBoxItem>10</ListBoxItem>
-                                        <ListBoxItem>11</ListBoxItem>
-                                        <ListBoxItem>12</ListBoxItem>
-                                        <ListBoxItem>13</ListBoxItem>
-                                        <ListBoxItem>14</ListBoxItem>
-                                        <ListBoxItem>15</ListBoxItem>
-                                        <ListBoxItem>16</ListBoxItem>
-                                        <ListBoxItem>17</ListBoxItem>
-                                        <ListBoxItem>18</ListBoxItem>
-                                        <ListBoxItem>19</ListBoxItem>
-                                        <ListBoxItem>20</ListBoxItem>
-                                        <ListBoxItem>21</ListBoxItem>
-                                        <ListBoxItem>22</ListBoxItem>
-                                        <ListBoxItem>23</ListBoxItem>
-                                    </ListBox>
-
-                                    <!-- Cột phút 00-59 -->
-                                    <ListBox Grid.Column="1" Width="50" Height="200" Margin="6,0,0,0" Foreground="White">
-                                        <ListBoxItem>00</ListBoxItem>
-                                        <ListBoxItem>01</ListBoxItem>
-                                        <ListBoxItem>02</ListBoxItem>
-                                        <ListBoxItem>03</ListBoxItem>
-                                        <ListBoxItem>04</ListBoxItem>
-                                        <ListBoxItem>05</ListBoxItem>
-                                        <ListBoxItem>06</ListBoxItem>
-                                        <ListBoxItem>07</ListBoxItem>
-                                        <ListBoxItem>08</ListBoxItem>
-                                        <ListBoxItem>09</ListBoxItem>
-                                        <ListBoxItem>10</ListBoxItem>
-                                        <ListBoxItem>11</ListBoxItem>
-                                        <ListBoxItem>12</ListBoxItem>
-                                        <ListBoxItem>13</ListBoxItem>
-                                        <ListBoxItem>14</ListBoxItem>
-                                        <ListBoxItem>15</ListBoxItem>
-                                        <ListBoxItem>16</ListBoxItem>
-                                        <ListBoxItem>17</ListBoxItem>
-                                        <ListBoxItem>18</ListBoxItem>
-                                        <ListBoxItem>19</ListBoxItem>
-                                        <ListBoxItem>20</ListBoxItem>
-                                        <ListBoxItem>21</ListBoxItem>
-                                        <ListBoxItem>22</ListBoxItem>
-                                        <ListBoxItem>23</ListBoxItem>
-                                        <ListBoxItem>24</ListBoxItem>
-                                        <ListBoxItem>25</ListBoxItem>
-                                        <ListBoxItem>26</ListBoxItem>
-                                        <ListBoxItem>27</ListBoxItem>
-                                        <ListBoxItem>28</ListBoxItem>
-                                        <ListBoxItem>29</ListBoxItem>
-                                        <ListBoxItem>30</ListBoxItem>
-                                        <ListBoxItem>31</ListBoxItem>
-                                        <ListBoxItem>32</ListBoxItem>
-                                        <ListBoxItem>33</ListBoxItem>
-                                        <ListBoxItem>34</ListBoxItem>
-                                        <ListBoxItem>35</ListBoxItem>
-                                        <ListBoxItem>36</ListBoxItem>
-                                        <ListBoxItem>37</ListBoxItem>
-                                        <ListBoxItem>38</ListBoxItem>
-                                        <ListBoxItem>39</ListBoxItem>
-                                        <ListBoxItem>40</ListBoxItem>
-                                        <ListBoxItem>41</ListBoxItem>
-                                        <ListBoxItem>42</ListBoxItem>
-                                        <ListBoxItem>43</ListBoxItem>
-                                        <ListBoxItem>44</ListBoxItem>
-                                        <ListBoxItem>45</ListBoxItem>
-                                        <ListBoxItem>46</ListBoxItem>
-                                        <ListBoxItem>47</ListBoxItem>
-                                        <ListBoxItem>48</ListBoxItem>
-                                        <ListBoxItem>49</ListBoxItem>
-                                        <ListBoxItem>50</ListBoxItem>
-                                        <ListBoxItem>51</ListBoxItem>
-                                        <ListBoxItem>52</ListBoxItem>
-                                        <ListBoxItem>53</ListBoxItem>
-                                        <ListBoxItem>54</ListBoxItem>
-                                        <ListBoxItem>55</ListBoxItem>
-                                        <ListBoxItem>56</ListBoxItem>
-                                        <ListBoxItem>57</ListBoxItem>
-                                        <ListBoxItem>58</ListBoxItem>
-                                        <ListBoxItem>59</ListBoxItem>
-                                    </ListBox>
-                                </Grid>
-                            </Border>
-                        </Popup>
-                    </Grid>
-                </StackPanel>
-
-                <!-- Giờ kết thúc -->
-                <StackPanel Grid.Row="2" Grid.Column="1" Margin="6,2,6,10">
-                    <TextBlock Text="Giờ kết thúc" Margin="2,0,0,4"/>
-                    <Grid>
-                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,4">
-                            <DockPanel>
-                                <TextBlock x:Name="lblEndTime" Text="--:--" VerticalAlignment="Center" Foreground="#444"/>
-                                <ToggleButton x:Name="btnEndClock" Content="🕓" Width="28" Height="28" Margin="4,0,0,0"
-                                              BorderThickness="0" Background="Transparent" DockPanel.Dock="Right"/>
-                            </DockPanel>
+                    <!-- Chọn sân -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Sân" Margin="2,0,0,4"/>
+                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="4,2">
+                            <ComboBox x:Name="cboSan" BorderThickness="0" MinHeight="34" SelectedIndex="0">
+                                <ComboBoxItem>Sân 1</ComboBoxItem>
+                                <ComboBoxItem>Sân 2</ComboBoxItem>
+                                <ComboBoxItem>Sân 3</ComboBoxItem>
+                                <ComboBoxItem>Sân 4</ComboBoxItem>
+                                <ComboBoxItem>Sân 5</ComboBoxItem>
+                                <ComboBoxItem>Sân 6</ComboBoxItem>
+                            </ComboBox>
                         </Border>
+                    </StackPanel>
+                </Grid>
 
-                        <Popup IsOpen="{Binding IsChecked, ElementName=btnEndClock}"
-                               PlacementTarget="{Binding ElementName=btnEndClock}" Placement="Bottom" StaysOpen="False">
-                            <Border Background="#333" CornerRadius="6" Padding="6">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="60"/>
-                                    </Grid.ColumnDefinitions>
+                <!-- HÀNG 2: Giờ bắt đầu + Giờ kết thúc -->
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                                    <!-- Cột giờ 00-23 -->
-                                    <ListBox Width="50" Height="200" Foreground="White">
-                                        <ListBoxItem>00</ListBoxItem>
-                                        <ListBoxItem>01</ListBoxItem>
-                                        <ListBoxItem>02</ListBoxItem>
-                                        <ListBoxItem>03</ListBoxItem>
-                                        <ListBoxItem>04</ListBoxItem>
-                                        <ListBoxItem>05</ListBoxItem>
-                                        <ListBoxItem>06</ListBoxItem>
-                                        <ListBoxItem>07</ListBoxItem>
-                                        <ListBoxItem>08</ListBoxItem>
-                                        <ListBoxItem>09</ListBoxItem>
-                                        <ListBoxItem>10</ListBoxItem>
-                                        <ListBoxItem>11</ListBoxItem>
-                                        <ListBoxItem>12</ListBoxItem>
-                                        <ListBoxItem>13</ListBoxItem>
-                                        <ListBoxItem>14</ListBoxItem>
-                                        <ListBoxItem>15</ListBoxItem>
-                                        <ListBoxItem>16</ListBoxItem>
-                                        <ListBoxItem>17</ListBoxItem>
-                                        <ListBoxItem>18</ListBoxItem>
-                                        <ListBoxItem>19</ListBoxItem>
-                                        <ListBoxItem>20</ListBoxItem>
-                                        <ListBoxItem>21</ListBoxItem>
-                                        <ListBoxItem>22</ListBoxItem>
-                                        <ListBoxItem>23</ListBoxItem>
-                                    </ListBox>
-
-                                    <!-- Cột phút 00-59 -->
-                                    <ListBox Grid.Column="1" Width="50" Height="200" Margin="6,0,0,0" Foreground="White">
-                                        <ListBoxItem>00</ListBoxItem>
-                                        <ListBoxItem>01</ListBoxItem>
-                                        <ListBoxItem>02</ListBoxItem>
-                                        <ListBoxItem>03</ListBoxItem>
-                                        <ListBoxItem>04</ListBoxItem>
-                                        <ListBoxItem>05</ListBoxItem>
-                                        <ListBoxItem>06</ListBoxItem>
-                                        <ListBoxItem>07</ListBoxItem>
-                                        <ListBoxItem>08</ListBoxItem>
-                                        <ListBoxItem>09</ListBoxItem>
-                                        <ListBoxItem>10</ListBoxItem>
-                                        <ListBoxItem>11</ListBoxItem>
-                                        <ListBoxItem>12</ListBoxItem>
-                                        <ListBoxItem>13</ListBoxItem>
-                                        <ListBoxItem>14</ListBoxItem>
-                                        <ListBoxItem>15</ListBoxItem>
-                                        <ListBoxItem>16</ListBoxItem>
-                                        <ListBoxItem>17</ListBoxItem>
-                                        <ListBoxItem>18</ListBoxItem>
-                                        <ListBoxItem>19</ListBoxItem>
-                                        <ListBoxItem>20</ListBoxItem>
-                                        <ListBoxItem>21</ListBoxItem>
-                                        <ListBoxItem>22</ListBoxItem>
-                                        <ListBoxItem>23</ListBoxItem>
-                                        <ListBoxItem>24</ListBoxItem>
-                                        <ListBoxItem>25</ListBoxItem>
-                                        <ListBoxItem>26</ListBoxItem>
-                                        <ListBoxItem>27</ListBoxItem>
-                                        <ListBoxItem>28</ListBoxItem>
-                                        <ListBoxItem>29</ListBoxItem>
-                                        <ListBoxItem>30</ListBoxItem>
-                                        <ListBoxItem>31</ListBoxItem>
-                                        <ListBoxItem>32</ListBoxItem>
-                                        <ListBoxItem>33</ListBoxItem>
-                                        <ListBoxItem>34</ListBoxItem>
-                                        <ListBoxItem>35</ListBoxItem>
-                                        <ListBoxItem>36</ListBoxItem>
-                                        <ListBoxItem>37</ListBoxItem>
-                                        <ListBoxItem>38</ListBoxItem>
-                                        <ListBoxItem>39</ListBoxItem>
-                                        <ListBoxItem>40</ListBoxItem>
-                                        <ListBoxItem>41</ListBoxItem>
-                                        <ListBoxItem>42</ListBoxItem>
-                                        <ListBoxItem>43</ListBoxItem>
-                                        <ListBoxItem>44</ListBoxItem>
-                                        <ListBoxItem>45</ListBoxItem>
-                                        <ListBoxItem>46</ListBoxItem>
-                                        <ListBoxItem>47</ListBoxItem>
-                                        <ListBoxItem>48</ListBoxItem>
-                                        <ListBoxItem>49</ListBoxItem>
-                                        <ListBoxItem>50</ListBoxItem>
-                                        <ListBoxItem>51</ListBoxItem>
-                                        <ListBoxItem>52</ListBoxItem>
-                                        <ListBoxItem>53</ListBoxItem>
-                                        <ListBoxItem>54</ListBoxItem>
-                                        <ListBoxItem>55</ListBoxItem>
-                                        <ListBoxItem>56</ListBoxItem>
-                                        <ListBoxItem>57</ListBoxItem>
-                                        <ListBoxItem>58</ListBoxItem>
-                                        <ListBoxItem>59</ListBoxItem>
-                                    </ListBox>
-                                </Grid>
+                    <!-- Giờ bắt đầu -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Giờ bắt đầu" Margin="2,0,0,4"/>
+                        <Grid>
+                            <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,4">
+                                <DockPanel>
+                                    <TextBlock x:Name="lblStartTime" Text="--:--" VerticalAlignment="Center" Foreground="#444"/>
+                                    <ToggleButton x:Name="btnStartClock" Content="🕓" Width="28" Height="28" Margin="4,0,0,0"
+                                                  BorderThickness="0" Background="Transparent" DockPanel.Dock="Right"/>
+                                </DockPanel>
                             </Border>
-                        </Popup>
-                    </Grid>
-                </StackPanel>
 
-                <!-- Tổng tiền -->
-                <Border Grid.Row="3" Grid.ColumnSpan="2" Margin="6,4,6,2" CornerRadius="12" Padding="12"
+                            <!-- Popup giờ/phút -->
+                            <Popup IsOpen="{Binding IsChecked, ElementName=btnStartClock}"
+                                   PlacementTarget="{Binding ElementName=btnStartClock}" Placement="Bottom" StaysOpen="False">
+                                <Border Background="#333" CornerRadius="6" Padding="6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Giờ 00-23 -->
+                                        <ListBox Width="50" Height="200" Foreground="White">
+                                            <ListBoxItem>00</ListBoxItem>
+                                            <ListBoxItem>01</ListBoxItem>
+                                            <ListBoxItem>02</ListBoxItem>
+                                            <ListBoxItem>03</ListBoxItem>
+                                            <ListBoxItem>04</ListBoxItem>
+                                            <ListBoxItem>05</ListBoxItem>
+                                            <ListBoxItem>06</ListBoxItem>
+                                            <ListBoxItem>07</ListBoxItem>
+                                            <ListBoxItem>08</ListBoxItem>
+                                            <ListBoxItem>09</ListBoxItem>
+                                            <ListBoxItem>10</ListBoxItem>
+                                            <ListBoxItem>11</ListBoxItem>
+                                            <ListBoxItem>12</ListBoxItem>
+                                            <ListBoxItem>13</ListBoxItem>
+                                            <ListBoxItem>14</ListBoxItem>
+                                            <ListBoxItem>15</ListBoxItem>
+                                            <ListBoxItem>16</ListBoxItem>
+                                            <ListBoxItem>17</ListBoxItem>
+                                            <ListBoxItem>18</ListBoxItem>
+                                            <ListBoxItem>19</ListBoxItem>
+                                            <ListBoxItem>20</ListBoxItem>
+                                            <ListBoxItem>21</ListBoxItem>
+                                            <ListBoxItem>22</ListBoxItem>
+                                            <ListBoxItem>23</ListBoxItem>
+                                        </ListBox>
+
+                                        <!-- Phút 00-59 -->
+                                        <ListBox Grid.Column="1" Width="50" Height="200" Margin="6,0,0,0" Foreground="White">
+                                            <ListBoxItem>00</ListBoxItem>
+                                            <ListBoxItem>01</ListBoxItem>
+                                            <ListBoxItem>02</ListBoxItem>
+                                            <ListBoxItem>03</ListBoxItem>
+                                            <ListBoxItem>04</ListBoxItem>
+                                            <ListBoxItem>05</ListBoxItem>
+                                            <ListBoxItem>06</ListBoxItem>
+                                            <ListBoxItem>07</ListBoxItem>
+                                            <ListBoxItem>08</ListBoxItem>
+                                            <ListBoxItem>09</ListBoxItem>
+                                            <ListBoxItem>10</ListBoxItem>
+                                            <ListBoxItem>11</ListBoxItem>
+                                            <ListBoxItem>12</ListBoxItem>
+                                            <ListBoxItem>13</ListBoxItem>
+                                            <ListBoxItem>14</ListBoxItem>
+                                            <ListBoxItem>15</ListBoxItem>
+                                            <ListBoxItem>16</ListBoxItem>
+                                            <ListBoxItem>17</ListBoxItem>
+                                            <ListBoxItem>18</ListBoxItem>
+                                            <ListBoxItem>19</ListBoxItem>
+                                            <ListBoxItem>20</ListBoxItem>
+                                            <ListBoxItem>21</ListBoxItem>
+                                            <ListBoxItem>22</ListBoxItem>
+                                            <ListBoxItem>23</ListBoxItem>
+                                            <ListBoxItem>24</ListBoxItem>
+                                            <ListBoxItem>25</ListBoxItem>
+                                            <ListBoxItem>26</ListBoxItem>
+                                            <ListBoxItem>27</ListBoxItem>
+                                            <ListBoxItem>28</ListBoxItem>
+                                            <ListBoxItem>29</ListBoxItem>
+                                            <ListBoxItem>30</ListBoxItem>
+                                            <ListBoxItem>31</ListBoxItem>
+                                            <ListBoxItem>32</ListBoxItem>
+                                            <ListBoxItem>33</ListBoxItem>
+                                            <ListBoxItem>34</ListBoxItem>
+                                            <ListBoxItem>35</ListBoxItem>
+                                            <ListBoxItem>36</ListBoxItem>
+                                            <ListBoxItem>37</ListBoxItem>
+                                            <ListBoxItem>38</ListBoxItem>
+                                            <ListBoxItem>39</ListBoxItem>
+                                            <ListBoxItem>40</ListBoxItem>
+                                            <ListBoxItem>41</ListBoxItem>
+                                            <ListBoxItem>42</ListBoxItem>
+                                            <ListBoxItem>43</ListBoxItem>
+                                            <ListBoxItem>44</ListBoxItem>
+                                            <ListBoxItem>45</ListBoxItem>
+                                            <ListBoxItem>46</ListBoxItem>
+                                            <ListBoxItem>47</ListBoxItem>
+                                            <ListBoxItem>48</ListBoxItem>
+                                            <ListBoxItem>49</ListBoxItem>
+                                            <ListBoxItem>50</ListBoxItem>
+                                            <ListBoxItem>51</ListBoxItem>
+                                            <ListBoxItem>52</ListBoxItem>
+                                            <ListBoxItem>53</ListBoxItem>
+                                            <ListBoxItem>54</ListBoxItem>
+                                            <ListBoxItem>55</ListBoxItem>
+                                            <ListBoxItem>56</ListBoxItem>
+                                            <ListBoxItem>57</ListBoxItem>
+                                            <ListBoxItem>58</ListBoxItem>
+                                            <ListBoxItem>59</ListBoxItem>
+                                        </ListBox>
+                                    </Grid>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Giờ kết thúc -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Giờ kết thúc" Margin="2,0,0,4"/>
+                        <Grid>
+                            <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,4">
+                                <DockPanel>
+                                    <TextBlock x:Name="lblEndTime" Text="--:--" VerticalAlignment="Center" Foreground="#444"/>
+                                    <ToggleButton x:Name="btnEndClock" Content="🕓" Width="28" Height="28" Margin="4,0,0,0"
+                                                  BorderThickness="0" Background="Transparent" DockPanel.Dock="Right"/>
+                                </DockPanel>
+                            </Border>
+
+                            <Popup IsOpen="{Binding IsChecked, ElementName=btnEndClock}"
+                                   PlacementTarget="{Binding ElementName=btnEndClock}" Placement="Bottom" StaysOpen="False">
+                                <Border Background="#333" CornerRadius="6" Padding="6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Giờ 00-23 -->
+                                        <ListBox Width="50" Height="200" Foreground="White">
+                                            <ListBoxItem>00</ListBoxItem>
+                                            <ListBoxItem>01</ListBoxItem>
+                                            <ListBoxItem>02</ListBoxItem>
+                                            <ListBoxItem>03</ListBoxItem>
+                                            <ListBoxItem>04</ListBoxItem>
+                                            <ListBoxItem>05</ListBoxItem>
+                                            <ListBoxItem>06</ListBoxItem>
+                                            <ListBoxItem>07</ListBoxItem>
+                                            <ListBoxItem>08</ListBoxItem>
+                                            <ListBoxItem>09</ListBoxItem>
+                                            <ListBoxItem>10</ListBoxItem>
+                                            <ListBoxItem>11</ListBoxItem>
+                                            <ListBoxItem>12</ListBoxItem>
+                                            <ListBoxItem>13</ListBoxItem>
+                                            <ListBoxItem>14</ListBoxItem>
+                                            <ListBoxItem>15</ListBoxItem>
+                                            <ListBoxItem>16</ListBoxItem>
+                                            <ListBoxItem>17</ListBoxItem>
+                                            <ListBoxItem>18</ListBoxItem>
+                                            <ListBoxItem>19</ListBoxItem>
+                                            <ListBoxItem>20</ListBoxItem>
+                                            <ListBoxItem>21</ListBoxItem>
+                                            <ListBoxItem>22</ListBoxItem>
+                                            <ListBoxItem>23</ListBoxItem>
+                                        </ListBox>
+
+                                        <!-- Phút 00-59 -->
+                                        <ListBox Grid.Column="1" Width="50" Height="200" Margin="6,0,0,0" Foreground="White">
+                                            <ListBoxItem>00</ListBoxItem>
+                                            <ListBoxItem>01</ListBoxItem>
+                                            <ListBoxItem>02</ListBoxItem>
+                                            <ListBoxItem>03</ListBoxItem>
+                                            <ListBoxItem>04</ListBoxItem>
+                                            <ListBoxItem>05</ListBoxItem>
+                                            <ListBoxItem>06</ListBoxItem>
+                                            <ListBoxItem>07</ListBoxItem>
+                                            <ListBoxItem>08</ListBoxItem>
+                                            <ListBoxItem>09</ListBoxItem>
+                                            <ListBoxItem>10</ListBoxItem>
+                                            <ListBoxItem>11</ListBoxItem>
+                                            <ListBoxItem>12</ListBoxItem>
+                                            <ListBoxItem>13</ListBoxItem>
+                                            <ListBoxItem>14</ListBoxItem>
+                                            <ListBoxItem>15</ListBoxItem>
+                                            <ListBoxItem>16</ListBoxItem>
+                                            <ListBoxItem>17</ListBoxItem>
+                                            <ListBoxItem>18</ListBoxItem>
+                                            <ListBoxItem>19</ListBoxItem>
+                                            <ListBoxItem>20</ListBoxItem>
+                                            <ListBoxItem>21</ListBoxItem>
+                                            <ListBoxItem>22</ListBoxItem>
+                                            <ListBoxItem>23</ListBoxItem>
+                                            <ListBoxItem>24</ListBoxItem>
+                                            <ListBoxItem>25</ListBoxItem>
+                                            <ListBoxItem>26</ListBoxItem>
+                                            <ListBoxItem>27</ListBoxItem>
+                                            <ListBoxItem>28</ListBoxItem>
+                                            <ListBoxItem>29</ListBoxItem>
+                                            <ListBoxItem>30</ListBoxItem>
+                                            <ListBoxItem>31</ListBoxItem>
+                                            <ListBoxItem>32</ListBoxItem>
+                                            <ListBoxItem>33</ListBoxItem>
+                                            <ListBoxItem>34</ListBoxItem>
+                                            <ListBoxItem>35</ListBoxItem>
+                                            <ListBoxItem>36</ListBoxItem>
+                                            <ListBoxItem>37</ListBoxItem>
+                                            <ListBoxItem>38</ListBoxItem>
+                                            <ListBoxItem>39</ListBoxItem>
+                                            <ListBoxItem>40</ListBoxItem>
+                                            <ListBoxItem>41</ListBoxItem>
+                                            <ListBoxItem>42</ListBoxItem>
+                                            <ListBoxItem>43</ListBoxItem>
+                                            <ListBoxItem>44</ListBoxItem>
+                                            <ListBoxItem>45</ListBoxItem>
+                                            <ListBoxItem>46</ListBoxItem>
+                                            <ListBoxItem>47</ListBoxItem>
+                                            <ListBoxItem>48</ListBoxItem>
+                                            <ListBoxItem>49</ListBoxItem>
+                                            <ListBoxItem>50</ListBoxItem>
+                                            <ListBoxItem>51</ListBoxItem>
+                                            <ListBoxItem>52</ListBoxItem>
+                                            <ListBoxItem>53</ListBoxItem>
+                                            <ListBoxItem>54</ListBoxItem>
+                                            <ListBoxItem>55</ListBoxItem>
+                                            <ListBoxItem>56</ListBoxItem>
+                                            <ListBoxItem>57</ListBoxItem>
+                                            <ListBoxItem>58</ListBoxItem>
+                                            <ListBoxItem>59</ListBoxItem>
+                                        </ListBox>
+                                    </Grid>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <!-- GIỎ ĐẶT (màu vàng) -->
+                <Border CornerRadius="10" BorderBrush="#F3E5B8" BorderThickness="1" Background="#FFF7DB" Padding="10" Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="{Binding GioCount, StringFormat=Giỏ đặt ({0} sân)}"
+                                   FontWeight="SemiBold" Foreground="{StaticResource ColText}" Margin="0,0,0,6"/>
+                        <ItemsControl ItemsSource="{Binding GioDat}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="8" Background="White" Padding="10" Margin="0,6,0,0" BorderBrush="#F1E9C7" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding TieuDe}" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding KhoangGio}" Foreground="#6B7E74" FontSize="12" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Content="✕" Width="26" Height="26"
+                                                    Background="#FFF0CC" BorderBrush="#F1D38A" Cursor="Hand"
+                                                    ToolTip="Xóa khỏi giỏ"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- TỔNG TIỀN DỰ KIẾN (giữ nguyên style cũ) -->
+                <Border Margin="0,0,0,0" CornerRadius="12" Padding="12"
                         BorderBrush="{StaticResource ColBorder}" BorderThickness="1">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -344,26 +397,64 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Tổng tiền dự kiến:" Foreground="{StaticResource ColSub}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="120.000đ" Foreground="#15A06D" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{Binding TongTien, StringFormat={}{0:N0}đ}"
+                                   Foreground="#15A06D" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
-            </Grid>
+            </StackPanel>
 
             <!-- Footer -->
             <Grid Grid.Row="2" Margin="6,12,6,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="190"/>
+                    <!-- Thêm vào giỏ đặt -->
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Hủy -->
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Tạo đơn (Auto để không tràn) -->
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" CornerRadius="8" Height="38" Background="#F3F5F4"
-                        BorderBrush="#E7ECEA" BorderThickness="1" Cursor="Hand" Margin="0,0,8,0">
+                <!-- Thêm vào giỏ đặt -->
+                <Border Grid.Column="1" CornerRadius="8" Height="38"
+                        Background="#FFFFFF" BorderBrush="#C5F3DF" BorderThickness="1"
+                        Cursor="Hand">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="➕" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Thêm vào giỏ đặt" VerticalAlignment="Center" Foreground="#0D7049" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Hủy -->
+                <Border Grid.Column="3" CornerRadius="8" Height="38" Background="#F3F5F4"
+                        BorderBrush="#E7ECEA" BorderThickness="1" Cursor="Hand" Padding="16,0">
                     <TextBlock Text="Hủy" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A5A55"/>
                 </Border>
 
-                <Border Grid.Column="1" CornerRadius="8" Height="38" Background="{StaticResource ColAccent}"
-                        Cursor="Hand" Margin="8,0,0,0">
-                    <TextBlock Text="Tạo đơn đặt" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontWeight="SemiBold"/>
+                <!-- Tạo đơn (gọn + badge) -->
+                <Border Grid.Column="5" CornerRadius="8" Height="38"
+                        Background="{StaticResource ColAccent}" Cursor="Hand"
+                        Padding="12,0" MinWidth="140">
+                    <DockPanel LastChildFill="False">
+                        <!-- Icon -->
+                        <TextBlock Text="&#xE8FB;" FontFamily="Segoe MDL2 Assets"
+                                   Foreground="White" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <!-- Text -->
+                        <TextBlock Text="Tạo đơn" Foreground="White"
+                                   FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <!-- Badge đếm -->
+                        <Border DockPanel.Dock="Right"
+                                Background="#FFFFFF22" BorderBrush="#FFFFFF55" BorderThickness="1"
+                                CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding GioCount, StringFormat={}{0} sân, TargetNullValue=0 sân, FallbackValue=0 sân}"
+                                       Foreground="Black" FontSize="12" FontWeight="SemiBold"/>
+                        </Border>
+                    </DockPanel>
+                    <Border.ToolTip>
+                        <TextBlock Text="{Binding GioCount, StringFormat={}{0} sân trong giỏ, TargetNullValue=Chưa có sân}"/>
+                    </Border.ToolTip>
                 </Border>
             </Grid>
         </Grid>

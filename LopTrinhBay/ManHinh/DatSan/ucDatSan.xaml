@@ -5,17 +5,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="1200"
-             Background="#F6FDF9" 
+             d:DesignHeight="700" d:DesignWidth="1080"
+             Background="#F6FDF9"
              MinWidth="1000" MinHeight="700" Loaded="UserControl_Loaded">
 
-    <!-- ====== RESOURCES (giữ nguyên style của frmQuanLySan) ====== -->
+    <!-- ================= RESOURCES ================= -->
     <UserControl.Resources>
         <SolidColorBrush x:Key="ColText"     Color="#21382D"/>
         <SolidColorBrush x:Key="ColSub"      Color="#6B7E74"/>
         <SolidColorBrush x:Key="ColBorder"   Color="#E1F0E9"/>
         <SolidColorBrush x:Key="ColCard"     Color="White"/>
 
+        <!-- Card -->
         <Style x:Key="CardBorder" TargetType="Border">
             <Setter Property="CornerRadius" Value="14"/>
             <Setter Property="Background" Value="{StaticResource ColCard}"/>
@@ -30,136 +31,272 @@
             </Setter>
         </Style>
 
-        <Style x:Key="Badge" TargetType="Border">
-            <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Padding" Value="10,3"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-
-        <Style x:Key="BtnSolid" TargetType="Border">
-            <Setter Property="CornerRadius" Value="8"/>
+        <!-- Nút bo góc -->
+        <Style x:Key="BtnPrimary" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#15A06D"/>
             <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
-        <!-- Icon tròn nhỏ -->
-        <Style x:Key="IconRound" TargetType="Border">
-            <Setter Property="Width" Value="28"/>
-            <Setter Property="Height" Value="28"/>
-            <Setter Property="CornerRadius" Value="14"/>
-            <Setter Property="Margin" Value="0,0,8,0"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-        </Style>
-
-        <!-- Watermark cho ô tìm kiếm -->
-        <Style x:Key="WatermarkTextStyle" TargetType="TextBlock">
-            <Setter Property="Visibility" Value="Visible"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="">
-                    <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="{x:Null}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Text.Length, ElementName=txtSearch}" Value="0">
-                    <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Text.Length, ElementName=txtSearch}" Value="1">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <!-- ComboBox trạng thái -->
+        <Style x:Key="ComboStatusStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="10,0,28,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="Bd" CornerRadius="10"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <!-- Icon phễu -->
+                            <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="#6B7E74" Margin="8,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <ContentPresenter Margin="28,0,28,0"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              Content="{TemplateBinding SelectionBoxItem}"/>
+                            <!-- Chevron -->
+                            <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="#6B7E74" Margin="0,0,8,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <Popup x:Name="PART_Popup"
+                                   Placement="Bottom" Focusable="False"
+                                   AllowsTransparency="True" IsOpen="{TemplateBinding IsDropDownOpen}">
+                                <Border CornerRadius="10" Background="White"
+                                        BorderBrush="{StaticResource ColBorder}" BorderThickness="1"
+                                        Padding="4" SnapsToDevicePixels="True">
+                                    <ScrollViewer MaxHeight="240">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#B9E6D1"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#FAFEFC"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2BB673"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Padding" Value="10,6"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Border x:Name="itemBd" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsHighlighted" Value="True">
+                                            <Setter TargetName="itemBd" Property="Background" Value="#F2FBF7"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="itemBd" Property="Background" Value="#E8FBF2"/>
+                                            <Setter Property="Foreground" Value="#0D7049"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
-    <!-- ====== CONTENT (không sidebar) ====== -->
+    <!-- ================= CONTENT ================= -->
     <Grid Margin="16,10,16,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header: Search + Bell + Date -->
             <RowDefinition Height="Auto"/>
-            <!-- Title + Add -->
             <RowDefinition Height="Auto"/>
-            <!-- Mô tả + Counters -->
             <RowDefinition Height="*"/>
-            <!-- List -->
         </Grid.RowDefinitions>
 
-        <!-- Title + Add -->
+        <!-- Title + Đặt sân mới -->
         <Grid Grid.Row="1" Margin="0,12,0,6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
+            <Button Grid.Column="1" Style="{StaticResource BtnPrimary}" Command="{Binding CmdOpenCreate}">
+                <TextBlock Text="+ Đặt sân mới" FontSize="16"/>
+            </Button>
 
-            <Border Grid.Column="1" Style="{StaticResource BtnSolid}" Cursor="Hand">
-                <TextBlock Text="+ Đặt sân mới" FontSize ="14" Foreground="White" Margin="0,2,0,-2"/>
-            </Border>
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Quản lý Sân bãi" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
-                <TextBlock Text="Theo dõi và vận hành trạng thái sân realtime" Foreground="#7A8A83"/>
+                <TextBlock Text="Đặt Sân" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                <TextBlock Text="Quản lý, tạo, sửa và hủy các lượt đặt sân" Foreground="#7A8A83"/>
             </StackPanel>
         </Grid>
 
-        <!-- Mô tả + Counters -->
-        <StackPanel Grid.Row="2" Margin="0,0,0,10">
-            <UniformGrid Columns="4" Rows="1">
-                <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
+        <!-- KPI counters giống style ucBaoCao (có icon) -->
+        <UniformGrid Grid.Row="2" Columns="4" Margin="0,4,0,10">
+            <!-- Tổng đơn hôm nay -->
+            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Tổng đơn hôm nay" Foreground="#678"/>
-                        <TextBlock Text="{Binding TongDonHomNay}" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding TongDonHomNay}" FontSize="20" FontWeight="Bold"/>
                     </StackPanel>
-                </Border>
-                <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
+                    <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="8" Margin="8,0,0,0">
+                        <TextBlock Text="🧾" FontSize="16"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Đang chơi -->
+            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Đang chơi" Foreground="#678"/>
-                        <TextBlock Text="{Binding SoDangChoi}" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SoDangChoi}" FontSize="20" FontWeight="Bold"/>
                     </StackPanel>
-                </Border>
-                <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
+                    <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="8" Margin="8,0,0,0">
+                        <TextBlock Text="🏃‍♂️" FontSize="16"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Đã đặt -->
+            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Đã đặt" Foreground="#678"/>
-                        <TextBlock Text="{Binding SoDaDat}" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SoDaDat}" FontSize="20" FontWeight="Bold"/>
                     </StackPanel>
-                </Border>
-                <Border Style="{StaticResource CardBorder}" Padding="14,8" Margin="8">
+                    <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="8" Margin="8,0,0,0">
+                        <TextBlock Text="📅" FontSize="16"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Hoàn thành -->
+            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Hoàn thành" Foreground="#678"/>
-                        <TextBlock Text="{Binding SoHoanThanh}" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding SoHoanThanh}" FontSize="20" FontWeight="Bold"/>
                     </StackPanel>
-                </Border>
-            </UniformGrid>
-        </StackPanel>
-
+                    <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="8" Margin="8,0,0,0">
+                        <TextBlock Text="✅" FontSize="16"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </UniformGrid>
         <!-- Danh sách đặt sân -->
         <Border Grid.Row="3" Style="{StaticResource CardBorder}" Padding="8" Margin="0,0,0,8">
             <StackPanel>
-                <TextBlock Text="Danh sách đặt sân" Margin="8,4,8,8"
+                <TextBlock Text="🗍 Danh sách đặt sân" Margin="8,4,8,8"
                            FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
 
-                <!-- Thanh tìm kiếm + lọc trạng thái trong card -->
+                <!-- Search + Trạng thái -->
                 <Grid Margin="8,0,8,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition Width="220"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Background="#FFFFFF" CornerRadius="10"
-                            BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Padding="8">
-                        <TextBox BorderThickness="0" ToolTip="Tìm theo tên, SĐT, sân..."/>
-                    </Border>
-                    <Border Grid.Column="1" Background="#FFFFFF" CornerRadius="10" Margin="12,0,0,0"
-                            BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Padding="4">
-                        <ComboBox Height="30" Margin="2,2,0,2" HorizontalAlignment="Left" Width="214">
-                            <ComboBoxItem>Tất cả trạng thái</ComboBoxItem>
-                            <ComboBoxItem>Đã đặt</ComboBoxItem>
-                            <ComboBoxItem>Đang chơi</ComboBoxItem>
-                            <ComboBoxItem>Hoàn tất</ComboBoxItem>
-                            <ComboBoxItem>Đã hủy</ComboBoxItem>
-                        </ComboBox>
-                    </Border>
+
+                    <!-- Search -->
+                    <Grid Grid.Column="0">
+                        <Border Background="#FFFFFF" CornerRadius="10"
+                                BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Padding="10">
+                            <Grid>
+                                <TextBox x:Name="txtSearch" BorderThickness="0"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="Tìm theo tên, SĐT, sân..."/>
+                                <!-- watermark -->
+                                <Grid IsHitTestVisible="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
+                                               Foreground="#9AA7A0" VerticalAlignment="Center" Margin="2,0,6,0"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="Tìm kiếm theo tên, SĐT, sân..."
+                                               Foreground="#9AA7A0" VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Trạng thái -->
+                    <ComboBox Grid.Column="1" Margin="12,0,0,0"
+                              x:Name="cboTrangThai"
+                              Style="{StaticResource ComboStatusStyle}"
+                              SelectedItem="{Binding SelectedTrangThai, Mode=TwoWay}">
+                        <ComboBoxItem>Tất cả trạng thái</ComboBoxItem>
+                        <ComboBoxItem>Đã đặt</ComboBoxItem>
+                        <ComboBoxItem>Đang chơi</ComboBoxItem>
+                        <ComboBoxItem>Hoàn thành</ComboBoxItem>
+                        <ComboBoxItem>Đã hủy</ComboBoxItem>
+                    </ComboBox>
                 </Grid>
 
+                <!-- List -->
                 <!-- List -->
                 <ListView ItemsSource="{Binding DanhSachDatSan}">
                     <ListView.Resources>
@@ -172,8 +309,11 @@
                     </ListView.Resources>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Sân" Width="auto" DisplayMemberBinding="{Binding TenSan}"/>
-                            <GridViewColumn Header="Khách hàng" Width="auto">
+                            <!-- KHÔNG dùng Width="auto" trên GridViewColumn -->
+                            <GridViewColumn Header="Sân"
+                            DisplayMemberBinding="{Binding TenSan}" />
+
+                            <GridViewColumn Header="Khách hàng">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -183,20 +323,30 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="Thời gian" Width="auto">
+
+                            <GridViewColumn Header="Thời gian">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding KhungGio}" Foreground="{StaticResource ColText}"/>
-                                            <TextBlock Text="{Binding NgayDat, StringFormat='  dd/MM/yyyy'}"
-                                                       Foreground="{StaticResource ColSub}" Margin="8,0,0,0"/>
+                                            <!-- StringFormat đúng cú pháp -->
+                                            <TextBlock Text="{Binding NgayDat, StringFormat={}{0:  dd/MM/yyyy}}"
+                                       Foreground="{StaticResource ColSub}" Margin="8,0,0,0"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="Giá tiền" Width="auto"
-                                            DisplayMemberBinding="{Binding TienThue, StringFormat={}{0:N0}đ}"/>
-                            <GridViewColumn Header="Trạng thái" Width="auto">
+
+                            <GridViewColumn Header="Giá tiền">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TienThue, StringFormat={}{0:#;0} đ}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+
+                            <GridViewColumn Header="Trạng thái">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border CornerRadius="12" Padding="8,2" Background="#DFF7EA">
@@ -205,13 +355,20 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="Thao tác" Width="auto">
+
+                            <GridViewColumn Header="Thao tác">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Content="Bắt đầu" Margin="0,0,6,0" Padding="10,4"/>
-                                            <Button Content="Kết thúc" Margin="0,0,6,0" Padding="10,4"/>
-                                            <Button Content="Hủy" Padding="10,4"/>
+                                            <Button Content="Bắt đầu" Margin="0,0,6,0" Padding="10,4"
+                                    Command="{Binding DataContext.CmdStart, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"/>
+                                            <Button Content="Kết thúc" Margin="0,0,6,0" Padding="10,4"
+                                    Command="{Binding DataContext.CmdFinish, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"/>
+                                            <Button Content="Hủy" Padding="10,4"
+                                    Command="{Binding DataContext.CmdCancel, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -219,7 +376,32 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
+
             </StackPanel>
         </Border>
+
+        <!-- ===== Popup tạo nhanh khách (Tên + SĐT) ===== -->
+        <Popup IsOpen="{Binding IsQuickCustomerOpen}" Placement="Center" StaysOpen="False">
+            <Border Background="White" CornerRadius="12" Padding="16"
+                    BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Width="360">
+                <StackPanel>
+                    <TextBlock Text="Tạo nhanh khách hàng" FontWeight="SemiBold" Foreground="{StaticResource ColText}" Margin="0,0,0,8"/>
+                    <StackPanel Margin="0,6,0,6">
+                        <TextBlock Text="Số điện thoại" Foreground="{StaticResource ColSub}"/>
+                        <TextBox Text="{Binding NewKhachSDT, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,6,0,12">
+                        <TextBlock Text="Tên khách hàng" Foreground="{StaticResource ColSub}"/>
+                        <TextBox Text="{Binding NewKhachTen, UpdateSourceTrigger=PropertyChanged}" Height="32"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Hủy" Margin="0,0,8,0" Padding="12,6"
+                                Command="{Binding CmdQuickCancel}"/>
+                        <Button Content="Tạo khách" Style="{StaticResource BtnPrimary}" Padding="12,6"
+                                Command="{Binding CmdQuickCreate}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </UserControl>

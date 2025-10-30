@@ -6,7 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="1200"
+             d:DesignHeight="700" d:DesignWidth="1080"
              Background="#F6FDF9" 
              MinWidth="1000" MinHeight="700" >
     <Grid Margin="16">
@@ -21,7 +21,7 @@
             <!-- Tiêu đề -->
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Kho &amp; POS Nước uống"
-                   FontSize="20" FontWeight="Bold"/>
+                   FontSize="24" FontWeight="Bold"/>
                 <TextBlock Text="Quản lý kho hàng và bán nước uống"
                    Foreground="#6B7E74"/>
             </StackPanel>

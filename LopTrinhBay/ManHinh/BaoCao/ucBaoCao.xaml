@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignWidth="1200" d:DesignHeight="700"
+             d:DesignWidth="1080" d:DesignHeight="700"
              Background="#F6FDF9">
 
     <!-- ============ RESOURCES (bắt buộc) ============ -->
@@ -63,12 +63,12 @@
                           Margin="0,0,8,0"/>
                 <Border Padding="8" Background="#F0F7F5" CornerRadius="12" Margin="0,0,8,0">
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="20" Height="20" Fill="#97E8C2" Margin="0,0,6,0"/>
+                        <Ellipse Width="20" Height="20" Fill="#0FBF84" Margin="0,0,6,0"/>
                         <TextBlock Text="{Binding CurrentUserDisplay}" Foreground="#21382D"/>
                     </StackPanel>
                 </Border>
                 <Button Content="Xuất Excel" Padding="12,6" Command="{Binding ExportExcelCommand}"
-                        Cursor="Hand" Background="#E8FBF2" BorderBrush="#C5F3DF" />
+                        Cursor="Hand" Background="#0FBF84" BorderBrush="#C5F3DF" />
             </StackPanel>
         </DockPanel>
 

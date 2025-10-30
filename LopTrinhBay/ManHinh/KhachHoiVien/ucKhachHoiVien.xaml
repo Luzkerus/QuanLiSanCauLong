@@ -4,16 +4,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="760" d:DesignWidth="1280"
+             d:DesignHeight="760" d:DesignWidth="1080"
              Background="#F6FDF9">
 
     <UserControl.Resources>
-        <!-- ===== Palette ===== -->
-        <SolidColorBrush x:Key="ColBg" Color="#F6FDF9"/>
+        <!-- Palette -->
         <SolidColorBrush x:Key="ColCard" Color="White"/>
         <SolidColorBrush x:Key="ColText" Color="#21382D"/>
         <SolidColorBrush x:Key="ColSub"  Color="#6B7E74"/>
-        <SolidColorBrush x:Key="ColPrimary" Color="#0FBF84"/>
 
         <!-- Card -->
         <Style x:Key="Card" TargetType="Border">
@@ -28,32 +26,95 @@
             </Setter>
         </Style>
 
-        <!-- Badge hạng -->
-        <Style x:Key="RankBadge" TargetType="Border">
+        <!-- Tabs segmented container -->
+        <Style x:Key="TabsContainer" TargetType="Border">
+            <Setter Property="Background" Value="#EEF8F3"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="6"/>
+        </Style>
+
+        <!-- Toggle Tab pill -->
+        <Style x:Key="TabPill" TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="16" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#0FBF84"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- CheckBox pill “Chỉ Hội viên” -->
+        <Style x:Key="CheckPill" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#21382D"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Border x:Name="wrap" CornerRadius="16" Background="#EAF3EF" Padding="12,6" SnapsToDevicePixels="True">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Border x:Name="dot" Width="16" Height="16" CornerRadius="8" Background="White" Margin="0,0,8,0" />
+                                <ContentPresenter VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="wrap" Property="Background" Value="#0FBF84"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="dot" Property="Background" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="wrap" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- KPI icon badge -->
+        <Style x:Key="IconPill" TargetType="Border">
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0,-6,-6,0"/>
+        </Style>
+
+        <!-- Badge Loại khách -->
+        <Style x:Key="TypeBadge" TargetType="Border">
             <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="Padding" Value="10,2"/>
             <Setter Property="Background" Value="#F1F5F9"/>
             <Setter Property="BorderBrush" Value="#E2E8F0"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding LoaiKhach}" Value="Hội viên">
+                    <Setter Property="Background" Value="#EAF3EF"/>
+                    <Setter Property="BorderBrush" Value="#8BD9C0"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
-        <!-- DataGrid base -->
-        <Style TargetType="DataGrid">
-            <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="RowHeight" Value="52"/>
-            <Setter Property="GridLinesVisibility" Value="None"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="CanUserAddRows" Value="False"/>
-            <Setter Property="CanUserDeleteRows" Value="False"/>
-            <Setter Property="CanUserResizeRows" Value="False"/>
-            <Setter Property="SelectionMode" Value="Single"/>
-            <Setter Property="AlternationCount" Value="2"/>
-            <Setter Property="Margin" Value="0"/>
-        </Style>
-
-        <!-- Avatar chấm tròn -->
+        <!-- Avatar -->
         <DataTemplate x:Key="AvatarTemplate">
             <Border Width="36" Height="36" CornerRadius="18" Background="#E6F9F2">
                 <TextBlock Text="{Binding Initials}"
@@ -62,34 +123,39 @@
             </Border>
         </DataTemplate>
 
-        <!-- Badge màu theo Hạng -->
-        <Style x:Key="RankPill" TargetType="Border" BasedOn="{StaticResource RankBadge}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Hang}" Value="Vàng">
-                    <Setter Property="Background" Value="#FFF8E1"/>
-                    <Setter Property="BorderBrush" Value="#FBC02D"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Hang}" Value="Bạc">
-                    <Setter Property="Background" Value="#ECEFF1"/>
-                    <Setter Property="BorderBrush" Value="#90A4AE"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Hang}" Value="Đồng">
-                    <Setter Property="Background" Value="#FFEFE6"/>
-                    <Setter Property="BorderBrush" Value="#FB8C00"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <!-- Row card cho từng khách -->
+        <Style x:Key="RowCard" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+            <Setter Property="BorderBrush" Value="#DDEEE7"/>
+            <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
-        <!-- View lọc tìm kiếm -->
-        <CollectionViewSource x:Key="cvsMembers" Source="{Binding Members}"
-                             />
+        <!-- Nút tròn hành động bên phải -->
+        <Style x:Key="IconRoundBtn" TargetType="Button">
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="18" Background="#0FBF84">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- View list -->
+        <CollectionViewSource x:Key="cvsMembers" Source="{Binding Members}"/>
     </UserControl.Resources>
 
     <Grid Margin="16">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="305*"/>
-            <ColumnDefinition Width="7*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Header -->
@@ -97,124 +163,93 @@
             <!-- KPI -->
             <RowDefinition Height="Auto"/>
             <!-- Search -->
+            <RowDefinition Height="Auto"/>
+            <!-- DS + Tabs -->
             <RowDefinition/>
             <!-- Table -->
         </Grid.RowDefinitions>
 
-        <!-- ===== Header ===== -->
+        <!-- Header -->
         <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,8">
-            <TextBlock Text="Quản lý khách hàng &amp; Hội viên" Foreground="{StaticResource ColText}"
-                       FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" />
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" >
-                <Button Background="#0FBF84" Foreground="White">
-                    + Thêm khách hàng
-                </Button>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Quản lý khách hàng &amp; Hội viên"
+                           Foreground="{StaticResource ColText}" FontSize="22" FontWeight="Bold"/>
+                <TextBlock Text="Quản lý thông tin khách hàng, điểm thưởng và chương trình CRM"
+                           Foreground="{StaticResource ColSub}"/>
             </StackPanel>
         </DockPanel>
 
-        <!-- ===== KPI cards (4 cột) ===== -->
-        <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,8" Grid.ColumnSpan="2">
-            <!-- Tổng hội viên -->
+        <!-- KPI cards có icon -->
+        <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,8">
+            <!-- Tổng khách hàng -->
             <Border Style="{StaticResource Card}">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Tổng hội viên" Foreground="{StaticResource ColSub}"/>
-                        <TextBlock Text="{Binding KpiTong}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{StaticResource ColText}"/>
+                        <TextBlock Text="Tổng khách hàng" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="{Binding KpiTongKhach}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Width="36" Height="36" CornerRadius="18"
-                            Background="#E6F9F2" HorizontalAlignment="Right">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text=""
-                                   Foreground="#0FBF84"
+                    <Border Style="{StaticResource IconPill}" Background="#E7EEFF">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#2B5EFF"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
-
-            <!-- Hạng Vàng -->
+            <!-- Hội viên -->
             <Border Style="{StaticResource Card}">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Hạng Vàng" Foreground="{StaticResource ColSub}"/>
-                        <TextBlock Text="{Binding KpiVang}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{StaticResource ColText}"/>
+                        <TextBlock Text="Hội viên" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="{Binding KpiHoiVien}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8"
-                            Background="#FFF8E1" BorderBrush="#FBC02D" BorderThickness="1">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text=""
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FBC02D"/>
+                    <Border Style="{StaticResource IconPill}" Background="#E6F9F2">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#0FBF84"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
-
-            <!-- Hạng Bạc -->
+            <!-- Tổng điểm tích lũy -->
             <Border Style="{StaticResource Card}">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Hạng Bạc" Foreground="{StaticResource ColSub}"/>
-                        <TextBlock Text="{Binding KpiBac}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{StaticResource ColText}"/>
+                        <TextBlock Text="Tổng điểm tích lũy" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="{Binding KpiTongDiem}" FontSize="24" FontWeight="Bold" Foreground="#FF9800"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8"
-                            Background="#ECEFF1" BorderBrush="#90A4AE" BorderThickness="1">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text=""
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#607D8B"/>
+                    <Border Style="{StaticResource IconPill}" Background="#FFF2DB">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#FF9800"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
-
-            <!-- Hoạt động trong tuần -->
+            <!-- Khách hàng mới (tháng) -->
             <Border Style="{StaticResource Card}">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Hoạt động trong tuần" Foreground="{StaticResource ColSub}"/>
-                        <TextBlock Text="{Binding KpiActiveWeek}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{StaticResource ColText}"/>
+                        <TextBlock Text="Khách hàng mới (tháng)" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="{Binding KpiKhachMoiThang}" FontSize="24" FontWeight="Bold" Foreground="#7C3AED"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8"
-                            Background="#E6F9F2" BorderBrush="#0FBF84" BorderThickness="1">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text=""
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#0FBF84"/>
+                    <Border Style="{StaticResource IconPill}" Background="#F0E7FF">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#7C3AED"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
         </UniformGrid>
 
-        <!-- ===== Search (WPF watermark, không dùng PlaceholderText) ===== -->
-        <Border Grid.Row="2" Style="{StaticResource Card}" Padding="12" Grid.ColumnSpan="2" Margin="8,8,8,8">
+        <!-- Search -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Padding="12">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- TextBox + watermark overlay -->
                 <Grid Grid.Column="0">
-                    <TextBox x:Name="txtSearch"
-                             Height="36" Margin="0,0,8,0"
+                    <TextBox x:Name="txtSearch" Height="38"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="Tìm theo tên hoặc SĐT..." />
-                    <TextBlock Margin="10,0,0,0"
-                               VerticalAlignment="Center"
-                               Foreground="#9AA5A1"
-                               IsHitTestVisible="False"
-                               Text="Tìm theo tên hoặc SĐT...">
+                             ToolTip="Tìm theo tên hoặc SĐT"/>
+                    <!-- watermark -->
+                    <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="#9AA5A1"
+                               IsHitTestVisible="False" Text="Tìm theo tên hoặc SĐT...">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -228,73 +263,108 @@
                     </TextBlock>
                 </Grid>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <CheckBox Content="Chỉ Hội viên" Margin="8,0,0,0"
-                              IsChecked="{Binding OnlyMembers}"/>
-                </StackPanel>
+                <CheckBox Grid.Column="1" Content="Chỉ Hội viên" Margin="10,0,0,0"
+                          IsChecked="{Binding OnlyMembers}" Style="{StaticResource CheckPill}"/>
             </Grid>
         </Border>
 
-        <!-- ===== Table ===== -->
-        <Border Grid.Row="3" Style="{StaticResource Card}" Padding="0" Grid.ColumnSpan="2" Margin="8,8,8,8">
-            <DataGrid ItemsSource="{Binding Source={StaticResource cvsMembers}}"
-                      IsReadOnly="True">
-                <DataGrid.Columns>
+        <!-- Section: Danh sách khách hàng + Tabs (segmented) -->
+        <Border Grid.Row="3" Style="{StaticResource Card}" Padding="16" Margin="8,8,8,4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <!-- Họ tên + avatar (không dùng Spacing, dùng Margin) -->
-                    <DataGridTemplateColumn Header="Hội viên" MinWidth="220">
+                <!-- Header dòng 1 -->
+                <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+                    <Border Width="28" Height="28" CornerRadius="14" Background="#E6F9F2" Margin="0,0,8,0">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#0FBF84"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Danh sách khách hàng" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                </StackPanel>
+
+                <!-- Tabs segment -->
+                <Border Grid.Row="1" Style="{StaticResource TabsContainer}" Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ToggleButton Content="{Binding TabAllTitle}"     IsChecked="{Binding TabAllChecked}"     Style="{StaticResource TabPill}"/>
+                        <ToggleButton Content="{Binding TabMembersTitle}" IsChecked="{Binding TabMembersChecked}" Style="{StaticResource TabPill}"/>
+                        <ToggleButton Content="{Binding TabWalkinTitle}"  IsChecked="{Binding TabWalkinChecked}"  Style="{StaticResource TabPill}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Danh sách khách hàng -->
+        <Border Grid.Row="4" Style="{StaticResource Card}" Padding="0">
+            <DataGrid ItemsSource="{Binding Source={StaticResource cvsMembers}}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      RowHeight="56" GridLinesVisibility="None"
+                      BorderThickness="0">
+                <DataGrid.Columns>
+                    <!-- Khách hàng -->
+                    <DataGridTemplateColumn Header="Khách hàng" MinWidth="220">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <ContentControl ContentTemplate="{StaticResource AvatarTemplate}" Margin="0,0,8,0"/>
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Ten}" Foreground="{StaticResource ColText}" FontWeight="SemiBold"/>
-                                        <TextBlock Text="{Binding SDT}" Foreground="{StaticResource ColSub}" FontSize="12"/>
-                                    </StackPanel>
+                                    <ContentControl ContentTemplate="{StaticResource AvatarTemplate}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Ten}" Foreground="{StaticResource ColText}" FontWeight="SemiBold"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" MinWidth="210"/>
-                    <DataGridTextColumn Header="Điểm TL" Binding="{Binding DiemTL}" MinWidth="90"/>
-                    <DataGridTextColumn Header="Số lượt" Binding="{Binding SoLuot}" MinWidth="80"/>
+                    <!-- SĐT (cột riêng) -->
+                    <DataGridTextColumn Header="SĐT" Binding="{Binding SDT}" MinWidth="140"/>
 
-                    <DataGridTemplateColumn Header="Hạng" MinWidth="90">
+                    <!-- Loại KH -->
+                    <DataGridTemplateColumn Header="Loại KH" MinWidth="110">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource RankPill}">
-                                    <TextBlock Text="{Binding Hang}" Margin="2,0" VerticalAlignment="Center"/>
+                                <Border Style="{StaticResource TypeBadge}">
+                                    <TextBlock Text="{Binding LoaiKhach}" VerticalAlignment="Center"/>
                                 </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="Lần cuối"
-                                        Binding="{Binding LanCuoi, StringFormat=\{0:dd/MM/yyyy\}}"
-                                        MinWidth="120"/>
+                    <!-- Điểm tích lũy -->
+                    <DataGridTextColumn Header="Điểm TL" Binding="{Binding DiemTichLuy}" MinWidth="90"/>
 
-                    <DataGridTemplateColumn Header="Thao tác" MinWidth="100">
+                    <!-- Lượt chơi -->
+                    <DataGridTextColumn Header="Lượt chơi" Binding="{Binding LuotChoi}" MinWidth="90"/>
+
+                    <!-- Tổng chi tiêu -->
+                    <DataGridTextColumn Header="Tổng chi tiêu"
+                                        Binding="{Binding TongChiTieu, StringFormat={}{0:#,0} đ}"
+                                        MinWidth="130"/>
+
+                    <!-- Ngày tham gia -->
+                    <DataGridTextColumn Header="Từ ngày"
+                                        Binding="{Binding TuNgay, StringFormat={}{0:dd/MM/yyyy}}"
+                                        MinWidth="110"/>
+
+                    <!-- Thao tác -->
+                    <DataGridTemplateColumn Header="Thao tác" MinWidth="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Button Command="{Binding DataContext.CmdEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Sửa" Cursor="Hand"
-                                            Margin="0,0,6,0" Padding="8,4">
+                                            CommandParameter="{Binding}" ToolTip="Sửa"
+                                            Padding="8,4" Margin="0,0,6,0">
                                         <TextBlock FontFamily="Segoe MDL2 Assets" Text=""/>
                                     </Button>
                                     <Button Command="{Binding DataContext.CmdDelete, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Xóa" Cursor="Hand"
-                                            Padding="8,4">
+                                            CommandParameter="{Binding}" ToolTip="Xóa" Padding="8,4">
                                         <TextBlock FontFamily="Segoe MDL2 Assets" Text=""/>
                                     </Button>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
