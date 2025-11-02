@@ -11,17 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Controls;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.BaoCao
 {
-    /// <summary>
-    /// Interaction logic for ucBaoCao.xaml
-    /// </summary>
     public partial class ucBaoCao : UserControl
     {
         public ucBaoCao()
         {
-            //InitializeComponent();
+          //InitializeComponent(); // ← KHÔNG được comment
         }
     }
 }
+
