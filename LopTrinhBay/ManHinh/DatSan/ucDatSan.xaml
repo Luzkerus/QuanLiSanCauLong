@@ -123,7 +123,7 @@
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="itemBd" Property="Background" Value="#E8FBF2"/>
-                                            <Setter Property="Foreground" Value="#0D7049"/>
+                                            <Setter Property="Foreground" Value="#2BB673"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -151,9 +151,45 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" Style="{StaticResource BtnPrimary}" Command="{Binding CmdOpenCreate}">
-                <TextBlock Text="+ Đặt sân mới" FontSize="16"/>
-            </Button>
+            <!-- Nút Đặt sân mới -->
+            <Border Grid.Column="2"
+        x:Name="btnDatSanMoi"
+        Cursor="Hand"
+        CornerRadius="8"
+        Margin="0,0,10,0">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#2BB673"/>
+                        <!-- Màu mặc định -->
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.2"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Padding" Value="14,8"/>
+                        <Style.Triggers>
+                            <!-- Khi trỏ chuột -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0D7049"/>
+                                <!-- Màu đậm hơn -->
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <TextBlock Text="Đặt sân mới"
+               FontSize="14"
+               FontWeight="SemiBold"
+               Foreground="White"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
+            </Border>
+
 
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Đặt Sân" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>

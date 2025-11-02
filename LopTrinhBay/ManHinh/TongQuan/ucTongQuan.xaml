@@ -122,17 +122,80 @@
                            Foreground="{StaticResource ColSub}" FontSize="12"/>
             </StackPanel>
 
-            <Border Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource BtnOutline}">
-                <TextBlock Text="Xuất báo cáo" FontSize="14" Foreground="#2BB673"
-                           
-                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Border Margin="835,0,10,0" CornerRadius="6"
+        Background="#E0E0E0" Cursor="Hand" Grid.ColumnSpan="2">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#E0E0E0"/>
+                        <!-- Màu xám nhạt -->
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="0" Opacity="0"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <!-- Khi trỏ chuột vào -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#BDBDBD"/>
+                                <!-- Màu xám đậm hơn -->
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="6" Opacity="0.3"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <TextBlock Text="Xuất báo cáo"
+               FontSize="14"
+               Foreground="Black"
+               FontWeight="SemiBold"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
             </Border>
 
-            <!-- TODO: gắn sự kiện Click trong code-behind nếu cần -->
-            <Border Grid.Column="2" Style="{StaticResource BtnSolid}" x:Name="btnDatSanMoi">
-                <TextBlock Text="Đặt sân mới" FontSize ="14" Foreground="White"
-                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <!-- Nút Đặt sân mới -->
+            <Border Grid.Column="2"
+        x:Name="btnDatSanMoi"
+        Cursor="Hand"
+        CornerRadius="8"
+        Margin="0,0,10,0">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#2BB673"/>
+                        <!-- Màu mặc định -->
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.2"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Padding" Value="14,8"/>
+                        <Style.Triggers>
+                            <!-- Khi trỏ chuột -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0D7049"/>
+                                <!-- Màu đậm hơn -->
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <TextBlock Text="Đặt sân mới"
+               FontSize="14"
+               FontWeight="SemiBold"
+               Foreground="White"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
             </Border>
+
         </Grid>
 
         <!-- Body -->
@@ -198,7 +261,7 @@
                             </StackPanel>
 
                             <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="8" Margin="8,0,0,28">
-                                <TextBlock Text="👥" FontSize="16" Height="23" VerticalAlignment="Top"/>
+                                <TextBlock Text="👥" FontSize="16" Margin="0,0,0,3"/>
                             </Border>
                         </Grid>
                     </Border>

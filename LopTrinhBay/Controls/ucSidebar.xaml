@@ -116,7 +116,7 @@
                 <Border x:Name="Item_Staff" Style="{StaticResource MenuItemNormal}" Tag="staff"
                         MouseLeftButtonDown="MenuItem_Click">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🧑‍💼" Margin="4,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="🧑‍" Margin="4,0,8,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Nhân viên" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>

@@ -184,52 +184,67 @@
             <!-- Tổng khách hàng -->
             <Border Style="{StaticResource Card}">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Tổng khách hàng" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="Tổng khách hàng" Foreground="{StaticResource ColSub}" FontSize="14"/>
                         <TextBlock Text="{Binding KpiTongKhach}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
                     </StackPanel>
-                    <Border Style="{StaticResource IconPill}" Background="#E7EEFF">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#2B5EFF"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                        <TextBlock Text="👥" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
+
             <!-- Hội viên -->
             <Border Style="{StaticResource Card}">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Hội viên" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="Hội viên" Foreground="{StaticResource ColSub}" FontSize="14"/>
                         <TextBlock Text="{Binding KpiHoiVien}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
                     </StackPanel>
-                    <Border Style="{StaticResource IconPill}" Background="#E6F9F2">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#0FBF84"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                        <TextBlock Text="💚" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
+
             <!-- Tổng điểm tích lũy -->
             <Border Style="{StaticResource Card}">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Tổng điểm tích lũy" Foreground="{StaticResource ColSub}"/>
-                        <TextBlock Text="{Binding KpiTongDiem}" FontSize="24" FontWeight="Bold" Foreground="#FF9800"/>
+                        <TextBlock Text="Tổng điểm tích lũy" Foreground="{StaticResource ColSub}" FontSize="14"/>
+                        <TextBlock Text="{Binding KpiTongDiem}" FontSize="24" FontWeight="Bold" Foreground="#F59E0B"/>
                     </StackPanel>
-                    <Border Style="{StaticResource IconPill}" Background="#FFF2DB">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#FF9800"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                        <TextBlock Text="⭐" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
+
             <!-- Khách hàng mới (tháng) -->
             <Border Style="{StaticResource Card}">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Khách hàng mới (tháng)" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text="Khách hàng mới (tháng)" Foreground="{StaticResource ColSub}" FontSize="14"/>
                         <TextBlock Text="{Binding KpiKhachMoiThang}" FontSize="24" FontWeight="Bold" Foreground="#7C3AED"/>
                     </StackPanel>
-                    <Border Style="{StaticResource IconPill}" Background="#F0E7FF">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Foreground="#7C3AED"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="8" Margin="8,0,0,28">
+                        <TextBlock Text="🆕" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
@@ -310,7 +325,9 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <ContentControl ContentTemplate="{StaticResource AvatarTemplate}" Margin="0,0,10,0"/>
+                                    <!-- sửa: đảm bảo ContentControl render đúng với DataContext -->
+                                    <ContentControl ContentTemplate="{StaticResource AvatarTemplate}"
+                                                    Content="{Binding}" Margin="0,0,10,0"/>
                                     <TextBlock Text="{Binding Ten}" Foreground="{StaticResource ColText}" FontWeight="SemiBold"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -339,7 +356,7 @@
 
                     <!-- Tổng chi tiêu -->
                     <DataGridTextColumn Header="Tổng chi tiêu"
-                                        Binding="{Binding TongChiTieu, StringFormat={}{0:#,0} đ}"
+                                        Binding="{Binding TongChiTieu, StringFormat={}{0:#;0} đ}"
                                         MinWidth="130"/>
 
                     <!-- Ngày tham gia -->
