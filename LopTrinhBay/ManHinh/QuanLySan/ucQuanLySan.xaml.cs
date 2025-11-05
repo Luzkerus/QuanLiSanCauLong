@@ -67,6 +67,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             }
         }
 
+        // Nút Cấu hình giá sân (Chưa làm)
+
         private void btn_Sua(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
