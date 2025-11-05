@@ -17,7 +17,7 @@
         <SolidColorBrush x:Key="ColAccent"   Color="#2BB673"/>
         <SolidColorBrush x:Key="ColAccentDark" Color="#0D7049"/>
 
-        <!-- Card -->
+        <!-- Card thường (giữ để dùng chỗ khác) -->
         <Style x:Key="CardBorder" TargetType="Border">
             <Setter Property="CornerRadius" Value="14"/>
             <Setter Property="Background" Value="{StaticResource ColCard}"/>
@@ -30,6 +30,49 @@
                     <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.15"/>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- KPI CARD: giống ucThanhToan (shadow + scale on hover) -->
+        <Style x:Key="KpiCardStyle" TargetType="Border" BasedOn="{StaticResource CardBorder}">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="18" ShadowDepth="0" Opacity="0.18"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.28"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Typography KPI -->
+        <Style x:Key="KpiTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ColSub}"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style x:Key="KpiValue" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
 
         <!-- Badge nhỏ -->
@@ -99,13 +142,11 @@
         </Style>
     </UserControl.Resources>
 
-    <!-- =================== LAYOUT (chỉ từ 'Tổng quan' trở xuống) =================== -->
+    <!-- =================== LAYOUT =================== -->
     <Grid Margin="16,10,16,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Title + Buttons -->
             <RowDefinition Height="*"/>
-            <!-- Body -->
         </Grid.RowDefinitions>
 
         <!-- Title + Buttons -->
@@ -122,22 +163,20 @@
                            Foreground="{StaticResource ColSub}" FontSize="12"/>
             </StackPanel>
 
-            <Border Margin="835,0,10,0" CornerRadius="6"
-        Background="#E0E0E0" Cursor="Hand" Grid.ColumnSpan="2">
+            <!-- Xuất báo cáo -->
+            <Border Margin="0,0,10,0" CornerRadius="6"
+                    Background="#E0E0E0" Cursor="Hand" Grid.Column="1">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Background" Value="#E0E0E0"/>
-                        <!-- Màu xám nhạt -->
                         <Setter Property="Effect">
                             <Setter.Value>
                                 <DropShadowEffect BlurRadius="0" Opacity="0"/>
                             </Setter.Value>
                         </Setter>
                         <Style.Triggers>
-                            <!-- Khi trỏ chuột vào -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#BDBDBD"/>
-                                <!-- Màu xám đậm hơn -->
+                                <Setter Property="Background" Value="#EFECE3"/>
                                 <Setter Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect BlurRadius="6" Opacity="0.3"/>
@@ -147,26 +186,24 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
-
                 <TextBlock Text="Xuất báo cáo"
-               FontSize="14"
-               Foreground="Black"
-               FontWeight="SemiBold"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"/>
+                           FontSize="14"
+                           Foreground="Black"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Padding="14,8"/>
             </Border>
 
-
-            <!-- Nút Đặt sân mới -->
+            <!-- Đặt sân mới -->
             <Border Grid.Column="2"
-        x:Name="btnDatSanMoi"
-        Cursor="Hand"
-        CornerRadius="8"
-        Margin="0,0,10,0">
+                    x:Name="btnDatSanMoi"
+                    Cursor="Hand"
+                    CornerRadius="8"
+                    Background="#2BB673">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Background" Value="#2BB673"/>
-                        <!-- Màu mặc định -->
                         <Setter Property="Effect">
                             <Setter.Value>
                                 <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.2"/>
@@ -174,10 +211,8 @@
                         </Setter>
                         <Setter Property="Padding" Value="14,8"/>
                         <Style.Triggers>
-                            <!-- Khi trỏ chuột -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#0D7049"/>
-                                <!-- Màu đậm hơn -->
                                 <Setter Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
@@ -187,106 +222,94 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
-
                 <TextBlock Text="Đặt sân mới"
-               FontSize="14"
-               FontWeight="SemiBold"
-               Foreground="White"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"/>
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
             </Border>
-
         </Grid>
 
         <!-- Body -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
 
-                <!-- KPI 4 thẻ (có icon) -->
-                <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,12">
+                <!-- KPI 4 thẻ: áp dụng KpiCardStyle như ucThanhToan -->
+                <UniformGrid Columns="4" Margin="0,0,0,12">
                     <!-- Doanh thu hôm nay -->
-                    <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
+                    <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
                             <StackPanel>
-                                <TextBlock Text="Doanh thu hôm nay" FontSize="14" Foreground="#678"/>
-                                <TextBlock Text="{Binding DoanhThuHomNay, StringFormat={}{0:N0}đ}"
-                           FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="Doanh thu hôm nay" Style="{StaticResource KpiTitle}"/>
+                                <TextBlock Text="{Binding DoanhThuHomNay, StringFormat={}{0:N0}đ}" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongDoanhThu}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
-
-                            <!-- Icon -->
-                            <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="8" Margin="8,0,0,28">
-                                <TextBlock Text="💵" FontSize="16" Height="26" VerticalAlignment="Top"/>
+                            <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                                <TextBlock Text="💵" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Border>
                         </Grid>
                     </Border>
 
                     <!-- Số lượt đặt sân -->
-                    <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
+                    <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
                             <StackPanel>
-                                <TextBlock Text="Số lượt đặt sân" FontSize="14" Foreground="#678"/>
-                                <TextBlock Text="{Binding SoLuotDatSan}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="Số lượt đặt sân" Style="{StaticResource KpiTitle}"/>
+                                <TextBlock Text="{Binding SoLuotDatSan}" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongLuotDat}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
-
-                            <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="8" Margin="8,0,0,28">
-                                <TextBlock Text="🗓️" FontSize="16"/>
+                            <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                                <TextBlock Text="🗓️" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Border>
                         </Grid>
                     </Border>
 
                     <!-- Hội viên mới -->
-                    <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
+                    <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
                             <StackPanel>
-                                <TextBlock Text="Hội viên mới" FontSize="14" Foreground="#678"/>
-                                <TextBlock Text="{Binding HoiVienMoi}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="Hội viên mới" Style="{StaticResource KpiTitle}"/>
+                                <TextBlock Text="{Binding HoiVienMoi}" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongHoiVien}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
-
-                            <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="8" Margin="8,0,0,28">
-                                <TextBlock Text="👥" FontSize="16" Margin="0,0,0,3"/>
+                            <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                                <TextBlock Text="👥" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Border>
                         </Grid>
                     </Border>
 
                     <!-- Tỉ lệ lấp đầy -->
-                    <Border Style="{StaticResource CardBorder}" Padding="16" Margin="8">
+                    <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
                             <StackPanel>
-                                <TextBlock Text="Tỉ lệ lấp đầy" FontSize="14" Foreground="#678"/>
-                                <TextBlock Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}"
-                           FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="Tỉ lệ lấp đầy" Style="{StaticResource KpiTitle}"/>
+                                <TextBlock Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongLapDay}" Foreground="#DC2626" Margin="0,6,0,0"/>
                             </StackPanel>
-
-                            <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="8" Margin="8,0,0,28">
-                                <TextBlock Text="📈" FontSize="16"/>
+                            <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                                <TextBlock Text="📈" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Border>
                         </Grid>
                     </Border>
                 </UniformGrid>
+
                 <!-- Tình trạng sân + Top hội viên -->
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
@@ -298,7 +321,6 @@
                     <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="8">
                         <StackPanel>
                             <DockPanel Margin="0,0,0,8">
-                                <TextBlock Text="" DockPanel.Dock="Left" Margin="0,0,6,0"/>
                                 <TextBlock Text="Tình trạng sân" FontWeight="SemiBold"/>
                             </DockPanel>
 

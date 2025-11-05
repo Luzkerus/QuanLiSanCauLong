@@ -31,6 +31,49 @@
             </Setter>
         </Style>
 
+        <!-- KPI CARD: giống ucThanhToan (shadow + scale on hover) -->
+        <Style x:Key="KpiCardStyle" TargetType="Border" BasedOn="{StaticResource CardBorder}">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="18" ShadowDepth="0" Opacity="0.18"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.28"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Typography KPI -->
+        <Style x:Key="KpiTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ColSub}"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style x:Key="KpiValue" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
         <!-- Nút bo góc -->
         <Style x:Key="BtnPrimary" TargetType="Button">
             <Setter Property="Foreground" Value="White"/>
@@ -51,7 +94,7 @@
             </Setter>
         </Style>
 
-        <!-- ComboBox trạng thái -->
+        <!-- ComboBox trạng thái (ĐÃ FIX: thêm ToggleButton để mở dropdown) -->
         <Style x:Key="ComboStatusStyle" TargetType="ComboBox">
             <Setter Property="Height" Value="32"/>
             <Setter Property="Padding" Value="10,0,28,0"/>
@@ -64,25 +107,44 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
+                            <!-- Khung -->
                             <Border x:Name="Bd" CornerRadius="10"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"/>
-                            <!-- Icon phễu -->
+
+                            <!-- Icon phễu bên trái -->
                             <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets"
                                        Foreground="#6B7E74" Margin="8,0,0,0"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                            <!-- Nội dung hiển thị -->
                             <ContentPresenter Margin="28,0,28,0"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Left"
                                               Content="{TemplateBinding SelectionBoxItem}"/>
-                            <!-- Chevron -->
+
+                            <!-- Chevron bên phải -->
                             <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets"
                                        Foreground="#6B7E74" Margin="0,0,8,0"
                                        VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                            <!-- NÚT BẬT/TẮT DROPDOWN (thành phần bắt buộc) -->
+                            <ToggleButton x:Name="DropDownToggle"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                          ClickMode="Press"/>
+
+                            <!-- Popup danh sách -->
                             <Popup x:Name="PART_Popup"
-                                   Placement="Bottom" Focusable="False"
-                                   AllowsTransparency="True" IsOpen="{TemplateBinding IsDropDownOpen}">
+                                   Placement="Bottom"
+                                   PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                   StaysOpen="False"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}">
                                 <Border CornerRadius="10" Background="White"
                                         BorderBrush="{StaticResource ColBorder}" BorderThickness="1"
                                         Padding="4" SnapsToDevicePixels="True">
@@ -92,6 +154,8 @@
                                 </Border>
                             </Popup>
                         </Grid>
+
+                        <!-- Triggers -->
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="BorderBrush" Value="#B9E6D1"/>
@@ -103,10 +167,16 @@
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.6"/>
                             </Trigger>
+                            <!-- Khi Toggle bật thì mở dropdown -->
+                            <Trigger SourceName="DropDownToggle" Property="IsChecked" Value="True">
+                                <Setter Property="ComboBox.IsDropDownOpen" Value="True"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+
+            <!-- Item style -->
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
                     <Style TargetType="ComboBoxItem">
@@ -152,15 +222,14 @@
             </Grid.ColumnDefinitions>
 
             <!-- Nút Đặt sân mới -->
-            <Border Grid.Column="2"
-        x:Name="btnDatSanMoi"
-        Cursor="Hand"
-        CornerRadius="8"
-        Margin="0,0,10,0">
+            <Border Grid.Column="1"
+                    x:Name="btnDatSanMoi"
+                    Cursor="Hand"
+                    CornerRadius="8"
+                    Margin="0,0,10,0">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Background" Value="#2BB673"/>
-                        <!-- Màu mặc định -->
                         <Setter Property="Effect">
                             <Setter.Value>
                                 <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.2"/>
@@ -168,10 +237,8 @@
                         </Setter>
                         <Setter Property="Padding" Value="14,8"/>
                         <Style.Triggers>
-                            <!-- Khi trỏ chuột -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#0D7049"/>
-                                <!-- Màu đậm hơn -->
                                 <Setter Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
@@ -183,13 +250,12 @@
                 </Border.Style>
 
                 <TextBlock Text="Đặt sân mới"
-               FontSize="14"
-               FontWeight="SemiBold"
-               Foreground="White"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"/>
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
             </Border>
-
 
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Đặt Sân" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
@@ -197,76 +263,77 @@
             </StackPanel>
         </Grid>
 
-        <!-- KPI counters giống style ucBaoCao (có icon) -->
+        <!-- KPI counters -->
         <UniformGrid Grid.Row="2" Columns="4" Margin="0,4,0,10">
             <!-- Tổng đơn hôm nay -->
-            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+            <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Tổng đơn hôm nay" Foreground="#678"/>
-                        <TextBlock Text="{Binding TongDonHomNay}" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock Text="Tổng đơn hôm nay" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding TongDonHomNay}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="8" Margin="8,0,0,0">
-                        <TextBlock Text="🧾" FontSize="16"/>
+                    <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                        <TextBlock Text="🧾" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
 
             <!-- Đang chơi -->
-            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+            <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Đang chơi" Foreground="#678"/>
-                        <TextBlock Text="{Binding SoDangChoi}" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock Text="Đang chơi" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding SoDangChoi}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="8" Margin="8,0,0,0">
-                        <TextBlock Text="🏃‍♂️" FontSize="16"/>
+                    <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                        <TextBlock Text="🏃‍♂️" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
 
             <!-- Đã đặt -->
-            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+            <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Đã đặt" Foreground="#678"/>
-                        <TextBlock Text="{Binding SoDaDat}" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock Text="Đã đặt" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding SoDaDat}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="8" Margin="8,0,0,0">
-                        <TextBlock Text="📅" FontSize="16"/>
+                    <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                        <TextBlock Text="📅" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
 
             <!-- Hoàn thành -->
-            <Border Style="{StaticResource CardBorder}" Padding="14,10" Margin="8">
+            <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Hoàn thành" Foreground="#678"/>
-                        <TextBlock Text="{Binding SoHoanThanh}" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock Text="Hoàn thành" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding SoHoanThanh}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="8" Margin="8,0,0,0">
-                        <TextBlock Text="✅" FontSize="16"/>
+                    <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
+                        <TextBlock Text="✅" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>
         </UniformGrid>
+
         <!-- Danh sách đặt sân -->
         <Border Grid.Row="3" Style="{StaticResource CardBorder}" Padding="8" Margin="0,0,0,8">
             <StackPanel>
@@ -333,7 +400,6 @@
                 </Grid>
 
                 <!-- List -->
-                <!-- List -->
                 <ListView ItemsSource="{Binding DanhSachDatSan}">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
@@ -345,10 +411,7 @@
                     </ListView.Resources>
                     <ListView.View>
                         <GridView>
-                            <!-- KHÔNG dùng Width="auto" trên GridViewColumn -->
-                            <GridViewColumn Header="Sân"
-                            DisplayMemberBinding="{Binding TenSan}" />
-
+                            <GridViewColumn Header="Sân" DisplayMemberBinding="{Binding TenSan}" />
                             <GridViewColumn Header="Khách hàng">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -365,9 +428,8 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding KhungGio}" Foreground="{StaticResource ColText}"/>
-                                            <!-- StringFormat đúng cú pháp -->
                                             <TextBlock Text="{Binding NgayDat, StringFormat={}{0:  dd/MM/yyyy}}"
-                                       Foreground="{StaticResource ColSub}" Margin="8,0,0,0"/>
+                                                       Foreground="{StaticResource ColSub}" Margin="8,0,0,0"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -380,7 +442,6 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-
 
                             <GridViewColumn Header="Trạng thái">
                                 <GridViewColumn.CellTemplate>
@@ -397,14 +458,14 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                             <Button Content="Bắt đầu" Margin="0,0,6,0" Padding="10,4"
-                                    Command="{Binding DataContext.CmdStart, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}"/>
+                                                    Command="{Binding DataContext.CmdStart, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
                                             <Button Content="Kết thúc" Margin="0,0,6,0" Padding="10,4"
-                                    Command="{Binding DataContext.CmdFinish, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}"/>
+                                                    Command="{Binding DataContext.CmdFinish, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
                                             <Button Content="Hủy" Padding="10,4"
-                                    Command="{Binding DataContext.CmdCancel, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}"/>
+                                                    Command="{Binding DataContext.CmdCancel, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
