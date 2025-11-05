@@ -2,6 +2,7 @@
 using QuanLiSanCauLong.LopNghiepVu;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
     public partial class ucQuanLySan : UserControl
     {
         private SanBLL sanBLL = new SanBLL();
+
+        private BangGiaBLL bangGiaBLL = new BangGiaBLL();
+
         public List<San> DanhSachSan { get; set; }
+        public DataTable BangGiaChung { get; set; }
 
         public int TongSoSan => DanhSachSan?.Count ?? 0;
         public int TongSoSanKhongBaoTri => DanhSachSan?.Count(s => s.TrangThai != "Bảo trì") ?? 0;
@@ -31,16 +36,22 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         public ucQuanLySan()
         {
             InitializeComponent();
-
+            LoadData();
+      
+        }
+        private void LoadData()
+        {
             try
             {
                 DanhSachSan = sanBLL.LayTatCaSan();
+                BangGiaChung = bangGiaBLL.LayBangGiaChung();
                 DataContext = this;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 DanhSachSan = new List<San>();
+                BangGiaChung = new DataTable();
             }
         }
 

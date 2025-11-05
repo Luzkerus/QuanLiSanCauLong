@@ -81,7 +81,7 @@
                             <Setter Property="Background" Value="#0FBF84"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#0FBF84"/>
+                                    <Setter Property="Background" Value="#0D7049"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -262,9 +262,9 @@
                             <DataGridComboBoxColumn Header="Áp dụng" SelectedItemBinding="{Binding LoaiNgay}" Width="*">
                                 <DataGridComboBoxColumn.ItemsSource>
                                     <x:Array Type="{x:Type sys:String}">
-                                        <sys:String>Thu2-Thu6</sys:String>
-                                        <sys:String>CuoiTuan</sys:String>
-                                        <sys:String>TatCa</sys:String>
+                                        <sys:String>Thứ 2-Thứ 6</sys:String>
+                                        <sys:String>Cuối Tuần</sys:String>
+   
                                     </x:Array>
                                 </DataGridComboBoxColumn.ItemsSource>
                             </DataGridComboBoxColumn>
