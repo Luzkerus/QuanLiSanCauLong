@@ -12,21 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan
+namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong
 {
     /// <summary>
-    /// Interaction logic for ucThanhToan.xaml
+    /// Interaction logic for ucPhanQuyen.xaml
     /// </summary>
-    public partial class ucThanhToan : UserControl
+    public partial class ucPhanQuyen : Window
     {
-        public ucThanhToan()
+        public ucPhanQuyen()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

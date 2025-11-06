@@ -83,8 +83,15 @@
     <Compile Include="LopTrinhBay\ManHinh\DatSan\ucDatSan.xaml.cs">
       <DependentUpon>ucDatSan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\HeThong\frmDangNhap.xaml.cs">
+      <DependentUpon>frmDangNhap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\HeThong\TabHeaderData.cs" />
     <Compile Include="LopTrinhBay\ManHinh\HeThong\ucCauHinhHeThong.xaml.cs">
       <DependentUpon>ucCauHinhHeThong.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\HeThong\ucPhanQuyen.xaml.cs">
+      <DependentUpon>ucPhanQuyen.xaml</DependentUpon>
     </Compile>
     <Compile Include="LopTrinhBay\ManHinh\KhachHoiVien\frmThemHoiVien.xaml.cs">
       <DependentUpon>frmThemHoiVien.xaml</DependentUpon>
@@ -175,7 +182,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LopTrinhBay\ManHinh\HeThong\frmDangNhap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LopTrinhBay\ManHinh\HeThong\ucCauHinhHeThong.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\HeThong\ucPhanQuyen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

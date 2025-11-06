@@ -438,7 +438,7 @@
                 <!-- Thanh toán: bo góc, hover xanh đậm -->
                 <Button Style="{StaticResource BtnSolidGreenRounded}"
                         Command="{Binding PayNowCommand}"
-                        Width="120" Height="32">
+                        Width="120" Height="32" Click="Button_Click">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>
                         <TextBlock Text="Thanh toán"/>

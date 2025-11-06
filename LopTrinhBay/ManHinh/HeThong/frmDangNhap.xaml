@@ -1,0 +1,210 @@
+﻿<Window x:Class="QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong.frmDangNhap"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Đăng nhập • SmartCourt"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Normal"
+        ResizeMode="NoResize"
+        Width="1080" Height="620"
+        Background="#F5F8F7">
+
+    <!-- ====== RESOURCES ====== -->
+    <Window.Resources>
+        <!-- Palette -->
+        <SolidColorBrush x:Key="ColText"   Color="#21382D"/>
+        <SolidColorBrush x:Key="ColSub"    Color="#6B7E74"/>
+        <SolidColorBrush x:Key="ColCard"   Color="White"/>
+        <SolidColorBrush x:Key="ColLine"   Color="#E8F0EC"/>
+        <SolidColorBrush x:Key="ColAccent" Color="#15A06D"/>
+        <SolidColorBrush x:Key="ColAccentSoft" Color="#E8F7F1"/>
+
+        <!-- Card style -->
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Background" Value="{StaticResource ColCard}"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#103B2C" BlurRadius="18" ShadowDepth="0" Opacity="0.12"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Input style -->
+        <Style x:Key="Txt" TargetType="TextBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style x:Key="Pwd" TargetType="PasswordBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <!-- Primary Button -->
+        <Style x:Key="BtnPrimary" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="{StaticResource ColAccent}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" Margin="8,0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#129462"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0F7E53"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Link text -->
+        <Style x:Key="Link" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ColAccent}"/>
+            <Setter Property="TextDecorations" Value="Underline"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- ====== LAYOUT ====== -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="540"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===== LEFT HERO (bo góc chỉ bên phải) ===== -->
+        <Border Grid.Column="0" 
+        CornerRadius="0,24,24,0"     
+                
+        ClipToBounds="True">
+            <!-- Để ảnh + overlay bị cắt theo bo góc -->
+            <Grid>
+                <!-- Ảnh nền -->
+
+                <!-- Lớp phủ xanh -->
+                <Rectangle Opacity="0.85">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#144E39" Offset="0"/>
+                            <GradientStop Color="#118257" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <!-- Nội dung bên trái -->
+                <StackPanel Margin="48" VerticalAlignment="Center" MaxWidth="520">
+                    <DockPanel LastChildFill="False" Margin="0,0,0,24">
+                        <Border Width="36" Height="36" CornerRadius="8"
+                        Background="White" Margin="0,0,12,0">
+                            <Viewbox Stretch="Uniform">
+                                <TextBlock Text="⚡" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Viewbox>
+                        </Border>
+                        <TextBlock Text="Sân cầu lông Củ Chi" FontSize="24" Foreground="White"
+                           VerticalAlignment="Center" FontWeight="Bold"/>
+                    </DockPanel>
+
+                    <TextBlock Text="Hệ thống Quản lý Sân Cầu Lông"
+                       Foreground="White" FontSize="28" FontWeight="Bold"
+                       TextWrapping="Wrap"/>
+                    <TextBlock Text="Giải pháp toàn diện cho việc quản lý sân bãi, đặt sân, thanh toán và nhiều tính năng khác"
+                       Foreground="#E6FFFFFF" Margin="0,8,0,16" TextWrapping="Wrap"/>
+
+                    <!-- Bullets -->
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <Ellipse Width="18" Height="18" Fill="#15A06D" Margin="0,2,10,0"/>
+                            <TextBlock Foreground="White" Text="Quản lý sân bãi realtime với sơ đồ trực quan"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <Ellipse Width="18" Height="18" Fill="#15A06D" Margin="0,2,10,0"/>
+                            <TextBlock Foreground="White" Text="Đặt sân linh hoạt với kiểm tra xung đột tự động"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <Ellipse Width="18" Height="18" Fill="#15A06D" Margin="0,2,10,0"/>
+                            <TextBlock Foreground="White" Text="Thanh toán đa phương thức qua QR code"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Footer -->
+                <TextBlock Text="©2025 Sân Cầu lông Củ Chi. Phần mềm quản lý sân cầu lông chuyên nghiệp."
+                   Foreground="#CCFFFFFF" HorizontalAlignment="Left"
+                   Margin="48" VerticalAlignment="Bottom"/>
+            </Grid>
+        </Border>
+
+
+        <!-- ===== RIGHT FORM ===== -->
+        <Grid Grid.Column="1" Background="#FBFDFB">
+            <Grid>
+                <Border Style="{StaticResource Card}" Width="420" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Đăng nhập" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
+                            <TextBlock Text="Nhập thông tin tài khoản để truy cập hệ thống"
+                                       Foreground="{StaticResource ColSub}" Margin="0,2,0,14"/>
+                        </StackPanel>
+
+                        <!-- Username -->
+                        <StackPanel Grid.Row="1" Margin="0,2,0,10">
+                            <TextBlock Text="Tên đăng nhập" Foreground="{StaticResource ColSub}" Margin="0,0,0,6"/>
+                            <TextBox x:Name="txtUser" Style="{StaticResource Txt}" />
+                        </StackPanel>
+
+                        <!-- Password + hint -->
+                        <StackPanel Grid.Row="2" Margin="0,2,0,2">
+                            <TextBlock Text="Mật khẩu" Foreground="{StaticResource ColSub}" Margin="0,0,0,6"/>
+                            <PasswordBox x:Name="pwd" Style="{StaticResource Pwd}" />
+                        </StackPanel>
+
+                        <!-- Options -->
+                        <DockPanel Grid.Row="3" Margin="0,10,0,8" LastChildFill="False">
+                            <CheckBox Content="Ghi nhớ đăng nhập" Foreground="{StaticResource ColSub}" VerticalAlignment="Center"/>
+                            <TextBlock DockPanel.Dock="Right" Style="{StaticResource Link}" Text="Quên mật khẩu?" />
+                        </DockPanel>
+
+                        <!-- Submit -->
+                        <StackPanel Grid.Row="4">
+                            <Button x:Name="btnLogin" Style="{StaticResource BtnPrimary}" Content="Đăng nhập" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
