@@ -54,7 +54,8 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 cmd.Parameters.AddWithValue("@TenSan", san.TenSan);
                 cmd.Parameters.AddWithValue("@TrangThai", san.TrangThai);
                 cmd.Parameters.AddWithValue("@NgayBaoTri",
-    san.NgayBaoTri == DateTime.MinValue ? (object)DBNull.Value : san.NgayBaoTri);
+    san.NgayBaoTri.HasValue ? san.NgayBaoTri.Value : (object)DBNull.Value);
+
 
 
                 conn.Open();

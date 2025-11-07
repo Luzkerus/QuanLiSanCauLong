@@ -75,7 +75,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
                 San san = new San
                 {
                     TenSan = txtTenSan.Text.Trim(),
-                    TrangThai = ((ComboBoxItem)cboTrangThai.SelectedItem).Content.ToString(),
+                    TrangThai = cboTrangThai.Text,
                     NgayBaoTri = dpNgayBaoTri.SelectedDate
                 };
 
@@ -94,8 +94,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi trong quá trình thêm sân. Vui lòng thử lại sau.", "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    $"Đã xảy ra lỗi trong quá trình thêm sân.\n\nChi tiết lỗi:\n{ex.Message}",
+                    "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
     }
 }
