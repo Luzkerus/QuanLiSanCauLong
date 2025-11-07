@@ -58,6 +58,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         private void btnThemSanMoi(object sender, RoutedEventArgs e)
         {
             frmThemSanMoi themSanMoiWindow = new frmThemSanMoi();
+            
         
             bool? result = themSanMoiWindow.ShowDialog(); // chờ form con đóng lại
 
@@ -149,6 +150,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void btnCauHinhGiaSan(object sender, RoutedEventArgs e)
+        {
+            // Chưa làm
         }
     }
 }

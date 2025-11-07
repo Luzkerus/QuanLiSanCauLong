@@ -118,7 +118,7 @@
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
                 <!-- Cấu hình giá sân -->
-                <Border Cursor="Hand" Margin="0,0,8,0">
+                <Border MouseLeftButtonDown="btnCauHinhGiaSan" Cursor="Hand" Margin="0,0,8,0">
                     <Border.Style>
                         <Style TargetType="Border" BasedOn="{StaticResource BtnSolid}">
                             <Setter Property="Background" Value="#0FBF84"/>
