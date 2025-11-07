@@ -20,7 +20,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT * FROM BangGiaChung ORDER BY GioBatDau";
+                string query = "SELECT * FROM BangGiaChung ORDER BY LoaiNgay DESC, GioBatDau ASC";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);

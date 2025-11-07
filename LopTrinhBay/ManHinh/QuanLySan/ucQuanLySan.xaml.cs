@@ -33,6 +33,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         public int TongSoSanKhongBaoTri => DanhSachSan?.Count(s => s.TrangThai != "Bảo trì") ?? 0;
         public int TongSoSanBaoTri => DanhSachSan?.Count(s => s.TrangThai == "Bảo trì") ?? 0;
 
+
         public ucQuanLySan()
         {
             InitializeComponent();
@@ -154,7 +155,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 
         private void btnCauHinhGiaSan(object sender, RoutedEventArgs e)
         {
-            // Chưa làm
+            frmCauHinhGia frmCauHinhGia = new frmCauHinhGia();
+            frmCauHinhGia.ShowDialog();
         }
     }
 }
