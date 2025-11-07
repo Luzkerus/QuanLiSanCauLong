@@ -245,7 +245,7 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Style="{StaticResource CardBorder}" Width="330" Margin="10" Padding="15">
+                                    <Border Style="{StaticResource KpiCardStyle}" Width="330" Margin="10" Padding="15">
                                         <Border.Resources>
                                             <!-- pill trạng thái -->
                                             <Style x:Key="TrangThaiPill" TargetType="Border">
