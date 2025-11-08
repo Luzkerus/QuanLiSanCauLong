@@ -158,5 +158,88 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             frmCauHinhGia frmCauHinhGia = new frmCauHinhGia();
             frmCauHinhGia.ShowDialog();
         }
+
+        private void btnThemKhungGio_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bool ok = bangGiaBLL.ThemBangGiaMau();
+
+                if (ok)
+                {
+                    MessageBox.Show("✅ Đã thêm khung giờ mẫu!", "Thông báo",
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Load lại dữ liệu nếu có DataGrid hiển thị bảng giá
+                    BangGiaChung = bangGiaBLL.LayBangGiaChung();
+                    DataContext = null;
+                    DataContext = this;
+                }
+                else
+                {
+                    MessageBox.Show("❌ Thêm khung giờ mẫu thất bại!", "Lỗi",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi thêm khung giờ mẫu: " + ex.Message,
+                                "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnXoaKhungGio_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (dgBangGia.SelectedItem is DataRowView selectedRow)
+                {
+                    // Lấy mã khung giờ từ dòng được chọn
+                    int maBangGia = Convert.ToInt32(selectedRow["MaBangGia"]);
+                    string gioBatDau = selectedRow["GioBatDau"].ToString();
+                    string gioKetThuc = selectedRow["GioKetThuc"].ToString();
+
+                    MessageBoxResult confirm = MessageBox.Show(
+                        $"Bạn có chắc muốn xóa khung giờ {gioBatDau} - {gioKetThuc} không?",
+                        "Xác nhận xóa",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question
+                    );
+
+                    if (confirm == MessageBoxResult.Yes)
+                    {
+                        bool xoaThanhCong = bangGiaBLL.XoaBangGia(maBangGia);
+
+                        if (xoaThanhCong)
+                        {
+                            MessageBox.Show("✅ Đã xóa khung giờ khỏi cơ sở dữ liệu!", "Thông báo",
+                                            MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            // Load lại bảng giá
+                            BangGiaChung = bangGiaBLL.LayBangGiaChung();
+                            DataContext = null;
+                            DataContext = this;
+                        }
+                        else
+                        {
+                            MessageBox.Show("❌ Không thể xóa khung giờ!", "Lỗi",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Vui lòng chọn dòng cần xóa!", "Thông báo",
+                                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xóa khung giờ: " + ex.Message,
+                                "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
     }
 }

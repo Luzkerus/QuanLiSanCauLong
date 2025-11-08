@@ -350,9 +350,9 @@
 
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                         <Button x:Name="btnThemKhungGio" Content="+ Thêm khung giờ" Padding="10,6"
-                                Background="White" BorderBrush="{StaticResource ColBorder}" Margin="0,0,8,0"/>
+                                Background="White" BorderBrush="{StaticResource ColBorder}" Margin="0,0,8,0" Click="btnThemKhungGio_Click"/>
                         <Button x:Name="btnXoaKhungGio" Content="Xóa khung giờ" Padding="12,6"
-                                Foreground="White" Background="#28A745" BorderBrush="#28A745"/>
+                                Foreground="White" Background="#28A745" BorderBrush="#28A745" Click="btnXoaKhungGio_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>

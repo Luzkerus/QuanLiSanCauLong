@@ -1,4 +1,5 @@
-﻿using QuanLiSanCauLong.LopTruyCapDuLieu;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using QuanLiSanCauLong.LopTruyCapDuLieu;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,5 +17,18 @@ namespace QuanLiSanCauLong.LopNghiepVu
         {
             return dal.LayBangGiaChung();
         }
+        public bool ThemBangGiaMau()
+        {
+            return dal.ThemBangGiaMau();
+        }
+        public bool XoaBangGia(int maBangGia)
+        {
+            return dal.XoaBangGia(maBangGia);
+        }
+        public bool SuaBangGia(BangGiaChung bangGia)
+        {
+            return dal.SuaBangGia(bangGia);
+        }
+
     }
 }
