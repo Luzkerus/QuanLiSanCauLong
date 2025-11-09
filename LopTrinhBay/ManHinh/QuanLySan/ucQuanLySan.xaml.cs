@@ -155,9 +155,45 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 
         private void btnCauHinhGiaSan(object sender, RoutedEventArgs e)
         {
-            frmCauHinhGia frmCauHinhGia = new frmCauHinhGia();
-            frmCauHinhGia.ShowDialog();
+            if (dgBangGia.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một dòng để cấu hình!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            DataRowView row = dgBangGia.SelectedItem as DataRowView;
+            if (row == null) return;
+
+            try
+            {
+                BangGiaChung bangGia = new BangGiaChung
+                {
+                    MaBangGia = Convert.ToInt32(row["MaBangGia"]),
+                    GioBatDau = TimeSpan.Parse(row["GioBatDau"].ToString()),
+                    GioKetThuc = TimeSpan.Parse(row["GioKetThuc"].ToString()),
+                    DonGia = Convert.ToDecimal(row["DonGia"]),
+                    LoaiNgay = row["LoaiNgay"].ToString(),
+                    PhuThuLePercent = row["PhuThuLePercent"] == DBNull.Value? (decimal?)null: Convert.ToDecimal(row["PhuThuLePercent"])
+
+                };
+
+                frmCauHinhGia frm = new frmCauHinhGia(bangGia);
+                bool? result = frm.ShowDialog(); // dùng DialogResult để biết có lưu không
+
+                // 🔁 Sau khi lưu, load lại bảng giá
+                if (result == true)
+                {
+                    BangGiaChung = bangGiaBLL.LayBangGiaChung();
+                    DataContext = null;
+                    DataContext = this;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi mở cấu hình giá: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
 
         private void btnThemKhungGio_Click(object sender, RoutedEventArgs e)
         {

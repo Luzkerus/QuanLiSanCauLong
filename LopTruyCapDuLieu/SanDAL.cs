@@ -106,9 +106,6 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             SET TrangThai = N'Bảo trì'
             WHERE CAST(NgayBaoTri AS date) = CAST(GETDATE() AS date);
 
-            UPDATE dbo.San
-            SET TrangThai = N'Đang hoạt động'
-            WHERE NgayBaoTri IS NOT NULL AND CAST(NgayBaoTri AS date) < CAST(GETDATE() AS date);
         ";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
