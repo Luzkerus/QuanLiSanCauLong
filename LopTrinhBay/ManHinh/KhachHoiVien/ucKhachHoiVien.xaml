@@ -124,13 +124,15 @@
         </DataTemplate>
 
         <!-- Nút hành động trên header -->
+        <!-- Nút hành động trên header (hover đậm hơn) -->
         <Style x:Key="HeaderBtn" TargetType="Button">
             <Setter Property="Height" Value="36"/>
-            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="MinWidth" Value="120"/>
             <Setter Property="Padding" Value="14,8"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#0FBF84"/>
-            <Setter Property="BorderBrush" Value="#0FBF84"/>
+            <!-- bình thường -->
+            <Setter Property="BorderBrush" Value="#0D7049"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -138,14 +140,16 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="bd" CornerRadius="10"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
+                            <!-- Hover: đậm hơn -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="bd" Property="Background" Value="#0DAA78"/>
+                                <!-- đậm hơn -->
                                 <Setter TargetName="bd" Property="BorderBrush" Value="#0DAA78"/>
                                 <Setter TargetName="bd" Property="Effect">
                                     <Setter.Value>
@@ -153,9 +157,11 @@
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
+                            <!-- Pressed: mờ nhẹ -->
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
                             </Trigger>
+                            <!-- Disabled -->
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
                             </Trigger>
@@ -195,11 +201,11 @@
                 <!-- Nút hành động bên phải -->
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
                     <Button Style="{StaticResource HeaderBtn}"
-                            Click="BtnAddMember_Click"
-                            ToolTip="Thêm hội viên mới">
+                            
+                            ToolTip="Thêm hội viên mới" Click="Button_Click_1">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
-                            <TextBlock Text="Thêm hội viên"/>
+                            <TextBlock FontFamily="Segoe MDL2 Assets"  Margin="0,0,0,0"/>
+                            <TextBlock Text="Thêm hội viên" FontSize="14"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
