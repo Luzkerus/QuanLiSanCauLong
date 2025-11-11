@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,13 +26,14 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             RecalcPreview();
         }
 
-        private void InitToday()
+        private async void InitToday()
+
         {
             var now = DateTime.Now;
             lblToday.Text = now.ToString("dddd, dd/MM/yyyy", new CultureInfo("vi-VN"));
 
             //bool isWeekend = now.DayOfWeek == DayOfWeek.Saturday || now.DayOfWeek == DayOfWeek.Sunday;
-            bool isHoliday = IsHoliday(now);
+            bool isHoliday = await IsHolidayAsync(new DateTime(2025, 9, 2));
             bool isSpecial =  isHoliday;
 
             lblSpecial.Text = isSpecial ? "Có" : "Không";
@@ -59,20 +61,39 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         }
 
 
-        private void LoadDefaults()
-        {
-            _giaCoBan = 120000m;
-            _pctPhuThu = 5m;
 
-            txtGiaCoBan.Text = _giaCoBan.ToString("0", CultureInfo.InvariantCulture);
-            txtPhuThu.Text = _pctPhuThu.ToString("0", CultureInfo.InvariantCulture);
+        private async Task<bool> IsHolidayAsync(DateTime date)
+        {
+            try
+            {
+                // 🔹 Gọi API để lấy danh sách ngày lễ trong năm hiện tại
+                var holidays = await QuanLiSanCauLong.API.HolidayApiService.GetHolidaysAsync(date.Year);
+
+                // 🔹 So sánh xem ngày hiện tại có trùng ngày lễ nào không
+                return holidays.Any(h =>
+                {
+                    if (DateTime.TryParse(h.Date, out var holidayDate))
+                        return holidayDate.Date == date.Date;
+                    return false;
+                });
+            }
+            catch (Exception ex)
+            {
+                // 🔹 Nếu API lỗi(mất mạng, server down), fallback về danh sách cố định
+
+
+                if ((date.Month == 1 && date.Day == 1) ||      // Tết Dương lịch
+                    (date.Month == 4 && date.Day == 30) ||     // Ngày Giải phóng miền Nam
+                    (date.Month == 5 && date.Day == 1) ||      // Ngày Quốc tế Lao động
+                    (date.Month == 9 && date.Day == 2))        // Quốc khánh
+                {
+                    return true;
+                }
+
+                return false;
+            }
         }
 
-        private bool IsHoliday(DateTime date)
-        {
-            // TODO: backend xác định ngày lễ thực tế
-            return false;
-        }
 
         private static readonly Regex _numRegex = new Regex(@"^[0-9]+([.,][0-9]{0,2})?$");
 
@@ -83,11 +104,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             return decimal.TryParse(input, NumberStyles.Number, CultureInfo.InvariantCulture, out var val) ? val : 0m;
         }
 
-        private void RecalcPreview()
+        private async void RecalcPreview()
         {
             var now = DateTime.Now;
             //bool isWeekend = now.DayOfWeek == DayOfWeek.Saturday || now.DayOfWeek == DayOfWeek.Sunday;
-            bool isHoliday = IsHoliday(now);
+            bool isHoliday = await IsHolidayAsync(new DateTime(2025, 9, 2));
             bool isSpecial = isHoliday;
 
             decimal gia = _giaCoBan;
