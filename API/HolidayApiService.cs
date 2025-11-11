@@ -9,48 +9,70 @@ namespace QuanLiSanCauLong.API
     internal class HolidayApiService
     {
         private static readonly HttpClient _client = new HttpClient();
+        private const string ApiKey = "Cl7KudnNkmgAPa53oazN5hIS59Hi2BXo"; // 🔸 Thay bằng key của bạn
 
         public static async Task<List<PublicHoliday>> GetHolidaysAsync(int year)
         {
-            string url = $"https://date.nager.at/api/v3/PublicHolidays/{year}/VN";
+            string url = $"https://calendarific.com/api/v2/holidays?api_key={ApiKey}&country=VN&year={year}";
 
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
 
-            var holidays = JsonSerializer.Deserialize<List<PublicHoliday>>(json, new JsonSerializerOptions
+            var root = JsonSerializer.Deserialize<CalendarificResponse>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
 
-            return holidays ?? new List<PublicHoliday>();
-        }
-        public static async Task<bool> IsHolidayAsync(DateTime date)
-        {
-            // Lấy danh sách ngày lễ của năm đó
-            var holidays = await GetHolidaysAsync(date.Year);
+            if (root?.Response?.Holidays == null)
+                return new List<PublicHoliday>();
 
-            // So sánh ngày
-            foreach (var h in holidays)
+            var holidays = new List<PublicHoliday>();
+            foreach (var holidayList in root.Response.Holidays.Values)
             {
-                if (DateTime.TryParse(h.Date, out var holidayDate))
+                foreach (var h in holidayList)
                 {
-                    if (holidayDate.Date == date.Date)
-                        return true;
+                    holidays.Add(new PublicHoliday
+                    {
+                        Date = h.Date?.Iso,
+                        Name = h.Name,
+                        Description = h.Description
+                    });
                 }
             }
 
-            return false;
+            return holidays;
         }
+    }
 
+    // 🔹 Các class phụ để parse JSON
+    internal class CalendarificResponse
+    {
+        public CalendarificResponseData Response { get; set; }
+    }
+
+    internal class CalendarificResponseData
+    {
+        public Dictionary<string, List<CalendarificHoliday>> Holidays { get; set; }
+    }
+
+    internal class CalendarificHoliday
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public CalendarificDate Date { get; set; }
+    }
+
+    internal class CalendarificDate
+    {
+        public string Iso { get; set; }
     }
 
     internal class PublicHoliday
     {
         public string Date { get; set; }
-        public string LocalName { get; set; }
         public string Name { get; set; }
-        public string CountryCode { get; set; }
+        public string Description { get; set; }
     }
 }
