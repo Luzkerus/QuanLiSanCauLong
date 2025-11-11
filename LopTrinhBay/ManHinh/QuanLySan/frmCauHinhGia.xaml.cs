@@ -80,19 +80,18 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             }
             catch (Exception ex)
             {
-                // 🔹 Nếu API lỗi(mất mạng, server down), fallback về danh sách cố định
+//🔹 Nếu API lỗi(mất mạng, server down), fallback về danh sách cố định
 
 
-                //if ((date.Month == 1 && date.Day == 1) ||      // Tết Dương lịch
-                //    (date.Month == 4 && date.Day == 30) ||     // Ngày Giải phóng miền Nam
-                //    (date.Month == 5 && date.Day == 1) ||      // Ngày Quốc tế Lao động
-                //    (date.Month == 9 && date.Day == 2))        // Quốc khánh
-                //{
-                //    return true;
-                //}
+                if ((date.Month == 1 && date.Day == 1) ||      // Tết Dương lịch
+                    (date.Month == 4 && date.Day == 30) ||     // Ngày Giải phóng miền Nam
+                    (date.Month == 5 && date.Day == 1) ||      // Ngày Quốc tế Lao động
+                    (date.Month == 9 && date.Day == 2))        // Quốc khánh
+                {
+                    return true;
+                }
 
-                //return false;
-                return true;
+                return false;
             }
         }
 
