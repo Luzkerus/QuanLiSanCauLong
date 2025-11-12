@@ -7,16 +7,114 @@
         SizeToContent="WidthAndHeight"
         WindowStyle="None"
         AllowsTransparency="True"
-        MinWidth="880" MinHeight="600"
-        Background="Transparent">
+        Width="550" Height="600"
+        Background="Transparent"
+        MinWidth="550" MinHeight="600"
+        MaxWidth="980">
 
-    <!-- Colors -->
+    <!-- ===== Colors / Converters ===== -->
     <Window.Resources>
         <SolidColorBrush x:Key="ColText"   Color="#21382D"/>
+        <SolidColorBrush x:Key="ColSub"    Color="#6B7E74"/>
         <SolidColorBrush x:Key="ColBorder" Color="#E1F0E9"/>
         <SolidColorBrush x:Key="ColCard"   Color="White"/>
         <SolidColorBrush x:Key="ColAccent" Color="#15A06D"/>
-        <SolidColorBrush x:Key="ColSub"    Color="#6B7E74"/>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <!-- Watermark (placeholder) cho TextBox: dùng thuộc tính Tag làm chữ gợi ý -->
+        <Style x:Key="WatermarkTextBox" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                            <TextBlock x:Name="Watermark"
+                                       Text="{TemplateBinding Tag}"
+                                       Foreground="#9AA7A0"
+                                       Margin="4,0,0,0"
+                                       IsHitTestVisible="False"
+                                       VerticalAlignment="Center"
+                                       Visibility="Collapsed"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Watermark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter TargetName="Watermark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Watermark" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Badge ngày lễ -->
+        <Style x:Key="HolidayBadge" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Background" Value="#FFF0F0"/>
+            <Setter Property="BorderBrush" Value="#FFC7C7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- Ô tiền -->
+        <Style x:Key="MoneyCell" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#0D7049"/>
+        </Style>
+
+        <!-- Footer Borders (hover đậm hơn, KHÔNG dùng IsPressed) -->
+        <Style x:Key="FooterGhostBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#C5F3DF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F2FFFA"/>
+                    <Setter Property="BorderBrush" Value="#8FEBD1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="FooterGrayBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Background" Value="#F3F5F4"/>
+            <Setter Property="BorderBrush" Value="#E7ECEA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E9ECEB"/>
+                    <Setter Property="BorderBrush" Value="#DADFDD"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="FooterPrimaryBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Background" Value="{StaticResource ColAccent}"/>
+            <Setter Property="BorderBrush" Value="#119A67"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0E8F64"/>
+                    <Setter Property="BorderBrush" Value="#0B7D57"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
 
     <Border CornerRadius="14" Background="{StaticResource ColCard}" BorderBrush="#D7EAE2" BorderThickness="1" Padding="20" Margin="6">
@@ -31,20 +129,100 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Header -->
-            <DockPanel Grid.Row="0" LastChildFill="False" Margin="6,0,6,10">
-                <TextBlock Text="Tạo đơn đặt sân mới" FontWeight="Bold" FontSize="16"
-                           Foreground="{StaticResource ColText}" DockPanel.Dock="Left"/>
-                <Border Width="28" Height="28" CornerRadius="14" Background="#F3F5F4"
-                        DockPanel.Dock="Right" Cursor="Hand">
-                    <TextBlock Text="✕" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-            </DockPanel>
+            <!-- ===== Header ===== -->
+            <!-- ===== Header (có Minimize & Close) ===== -->
+            <Border Grid.Row="0" Background="White" CornerRadius="10,10,0,0"
+        BorderBrush="{StaticResource ColBorder}" BorderThickness="0,0,0,1">
+                <Grid MouseDown="Header_MouseDown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-            <!-- Body -->
-            <StackPanel Grid.Row="1">
+                    <!-- Tiêu đề -->
+                    <TextBlock Text="Tạo đơn đặt sân mới" FontWeight="Bold" FontSize="16"
+                   Foreground="{StaticResource ColText}" VerticalAlignment="Center" Margin="12,8"/>
 
-                <!-- THÔNG TIN KHÁCH HÀNG (đưa lên đầu) -->
+                    <!-- Nút Minimize (đơn giản, bo nhẹ) -->
+                    <Button Grid.Column="1" Width="36" Height="28" Margin="0,6,6,6"
+                Click="BtnMinimize_Click"
+                ToolTip="Thu nhỏ"
+                Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#CBD5E1"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Foreground" Value="#334155"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="6"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#E0F2FE"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#BFDBFE"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock Text="—" FontSize="14" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Button>
+
+                    <!-- Nút Close (đơn giản, bo nhẹ) -->
+                    <Button Grid.Column="2" Width="36" Height="28" Margin="0,6,10,6"
+                Click="BtnClose_Click"
+                ToolTip="Đóng"
+                Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#FCA5A5"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Foreground" Value="#B91C1C"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="6"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#FEE2E2"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#FCA5A5"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock Text="✕" FontSize="13" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- ===== Body ===== -->
+            <StackPanel Grid.Row="1" DataContext="{Binding}">
+                <!-- Thông tin KH -->
                 <Border CornerRadius="10" BorderBrush="#CFE4FF" BorderThickness="1"
                         Background="#EDF6FF" Padding="10" Margin="0,0,0,10">
                     <StackPanel>
@@ -56,335 +234,167 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Số điện thoại -->
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="Số điện thoại" Margin="2,0,0,4"/>
+                                <TextBlock Text="Tên khách hàng*" Margin="2,0,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1" Background="White" Padding="8,6">
-                                    <TextBox x:Name="txtSDT" BorderThickness="0" Background="Transparent" />
+                                    <TextBox BorderThickness="0" Background="Transparent" Text="{Binding TenKH, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Border>
+                                <TextBlock Text="Số điện thoại*" Margin="2,0,0,4"/>
+                                <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1" Background="White" Padding="8,6">
+                                    <TextBox BorderThickness="0" Background="Transparent" Text="{Binding SDT, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
                             </StackPanel>
 
-                            <!-- Tên khách -->
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="Tên khách hàng" Margin="2,0,0,4"/>
+                                <TextBlock Text="Email" Margin="2,0,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1" Background="White" Padding="8,6">
-                                    <TextBox x:Name="txtTenKH" BorderThickness="0" Background="Transparent" />
+                                    <TextBox BorderThickness="0" Background="Transparent" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Border>
 
-                <!-- HÀNG 1: Ngày đặt + Sân -->
+                <!-- Hàng 1: Ngày + Sân + Badge ngày lễ -->
                 <Grid Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- Ngày đặt -->
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Ngày đặt" Margin="2,0,0,4"/>
                         <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="4,0">
-                            <DatePicker x:Name="dtNgayDat" BorderThickness="0" Height="38" Width="Auto"/>
+                            <DatePicker SelectedDate="{Binding NgayDat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        BorderThickness="0" Height="38"/>
                         </Border>
                     </StackPanel>
 
-                    <!-- Chọn sân -->
+                    <!-- Sân -->
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Sân" Margin="2,0,0,4"/>
                         <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="4,2">
-                            <ComboBox x:Name="cboSan" BorderThickness="0" MinHeight="34" SelectedIndex="0">
-                                <ComboBoxItem>Sân 1</ComboBoxItem>
-                                <ComboBoxItem>Sân 2</ComboBoxItem>
-                                <ComboBoxItem>Sân 3</ComboBoxItem>
-                                <ComboBoxItem>Sân 4</ComboBoxItem>
-                                <ComboBoxItem>Sân 5</ComboBoxItem>
-                                <ComboBoxItem>Sân 6</ComboBoxItem>
-                            </ComboBox>
+                            <ComboBox MinHeight="34"
+                                      ItemsSource="{Binding DanhSachSan}"
+                                      SelectedItem="{Binding SanDangChon}"/>
                         </Border>
                     </StackPanel>
                 </Grid>
 
-                <!-- HÀNG 2: Giờ bắt đầu + Giờ kết thúc -->
-                <Grid Margin="0,0,0,8">
+                <!-- Hàng 2: Giờ bắt đầu/kết thúc (dùng WatermarkTextBox) -->
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Giờ bắt đầu -->
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Giờ bắt đầu" Margin="2,0,0,4"/>
-                        <Grid>
-                            <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,4">
-                                <DockPanel>
-                                    <TextBlock x:Name="lblStartTime" Text="--:--" VerticalAlignment="Center" Foreground="#444"/>
-                                    <ToggleButton x:Name="btnStartClock" Content="🕓" Width="28" Height="28" Margin="4,0,0,0"
-                                                  BorderThickness="0" Background="Transparent" DockPanel.Dock="Right"/>
-                                </DockPanel>
-                            </Border>
-
-                            <!-- Popup giờ/phút -->
-                            <Popup IsOpen="{Binding IsChecked, ElementName=btnStartClock}"
-                                   PlacementTarget="{Binding ElementName=btnStartClock}" Placement="Bottom" StaysOpen="False">
-                                <Border Background="#333" CornerRadius="6" Padding="6">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Giờ 00-23 -->
-                                        <ListBox Width="50" Height="200" Foreground="White">
-                                            <ListBoxItem>00</ListBoxItem>
-                                            <ListBoxItem>01</ListBoxItem>
-                                            <ListBoxItem>02</ListBoxItem>
-                                            <ListBoxItem>03</ListBoxItem>
-                                            <ListBoxItem>04</ListBoxItem>
-                                            <ListBoxItem>05</ListBoxItem>
-                                            <ListBoxItem>06</ListBoxItem>
-                                            <ListBoxItem>07</ListBoxItem>
-                                            <ListBoxItem>08</ListBoxItem>
-                                            <ListBoxItem>09</ListBoxItem>
-                                            <ListBoxItem>10</ListBoxItem>
-                                            <ListBoxItem>11</ListBoxItem>
-                                            <ListBoxItem>12</ListBoxItem>
-                                            <ListBoxItem>13</ListBoxItem>
-                                            <ListBoxItem>14</ListBoxItem>
-                                            <ListBoxItem>15</ListBoxItem>
-                                            <ListBoxItem>16</ListBoxItem>
-                                            <ListBoxItem>17</ListBoxItem>
-                                            <ListBoxItem>18</ListBoxItem>
-                                            <ListBoxItem>19</ListBoxItem>
-                                            <ListBoxItem>20</ListBoxItem>
-                                            <ListBoxItem>21</ListBoxItem>
-                                            <ListBoxItem>22</ListBoxItem>
-                                            <ListBoxItem>23</ListBoxItem>
-                                        </ListBox>
-
-                                        <!-- Phút 00-59 -->
-                                        <ListBox Grid.Column="1" Width="50" Height="200" Margin="6,0,0,0" Foreground="White">
-                                            <ListBoxItem>00</ListBoxItem>
-                                            <ListBoxItem>01</ListBoxItem>
-                                            <ListBoxItem>02</ListBoxItem>
-                                            <ListBoxItem>03</ListBoxItem>
-                                            <ListBoxItem>04</ListBoxItem>
-                                            <ListBoxItem>05</ListBoxItem>
-                                            <ListBoxItem>06</ListBoxItem>
-                                            <ListBoxItem>07</ListBoxItem>
-                                            <ListBoxItem>08</ListBoxItem>
-                                            <ListBoxItem>09</ListBoxItem>
-                                            <ListBoxItem>10</ListBoxItem>
-                                            <ListBoxItem>11</ListBoxItem>
-                                            <ListBoxItem>12</ListBoxItem>
-                                            <ListBoxItem>13</ListBoxItem>
-                                            <ListBoxItem>14</ListBoxItem>
-                                            <ListBoxItem>15</ListBoxItem>
-                                            <ListBoxItem>16</ListBoxItem>
-                                            <ListBoxItem>17</ListBoxItem>
-                                            <ListBoxItem>18</ListBoxItem>
-                                            <ListBoxItem>19</ListBoxItem>
-                                            <ListBoxItem>20</ListBoxItem>
-                                            <ListBoxItem>21</ListBoxItem>
-                                            <ListBoxItem>22</ListBoxItem>
-                                            <ListBoxItem>23</ListBoxItem>
-                                            <ListBoxItem>24</ListBoxItem>
-                                            <ListBoxItem>25</ListBoxItem>
-                                            <ListBoxItem>26</ListBoxItem>
-                                            <ListBoxItem>27</ListBoxItem>
-                                            <ListBoxItem>28</ListBoxItem>
-                                            <ListBoxItem>29</ListBoxItem>
-                                            <ListBoxItem>30</ListBoxItem>
-                                            <ListBoxItem>31</ListBoxItem>
-                                            <ListBoxItem>32</ListBoxItem>
-                                            <ListBoxItem>33</ListBoxItem>
-                                            <ListBoxItem>34</ListBoxItem>
-                                            <ListBoxItem>35</ListBoxItem>
-                                            <ListBoxItem>36</ListBoxItem>
-                                            <ListBoxItem>37</ListBoxItem>
-                                            <ListBoxItem>38</ListBoxItem>
-                                            <ListBoxItem>39</ListBoxItem>
-                                            <ListBoxItem>40</ListBoxItem>
-                                            <ListBoxItem>41</ListBoxItem>
-                                            <ListBoxItem>42</ListBoxItem>
-                                            <ListBoxItem>43</ListBoxItem>
-                                            <ListBoxItem>44</ListBoxItem>
-                                            <ListBoxItem>45</ListBoxItem>
-                                            <ListBoxItem>46</ListBoxItem>
-                                            <ListBoxItem>47</ListBoxItem>
-                                            <ListBoxItem>48</ListBoxItem>
-                                            <ListBoxItem>49</ListBoxItem>
-                                            <ListBoxItem>50</ListBoxItem>
-                                            <ListBoxItem>51</ListBoxItem>
-                                            <ListBoxItem>52</ListBoxItem>
-                                            <ListBoxItem>53</ListBoxItem>
-                                            <ListBoxItem>54</ListBoxItem>
-                                            <ListBoxItem>55</ListBoxItem>
-                                            <ListBoxItem>56</ListBoxItem>
-                                            <ListBoxItem>57</ListBoxItem>
-                                            <ListBoxItem>58</ListBoxItem>
-                                            <ListBoxItem>59</ListBoxItem>
-                                        </ListBox>
-                                    </Grid>
-                                </Border>
-                            </Popup>
-                        </Grid>
+                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,6">
+                            <TextBox Text="{Binding GioBatDau}"
+                                     Style="{StaticResource WatermarkTextBox}"
+                                     Tag="--:--" 
+                                     BorderThickness="0" Background="Transparent"/>
+                        </Border>
                     </StackPanel>
 
-                    <!-- Giờ kết thúc -->
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Giờ kết thúc" Margin="2,0,0,4"/>
-                        <Grid>
-                            <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,4">
-                                <DockPanel>
-                                    <TextBlock x:Name="lblEndTime" Text="--:--" VerticalAlignment="Center" Foreground="#444"/>
-                                    <ToggleButton x:Name="btnEndClock" Content="🕓" Width="28" Height="28" Margin="4,0,0,0"
-                                                  BorderThickness="0" Background="Transparent" DockPanel.Dock="Right"/>
-                                </DockPanel>
-                            </Border>
-
-                            <Popup IsOpen="{Binding IsChecked, ElementName=btnEndClock}"
-                                   PlacementTarget="{Binding ElementName=btnEndClock}" Placement="Bottom" StaysOpen="False">
-                                <Border Background="#333" CornerRadius="6" Padding="6">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition Width="60"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Giờ 00-23 -->
-                                        <ListBox Width="50" Height="200" Foreground="White">
-                                            <ListBoxItem>00</ListBoxItem>
-                                            <ListBoxItem>01</ListBoxItem>
-                                            <ListBoxItem>02</ListBoxItem>
-                                            <ListBoxItem>03</ListBoxItem>
-                                            <ListBoxItem>04</ListBoxItem>
-                                            <ListBoxItem>05</ListBoxItem>
-                                            <ListBoxItem>06</ListBoxItem>
-                                            <ListBoxItem>07</ListBoxItem>
-                                            <ListBoxItem>08</ListBoxItem>
-                                            <ListBoxItem>09</ListBoxItem>
-                                            <ListBoxItem>10</ListBoxItem>
-                                            <ListBoxItem>11</ListBoxItem>
-                                            <ListBoxItem>12</ListBoxItem>
-                                            <ListBoxItem>13</ListBoxItem>
-                                            <ListBoxItem>14</ListBoxItem>
-                                            <ListBoxItem>15</ListBoxItem>
-                                            <ListBoxItem>16</ListBoxItem>
-                                            <ListBoxItem>17</ListBoxItem>
-                                            <ListBoxItem>18</ListBoxItem>
-                                            <ListBoxItem>19</ListBoxItem>
-                                            <ListBoxItem>20</ListBoxItem>
-                                            <ListBoxItem>21</ListBoxItem>
-                                            <ListBoxItem>22</ListBoxItem>
-                                            <ListBoxItem>23</ListBoxItem>
-                                        </ListBox>
-
-                                        <!-- Phút 00-59 -->
-                                        <ListBox Grid.Column="1" Width="50" Height="200" Margin="6,0,0,0" Foreground="White">
-                                            <ListBoxItem>00</ListBoxItem>
-                                            <ListBoxItem>01</ListBoxItem>
-                                            <ListBoxItem>02</ListBoxItem>
-                                            <ListBoxItem>03</ListBoxItem>
-                                            <ListBoxItem>04</ListBoxItem>
-                                            <ListBoxItem>05</ListBoxItem>
-                                            <ListBoxItem>06</ListBoxItem>
-                                            <ListBoxItem>07</ListBoxItem>
-                                            <ListBoxItem>08</ListBoxItem>
-                                            <ListBoxItem>09</ListBoxItem>
-                                            <ListBoxItem>10</ListBoxItem>
-                                            <ListBoxItem>11</ListBoxItem>
-                                            <ListBoxItem>12</ListBoxItem>
-                                            <ListBoxItem>13</ListBoxItem>
-                                            <ListBoxItem>14</ListBoxItem>
-                                            <ListBoxItem>15</ListBoxItem>
-                                            <ListBoxItem>16</ListBoxItem>
-                                            <ListBoxItem>17</ListBoxItem>
-                                            <ListBoxItem>18</ListBoxItem>
-                                            <ListBoxItem>19</ListBoxItem>
-                                            <ListBoxItem>20</ListBoxItem>
-                                            <ListBoxItem>21</ListBoxItem>
-                                            <ListBoxItem>22</ListBoxItem>
-                                            <ListBoxItem>23</ListBoxItem>
-                                            <ListBoxItem>24</ListBoxItem>
-                                            <ListBoxItem>25</ListBoxItem>
-                                            <ListBoxItem>26</ListBoxItem>
-                                            <ListBoxItem>27</ListBoxItem>
-                                            <ListBoxItem>28</ListBoxItem>
-                                            <ListBoxItem>29</ListBoxItem>
-                                            <ListBoxItem>30</ListBoxItem>
-                                            <ListBoxItem>31</ListBoxItem>
-                                            <ListBoxItem>32</ListBoxItem>
-                                            <ListBoxItem>33</ListBoxItem>
-                                            <ListBoxItem>34</ListBoxItem>
-                                            <ListBoxItem>35</ListBoxItem>
-                                            <ListBoxItem>36</ListBoxItem>
-                                            <ListBoxItem>37</ListBoxItem>
-                                            <ListBoxItem>38</ListBoxItem>
-                                            <ListBoxItem>39</ListBoxItem>
-                                            <ListBoxItem>40</ListBoxItem>
-                                            <ListBoxItem>41</ListBoxItem>
-                                            <ListBoxItem>42</ListBoxItem>
-                                            <ListBoxItem>43</ListBoxItem>
-                                            <ListBoxItem>44</ListBoxItem>
-                                            <ListBoxItem>45</ListBoxItem>
-                                            <ListBoxItem>46</ListBoxItem>
-                                            <ListBoxItem>47</ListBoxItem>
-                                            <ListBoxItem>48</ListBoxItem>
-                                            <ListBoxItem>49</ListBoxItem>
-                                            <ListBoxItem>50</ListBoxItem>
-                                            <ListBoxItem>51</ListBoxItem>
-                                            <ListBoxItem>52</ListBoxItem>
-                                            <ListBoxItem>53</ListBoxItem>
-                                            <ListBoxItem>54</ListBoxItem>
-                                            <ListBoxItem>55</ListBoxItem>
-                                            <ListBoxItem>56</ListBoxItem>
-                                            <ListBoxItem>57</ListBoxItem>
-                                            <ListBoxItem>58</ListBoxItem>
-                                            <ListBoxItem>59</ListBoxItem>
-                                        </ListBox>
-                                    </Grid>
-                                </Border>
-                            </Popup>
-                        </Grid>
+                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,6">
+                            <TextBox Text="{Binding GioKetThuc}"
+                                     Style="{StaticResource WatermarkTextBox}"
+                                     Tag="--:--" 
+                                     BorderThickness="0" Background="Transparent"/>
+                        </Border>
                     </StackPanel>
                 </Grid>
 
-                <!-- GIỎ ĐẶT (màu vàng) -->
+                <!-- Hàng 3: Giá gốc / Giá lễ / Thành tiền ước tính -->
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Giá gốc (VNĐ/giờ)" Margin="2,0,0,4"/>
+                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,6">
+                            <TextBlock Text="{Binding GiaGoc, StringFormat={}{0:N0}}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Giá ngày lễ (VNĐ/giờ)" Margin="2,0,0,4"/>
+                        <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Background="#FFFFFF" Padding="8,6">
+                            <TextBlock Text="{Binding GiaNgayLe, StringFormat={}{0:N0}, TargetNullValue=—}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Text="Thành tiền (ước tính)" Margin="2,0,0,4"/>
+                        <Border CornerRadius="10" BorderBrush="#C5F3DF" BorderThickness="1" Background="#F6FFFB" Padding="8,6">
+                            <TextBlock Style="{StaticResource MoneyCell}"
+                                       Text="{Binding ThanhTienUocTinh, StringFormat={}{0:N0} đ}"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Chi tiết đặt nhiều sân (DataGrid) -->
                 <Border CornerRadius="10" BorderBrush="#F3E5B8" BorderThickness="1" Background="#FFF7DB" Padding="10" Margin="0,0,0,10">
                     <StackPanel>
-                        <TextBlock Text="{Binding GioCount, StringFormat=Giỏ đặt ({0} sân)}"
-                                   FontWeight="SemiBold" Foreground="{StaticResource ColText}" Margin="0,0,0,6"/>
-                        <ItemsControl ItemsSource="{Binding GioDat}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border CornerRadius="8" Background="White" Padding="10" Margin="0,6,0,0" BorderBrush="#F1E9C7" BorderThickness="1">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding TieuDe}" FontWeight="SemiBold"/>
-                                                <TextBlock Text="{Binding KhoangGio}" Foreground="#6B7E74" FontSize="12" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                            <Button Grid.Column="1" Content="✕" Width="26" Height="26"
-                                                    Background="#FFF0CC" BorderBrush="#F1D38A" Cursor="Hand"
-                                                    ToolTip="Xóa khỏi giỏ"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <DockPanel Margin="0,0,0,6">
+                            <TextBlock Text="Chi tiết giỏ đặt nhiều sân" FontWeight="SemiBold" Foreground="{StaticResource ColText}" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{Binding GioCount, StringFormat={}{0} sân}" Foreground="{StaticResource ColSub}" DockPanel.Dock="Right"/>
+                        </DockPanel>
+
+                        <DataGrid ItemsSource="{Binding GioDat}" AutoGenerateColumns="False" HeadersVisibility="Column"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
+                                  BorderBrush="#F1E9C7" BorderThickness="1" RowBackground="White" AlternatingRowBackground="#FFF3D6"
+                                  Margin="0,4,0,8">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Sân" Binding="{Binding TenSan}" Width="*" />
+                                <DataGridTextColumn Header="Ngày" Binding="{Binding Ngay, StringFormat={}{0:dd/MM/yyyy}}" Width="120"/>
+                                <DataGridTextColumn Header="Bắt đầu" Binding="{Binding GioBatDau}" Width="90"/>
+                                <DataGridTextColumn Header="Kết thúc" Binding="{Binding GioKetThuc}" Width="90"/>
+                                <DataGridTextColumn Header="Giá gốc" Binding="{Binding GiaGoc, StringFormat={}{0:N0}}" Width="120"/>
+                                <DataGridTextColumn Header="Giá lễ" Binding="{Binding GiaNgayLe, StringFormat={}{0:N0}}" Width="120"/>
+                                <DataGridTextColumn Header="Thành tiền" Binding="{Binding ThanhTien, StringFormat={}{0:N0} đ}" Width="140"/>
+                                <DataGridTemplateColumn Header="">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="✕" Padding="6,2" Cursor="Hand"
+                                                    Command="{Binding DataContext.XoaDongGioDatCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Tổng giỏ -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="192*"/>
+                                <ColumnDefinition Width="613*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Tổng tiền giỏ (ước tính):" VerticalAlignment="Center" Foreground="{StaticResource ColSub}" Grid.ColumnSpan="2"/>
+                            <TextBlock Grid.Column="2" Style="{StaticResource MoneyCell}"
+                                       Text="{Binding TongTienGio, StringFormat={}{0:N0} đ}" HorizontalAlignment="Center"/>
+                        </Grid>
                     </StackPanel>
                 </Border>
 
-                <!-- TỔNG TIỀN DỰ KIẾN (giữ nguyên style cũ) -->
-                <Border Margin="0,0,0,0" CornerRadius="12" Padding="12"
-                        BorderBrush="{StaticResource ColBorder}" BorderThickness="1">
+                <!-- Tổng tiền dự kiến -->
+                <Border CornerRadius="12" Padding="12" BorderBrush="{StaticResource ColBorder}" BorderThickness="1">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                             <GradientStop Color="#F0FFF6" Offset="0"/>
@@ -403,58 +413,67 @@
                 </Border>
             </StackPanel>
 
-            <!-- Footer -->
+            <!-- ===== Footer ===== -->
             <Grid Grid.Row="2" Margin="6,12,6,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="190"/>
-                    <!-- Thêm vào giỏ đặt -->
                     <ColumnDefinition Width="12"/>
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Hủy -->
                     <ColumnDefinition Width="12"/>
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Tạo đơn (Auto để không tràn) -->
                 </Grid.ColumnDefinitions>
 
                 <!-- Thêm vào giỏ đặt -->
-                <Border Grid.Column="1" CornerRadius="8" Height="38"
-                        Background="#FFFFFF" BorderBrush="#C5F3DF" BorderThickness="1"
-                        Cursor="Hand">
+                <Border Grid.Column="1"
+            Style="{StaticResource FooterGhostBorder}"
+            Margin="48,0,0,0">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="➕" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Thêm vào giỏ đặt" VerticalAlignment="Center" Foreground="#0D7049" FontWeight="SemiBold"/>
+                        <TextBlock Text="Thêm vào giỏ đặt" VerticalAlignment="Center"
+                       Foreground="#0D7049" FontWeight="SemiBold"/>
                     </StackPanel>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick"
+                          Command="{Binding ThemVaoGioCommand}"/>
+                    </Border.InputBindings>
                 </Border>
 
                 <!-- Hủy -->
-                <Border Grid.Column="3" CornerRadius="8" Height="38" Background="#F3F5F4"
-                        BorderBrush="#E7ECEA" BorderThickness="1" Cursor="Hand" Padding="16,0">
-                    <TextBlock Text="Hủy" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A5A55"/>
+                <Border Grid.Column="3"
+            Style="{StaticResource FooterGrayBorder}"
+            Padding="16,0">
+                    <TextBlock Text="Hủy" VerticalAlignment="Center"
+                   HorizontalAlignment="Center" Foreground="#4A5A55"/>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick"
+                          Command="{Binding HuyCommand}"/>
+                    </Border.InputBindings>
                 </Border>
 
-                <!-- Tạo đơn (gọn + badge) -->
-                <Border Grid.Column="5" CornerRadius="8" Height="38"
-                        Background="{StaticResource ColAccent}" Cursor="Hand"
-                        Padding="12,0" MinWidth="140">
+                <!-- Tạo đơn -->
+                <Border Grid.Column="5"
+            Style="{StaticResource FooterPrimaryBorder}"
+            Padding="12,0"
+            MinWidth="140">
                     <DockPanel LastChildFill="False">
-                        <!-- Icon -->
                         <TextBlock Text="&#xE8FB;" FontFamily="Segoe MDL2 Assets"
-                                   Foreground="White" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <!-- Text -->
+                       Foreground="White" VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <TextBlock Text="Tạo đơn" Foreground="White"
-                                   FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <!-- Badge đếm -->
-                        <Border DockPanel.Dock="Right"
-                                Background="#FFFFFF22" BorderBrush="#FFFFFF55" BorderThickness="1"
-                                CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
+                       FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Border DockPanel.Dock="Right" Background="#FFFFFF22" BorderBrush="#FFFFFF55" BorderThickness="1"
+                    CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
                             <TextBlock Text="{Binding GioCount, StringFormat={}{0} sân, TargetNullValue=0 sân, FallbackValue=0 sân}"
-                                       Foreground="Black" FontSize="12" FontWeight="SemiBold"/>
+                           Foreground="Black" FontSize="12" FontWeight="SemiBold"/>
                         </Border>
                     </DockPanel>
                     <Border.ToolTip>
                         <TextBlock Text="{Binding GioCount, StringFormat={}{0} sân trong giỏ, TargetNullValue=Chưa có sân}"/>
                     </Border.ToolTip>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick"
+                          Command="{Binding TaoDonCommand}"/>
+                    </Border.InputBindings>
                 </Border>
             </Grid>
         </Grid>

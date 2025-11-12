@@ -24,9 +24,12 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnLichSuThanhToan_Click(object sender, RoutedEventArgs e)
         {
-
+            var frm = new frmLichSuThanhToan();
+            frm.ShowDialog();
         }
+
+
     }
 }

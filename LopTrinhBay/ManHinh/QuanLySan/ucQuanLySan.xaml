@@ -6,7 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1080"
-             Background="#F6FDF9" MinWidth="1080" MinHeight="700">
+             Background="#F6FDF9" >
 
     <!-- ====== RESOURCES ====== -->
     <UserControl.Resources>
@@ -91,6 +91,65 @@
                 <TextBlock Text="🏆" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </DataTemplate>
+
+        <!-- Nút kiểu KPI: shadow + scale giống KpiCardStyle -->
+        <Style x:Key="KpiButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#0FBF84"/>
+            <Setter Property="BorderBrush" Value="#0DAA78"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="MinWidth" Value="160"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" CornerRadius="12"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: shadow + scale -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.28"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Background" Value="#0D9E73"/>
+                                <Setter Property="RenderTransform" TargetName="bd">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                            </Trigger>
+
+                            <!-- Pressed: thu nhẹ -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform" TargetName="bd">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Background" Value="#BBDDD0"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#BBDDD0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
 
     <!-- ====== LAYOUT ====== -->
@@ -118,36 +177,25 @@
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
                 <!-- Cấu hình giá sân -->
-                <Border MouseLeftButtonDown="btnCauHinhGiaSan" Cursor="Hand" Margin="0,0,8,0">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource BtnSolid}">
-                            <Setter Property="Background" Value="#0FBF84"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#0D7049"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <TextBlock Text="⚙  Cấu hình giá sân" Foreground="White" Padding="12,6"/>
-                </Border>
+                <Button Style="{StaticResource KpiButton}" Margin="0,0,8,0"
+                    Click="btnCauHinhGiaSan">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE713;" FontSize="14" FontFamily="Segoe MDL2 Assets" Margin="0,0,6,0"/>
+                        <!-- bánh răng -->
+                        <TextBlock Text="Cấu hình giá sân" FontSize="14" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Button>
 
-                <!-- Đặt sân mới -->
-                <Border MouseLeftButtonDown="btnThemSanMoi" Cursor="Hand">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource BtnSolid}">
-                            <Setter Property="Background" Value="#0FBF84"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#0D7049"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <TextBlock Text="🗓  Thêm sân mới" Foreground="White" Padding="12,6"/>
-                </Border>
+                <!-- Thêm sân mới -->
+                <Button Style="{StaticResource KpiButton}"
+                    Click="btnThemSanMoi">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE710;" FontSize="14" FontFamily="Segoe MDL2 Assets" Margin="0,0,4,0"/>
+                        <!-- dấu cộng -->
+                        <TextBlock Text="Thêm sân mới" FontSize="14" FontWeight="SemiBold" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
-
         </Grid>
 
         <!-- ===== KPI (đã đổi hiệu ứng như ucThanhToan) ===== -->
@@ -349,11 +397,99 @@
                     </DataGrid>
 
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                        <Button x:Name="btnThemKhungGio" Content="+ Thêm khung giờ" Padding="10,6"
-                                Background="White" BorderBrush="{StaticResource ColBorder}" Margin="0,0,8,0" Click="btnThemKhungGio_Click"/>
-                        <Button x:Name="btnXoaKhungGio" Content="Xóa khung giờ" Padding="12,6"
-                                Foreground="White" Background="#28A745" BorderBrush="#28A745" Click="btnXoaKhungGio_Click"/>
+
+                        <!-- Thêm khung giờ -->
+                        <Button x:Name="btnThemKhungGio"
+                            Content="+ Thêm khung giờ"
+                            FontWeight="SemiBold"
+                            Padding="10,6"
+                            Background="White"
+                            BorderBrush="{StaticResource ColBorder}"
+                            Foreground="#21382D"
+                            Cursor="Hand"
+                            Margin="0,0,8,0"
+                            Click="btnThemKhungGio_Click">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="bd" CornerRadius="8"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6,2"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <!-- Hover: nền đậm hơn nhẹ -->
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="bd" Property="Background" Value="#E8E8E8"/>
+                                                    </Trigger>
+
+                                                    <!-- Click: thu nhẹ -->
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="bd" Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                                        <Setter TargetName="bd" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter TargetName="bd" Property="Opacity" Value="0.9"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <!-- Xóa khung giờ -->
+                        <Button x:Name="btnXoaKhungGio"
+                            Content="Xóa khung giờ"
+                            FontWeight="SemiBold"
+                            Padding="12,6"
+                            Foreground="White"
+                            Background="#0ea271"
+                            BorderBrush="#0b8e63"
+                            Cursor="Hand"
+                            Click="btnXoaKhungGio_Click">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="bd" CornerRadius="8"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6,2"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <!-- Hover: đậm hơn tone gốc -->
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="bd" Property="Background" Value="#0b8e63"/>
+                                                    </Trigger>
+
+                                                    <!-- Click: tối hơn 1 tone -->
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="bd" Property="Background" Value="#097e55"/>
+                                                        <Setter TargetName="bd" Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                                        <Setter TargetName="bd" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
+
                 </Grid>
             </Border>
         </Grid>

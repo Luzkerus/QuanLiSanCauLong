@@ -178,7 +178,7 @@
             </StackPanel>
             <Button Grid.Column="1"
                     Style="{StaticResource GrayGhostButton}"
-                    Command="{Binding OpenLichSuCommand}"
+                    Click ="btnLichSuThanhToan_Click"
                     HorizontalAlignment="Right"
                     Padding="14,8"
                     Width="170">
@@ -189,7 +189,7 @@
             </Button>
         </Grid>
 
-        <!-- KPI -->
+        <!-- KPI (GIỮ NGUYÊN) -->
         <UniformGrid Grid.Row="1" Columns="4" Margin="12,10,12,0">
             <Border Style="{StaticResource KpiCardStyle}">
                 <Grid>
@@ -259,32 +259,34 @@
             </Border>
         </UniformGrid>
 
-        <!-- ===== Main (1 cột – đã bỏ 'Chờ thanh toán') ===== -->
+        <!-- ===== Main (1 cột) ===== -->
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="12,0,12,0">
             <StackPanel>
 
-                <!-- Tạo hóa đơn mới -->
-                <Border Style="{StaticResource CardStyle}">
+                <!-- Tạo hóa đơn mới (ĐÃ SỬA THEO ẢNH: nền xanh nhạt + 2 input) -->
+                <Border Style="{StaticResource CardStyle}" Background="#EAF2FF" BorderBrush="#CFE1FF">
                     <StackPanel>
-                        <TextBlock Text="Tạo hóa đơn mới" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
+                        <TextBlock Text="Thông tin khách hàng" FontWeight="SemiBold" Margin="0,0,0,8"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+
                             <StackPanel Margin="0,0,12,0">
                                 <TextBlock Text="Tên khách hàng" Foreground="{StaticResource ColSub}"/>
-                                <TextBox Text="{Binding TenKH}" Style="{StaticResource RoundedInput}"/>
+                                <TextBox Text="{Binding TenKH}" Style="{StaticResource RoundedInput}" />
                             </StackPanel>
+
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="Số điện thoại" Foreground="{StaticResource ColSub}"/>
-                                <TextBox Text="{Binding SDT}" Style="{StaticResource RoundedInput}"/>
+                                <TextBox Text="{Binding SDT}" Style="{StaticResource RoundedInput}" />
                             </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Border>
 
-                <!-- Chi tiết đặt sân -->
+                <!-- Chi tiết đặt sân (giữ nguyên) -->
                 <Border Style="{StaticResource CardStyle}">
                     <StackPanel>
                         <DockPanel>
@@ -331,7 +333,7 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Thuê vợt (tối giản: số lượng + đơn giá) -->
+                <!-- Thuê vợt (tối giản: SỐ LƯỢNG + ĐƠN GIÁ — GIỮ NGUYÊN) -->
                 <Border Style="{StaticResource CardStyle}">
                     <StackPanel>
                         <TextBlock Text="Thuê vợt" FontWeight="SemiBold" />

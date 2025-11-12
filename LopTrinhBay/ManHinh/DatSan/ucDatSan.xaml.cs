@@ -28,5 +28,12 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         {
 
         }
+
+        private void btnDatSanMoi_Click(object sender, RoutedEventArgs e)
+        {
+            frmTaoLichDat taoLichDat = new frmTaoLichDat();
+
+            taoLichDat.ShowDialog();
+        }
     }
 }

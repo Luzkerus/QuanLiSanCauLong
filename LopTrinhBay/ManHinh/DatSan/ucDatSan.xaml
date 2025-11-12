@@ -6,8 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1080"
-             Background="#F6FDF9"
-             MinWidth="1000" MinHeight="700" Loaded="UserControl_Loaded">
+             Background="#F6FDF9">
 
     <!-- ================= RESOURCES ================= -->
     <UserControl.Resources>
@@ -235,7 +234,7 @@
             Background="#0FBF84"
             BorderBrush="#0FBF84"
             BorderThickness="1"
-            Command="{Binding CmdDatSanMoi}">
+            Click ="btnDatSanMoi_Click" >
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="bd"
@@ -356,7 +355,7 @@
         <!-- Danh sách đặt sân -->
         <Border Grid.Row="3" Style="{StaticResource CardBorder}" Padding="8" Margin="0,0,0,8">
             <StackPanel>
-                <TextBlock Text="🗍 Danh sách đặt sân" Margin="8,4,8,8"
+                <TextBlock Text="🗍 Danh sách đặt sân" FontSize="14" Margin="8,4,8,8"
                            FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
 
                 <!-- Search + Trạng thái -->
