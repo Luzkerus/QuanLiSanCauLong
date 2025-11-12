@@ -199,16 +199,7 @@
                 </StackPanel>
 
                 <!-- Nút hành động bên phải -->
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
-                    <Button Style="{StaticResource HeaderBtn}"
-                            
-                            ToolTip="Thêm hội viên mới" Click="Button_Click_1">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets"  Margin="0,0,0,0"/>
-                            <TextBlock Text="Thêm hội viên" FontSize="14"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+    
             </DockPanel>
 
             <!-- KPI cards -->
@@ -221,7 +212,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel>
                             <TextBlock Text="Tổng khách hàng" Style="{StaticResource KpiTitle}"/>
-                            <TextBlock Text="{Binding KpiTongKhach}" Style="{StaticResource KpiValue}"/>
+                            <TextBlock x:Name="txtTongKhachHang" Text="{Binding KpiTongKhach}" Style="{StaticResource KpiValue}"/>
                         </StackPanel>
                         <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                             <TextBlock Text="👥" FontSize="20"/>
@@ -237,7 +228,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel>
                             <TextBlock Text="Hội viên" Style="{StaticResource KpiTitle}"/>
-                            <TextBlock Text="{Binding KpiHoiVien}" Style="{StaticResource KpiValue}"/>
+                            <TextBlock x:Name="txtTongHoiVien" Text="{Binding KpiHoiVien}" Style="{StaticResource KpiValue}"/>
                         </StackPanel>
                         <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                             <TextBlock Text="💚" FontSize="20"/>
@@ -253,7 +244,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel>
                             <TextBlock Text="Tổng điểm tích lũy" Style="{StaticResource KpiTitle}"/>
-                            <TextBlock Text="{Binding KpiTongDiem}" Style="{StaticResource KpiValue}" Foreground="#F59E0B"/>
+                            <TextBlock x:Name="txtTongDiem" Text="{Binding KpiTongDiem}" Style="{StaticResource KpiValue}" Foreground="#F59E0B"/>
                         </StackPanel>
                         <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                             <TextBlock Text="⭐" FontSize="20"/>
@@ -272,7 +263,7 @@
                             <TextBlock Text="{Binding KpiKhachMoiThang}" Style="{StaticResource KpiValue}" Foreground="#7C3AED"/>
                         </StackPanel>
                         <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
-                            <TextBlock Text="🆕" FontSize="20"/>
+                            <TextBlock x:Name="txtTongKhachHangMoi" Text="🆕" FontSize="20"/>
                         </Border>
                     </Grid>
                 </Border>
@@ -292,7 +283,7 @@
                                 BorderBrush="{StaticResource ColBorder}" BorderThickness="1" Padding="10">
                             <Grid>
                                 <TextBox x:Name="txtSearch" BorderThickness="0" Height="32"
-                                         VerticalContentAlignment="Center"
+                                         VerticalContentAlignment="Center" TextChanged="txtSearch_TextChanged"
                                          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                          ToolTip="Tìm theo tên, SĐT hoặc Email"/>
                                 <!-- watermark + icon -->
@@ -302,8 +293,23 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
-                                               Foreground="#9AA7A0" VerticalAlignment="Center" Margin="2,0,6,0"/>
-                                    <TextBlock Grid.Column="1" Text="Tìm theo tên, SĐT hoặc Email..."
+           Foreground="#9AA7A0" VerticalAlignment="Center" Margin="2,0,6,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
+                                    <TextBlock Grid.Column="1" Text="Tìm theo tên, SĐT "
                                                Foreground="#9AA7A0" VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
@@ -324,9 +330,15 @@
                         </Border>
                     </StackPanel>
 
-                    <CheckBox Grid.Column="1" Content="Chỉ Hội viên" Margin="12,26,0,0"
-                              VerticalAlignment="Top"
-                              IsChecked="{Binding OnlyMembers}" Style="{StaticResource CheckPill}"/>
+                    <CheckBox x:Name="chkOnlyMembers"
+          Grid.Column="1"
+          Content="Chỉ Hội viên"
+          Margin="12,26,0,0"
+          VerticalAlignment="Top"
+          Checked="chkOnlyMembers_Checked"
+          Unchecked="chkOnlyMembers_Unchecked"
+          Style="{StaticResource CheckPill}"/>
+
                 </Grid>
             </Border>
 
@@ -352,13 +364,13 @@
                               ItemsSource="{Binding Members}"
                               IsReadOnly="True"
                               AutoGenerateColumns="False"
-                              HeadersVisibility="Column"
+                              HeadersVisibility="Column" Name="dgKhachHang"
                               RowHeight="56" GridLinesVisibility="None"
                               BorderThickness="0"
                               ScrollViewer.VerticalScrollBarVisibility="Disabled"
                               ScrollViewer.CanContentScroll="False">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Khách hàng" MinWidth="220">
+                            <DataGridTemplateColumn Header="Khách hàng" Width="3*" MinWidth="220">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -369,10 +381,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="SĐT" Binding="{Binding SDT}" MinWidth="120"/>
-                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" MinWidth="200"/>
+                            <DataGridTextColumn Header="SĐT" Width="*" Binding="{Binding SDT}" MinWidth="120"/>
+                            <DataGridTextColumn Header="SĐT phụ" Width="*" Binding="{Binding SDTPhu}" MinWidth="120"/>
+                            <DataGridTextColumn Header="Email" Width="2*" Binding="{Binding Email}" MinWidth="200"/>
 
-                            <DataGridTemplateColumn Header="Loại KH" MinWidth="110">
+                            <DataGridTemplateColumn Header="Loại KH" Width="*" MinWidth="110">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border Style="{StaticResource TypeBadge}">
@@ -382,27 +395,23 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="Điểm TL" Binding="{Binding DiemTichLuy}" MinWidth="90"/>
-                            <DataGridTextColumn Header="Lượt chơi" Binding="{Binding LuotChoi}" MinWidth="90"/>
-                            <DataGridTextColumn Header="Tổng chi tiêu"
+                            <DataGridTextColumn Header="Điểm TL" Width="*" Binding="{Binding DiemTichLuy}" MinWidth="90"/>
+                            <DataGridTextColumn Header="Lượt chơi" Width="*" Binding="{Binding LuotChoi}" MinWidth="90"/>
+                            <DataGridTextColumn Header="Tổng chi tiêu" Width="*"
                                                 Binding="{Binding TongChiTieu, StringFormat={}{0:#;0} đ}"
                                                 MinWidth="130"/>
-                            <DataGridTextColumn Header="Từ ngày"
+                            <DataGridTextColumn Header="Từ ngày" Width="*"
                                                 Binding="{Binding TuNgay, StringFormat={}{0:dd/MM/yyyy}}"
                                                 MinWidth="110"/>
 
-                            <DataGridTemplateColumn Header="Thao tác" MinWidth="120">
+                            <DataGridTemplateColumn Header="Thao tác" MinWidth="120" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <Button Command="{Binding DataContext.CmdEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}" ToolTip="Sửa"
+                                                    CommandParameter="{Binding}" ToolTip="Sửa" Click="btnSuaKhachHang"
                                                     Padding="8,4" Margin="0,0,6,0">
                                                 <TextBlock FontFamily="Segoe MDL2 Assets" Text=""/>
-                                            </Button>
-                                            <Button Command="{Binding DataContext.CmdDelete, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}" ToolTip="Xóa" Padding="8,4">
-                                                <TextBlock FontFamily="Segoe MDL2 Assets" Text=""/>
                                             </Button>
                                         </StackPanel>
                                     </DataTemplate>
