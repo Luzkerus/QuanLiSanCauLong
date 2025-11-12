@@ -28,5 +28,10 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhachHoiVien
         {
 
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

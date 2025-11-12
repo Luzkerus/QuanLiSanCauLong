@@ -222,40 +222,59 @@
             </Grid.ColumnDefinitions>
 
             <!-- Nút Đặt sân mới -->
-            <Border Grid.Column="1"
-                    x:Name="btnDatSanMoi"
-                    Cursor="Hand"
-                    CornerRadius="8"
-                    Margin="0,0,10,0">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="Background" Value="#2BB673"/>
-                        <Setter Property="Effect">
-                            <Setter.Value>
-                                <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.2"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Padding" Value="14,8"/>
-                        <Style.Triggers>
+            <!-- Nút Đặt sân mới -->
+            <Button Grid.Column="1"
+            x:Name="btnDatSanMoi"
+            Height="38"
+            MinWidth="100"
+            Padding="14,8"
+            Margin="0,0,10,0"
+            Cursor="Hand"
+            FontWeight="SemiBold"
+            Foreground="White"
+            Background="#0FBF84"
+            BorderBrush="#0FBF84"
+            BorderThickness="1"
+            Command="{Binding CmdDatSanMoi}">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                    CornerRadius="10"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Margin="0,0,0,0"/>
+                                <TextBlock Text="Đặt sân mới" FontSize="14" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Hiệu ứng hover và click -->
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: đậm hơn -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#0D7049"/>
-                                <Setter Property="Effect">
+                                <Setter TargetName="bd" Property="Background" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="Effect">
                                     <Setter.Value>
-                                        <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
+                                        <DropShadowEffect BlurRadius="14" ShadowDepth="0" Opacity="0.3" Color="#0DAA78"/>
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
 
-                <TextBlock Text="Đặt sân mới"
-                           FontSize="14"
-                           FontWeight="SemiBold"
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-            </Border>
+                            <!-- Khi nhấn -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+
+                            <!-- Khi disable -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Đặt Sân" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>

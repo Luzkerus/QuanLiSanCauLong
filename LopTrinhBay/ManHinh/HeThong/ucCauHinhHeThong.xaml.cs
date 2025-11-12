@@ -66,6 +66,22 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string n = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
+
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+
+            return false;
+        }
+
+        private System.Collections.IEnumerable members;
+
+        public System.Collections.IEnumerable Members { get => members; set => SetProperty(ref members, value); }
     }
 
     public class RelayCommand : ICommand

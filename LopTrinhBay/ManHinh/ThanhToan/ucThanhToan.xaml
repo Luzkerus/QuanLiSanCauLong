@@ -5,17 +5,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              d:DesignWidth="1080" d:DesignHeight="800"
-             Background="#F7FAF9">
+             Background="#F6FDF9">
 
-    <!-- ========= RESOURCES ========= -->
+    <!-- ========= RESOURCES (phong cách như ucKhachHoiVien) ========= -->
     <UserControl.Resources>
         <!-- Palette -->
         <SolidColorBrush x:Key="ColText"  Color="#21382D"/>
         <SolidColorBrush x:Key="ColSub"   Color="#6B7E74"/>
         <SolidColorBrush x:Key="ColCard"  Color="White"/>
-        <SolidColorBrush x:Key="ColLine"  Color="#E8F0EC"/>
+        <SolidColorBrush x:Key="ColLine"  Color="#E1F0E9"/>
 
-        <!-- Card thường -->
+        <!-- Card trắng + bóng nhẹ -->
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource ColCard}"/>
             <Setter Property="CornerRadius" Value="14"/>
@@ -23,9 +23,14 @@
             <Setter Property="Margin" Value="12,0,12,12"/>
             <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="12" ShadowDepth="0" Opacity="0.12"/>
+                </Setter.Value>
+            </Setter>
         </Style>
 
-        <!-- Card KPI nổi bật hơn (shadow + scale on hover) -->
+        <!-- Card KPI nổi bật (giữ hiệu ứng hover giống ucKhachHoiVien) -->
         <Style x:Key="KpiCardStyle" TargetType="Border" BasedOn="{StaticResource CardStyle}">
             <Setter Property="CornerRadius" Value="16"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -68,64 +73,59 @@
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
 
-        <!-- Nút xám lợt (ghost) -->
+        <!-- Input bo góc trắng, viền mảnh -->
+        <Style x:Key="RoundedInput" TargetType="TextBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Nút xám viền mảnh -->
         <Style x:Key="GrayGhostButton" TargetType="Button">
-            <Setter Property="Background" Value="#F2F4F7"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="12,8"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="10">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#FAFEFC"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#B9E6D1"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E5E7EB"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.6"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
-        <!-- Nút xám đặc (solid) dùng cho "Lịch sử hóa đơn" -->
-        <Style x:Key="BtnGraySolidRounded" TargetType="Button" BasedOn="{StaticResource GrayGhostButton}">
-            <Setter Property="Foreground" Value="#21382D"/>
-            <Setter Property="Background" Value="#F2F4F7"/>
-            <!-- xám lợt -->
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="14,8"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#D1D5DB"/>
-                    <!-- xám đậm hơn khi hover -->
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Nút xanh bo góc (hover xanh đậm) -->
+        <!-- Nút xanh (giống ucKhachHoiVien, hover đậm hơn) -->
         <Style x:Key="BtnSolidGreenRounded" TargetType="Button">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#2BB673"/>
@@ -134,61 +134,89 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="10">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="10">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="14" ShadowDepth="0" Opacity="0.3" Color="#0DAA78"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#0D7049"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.6"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
-        <!-- Pending item bên phải -->
+        <!-- Pending item (giữ màu vàng nhạt, không nền xám tổng) -->
         <DataTemplate x:Key="PendingItemTemplate">
             <Border BorderBrush="#F3E7C3" BorderThickness="1" CornerRadius="12" Padding="12" Background="#FFFBF1" Margin="0,0,0,12">
                 <StackPanel>
+                    <!-- Dòng 1: Mã + Nguồn -->
                     <DockPanel>
                         <TextBlock Text="{Binding MaDisplay}" FontWeight="Bold"/>
                         <Border DockPanel.Dock="Right" Background="#FFE9BF" Padding="6,2" CornerRadius="10" Margin="8,0,0,0">
-                            <TextBlock Text="Chờ" FontSize="12"/>
+                            <TextBlock Text="{Binding NguonDisplay}" FontSize="12"/>
+                            <!-- ví dụ: 'Đặt sân' -->
                         </Border>
                     </DockPanel>
-                    <TextBlock Text="{Binding TenKH}" Foreground="{StaticResource ColSub}" Margin="0,2,0,6"/>
-                    <TextBlock Text="{Binding MoTaDon}" FontSize="12" Margin="0,0,0,6"/>
+
+                    <!-- Dòng 2: KH + SDT -->
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,6">
+                        <TextBlock Text="{Binding TenKH}" Foreground="{StaticResource ColSub}"/>
+                        <TextBlock Text=" • " Foreground="{StaticResource ColSub}" Margin="6,0"/>
+                        <TextBlock Text="{Binding SDT}" Foreground="{StaticResource ColSub}"/>
+                    </StackPanel>
+
+                    <!-- Dòng 3: Ngày–giờ -->
+                    <TextBlock Text="{Binding NgayGioDisplay}" FontSize="12" Margin="0,0,0,6"/>
+                    <!-- ví dụ 12/11 18:00–20:00 -->
+
+                    <!-- Dòng 4: Tổng -->
                     <DockPanel>
                         <TextBlock Text="Tổng:" FontWeight="SemiBold"/>
                         <TextBlock DockPanel.Dock="Right" Text="{Binding TongStr}" FontWeight="Bold"/>
                     </DockPanel>
+
+                    <!-- Action -->
                     <Button Content="Mở để thanh toán"
-                            Command="{Binding DataContext.PayPendingCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                            CommandParameter="{Binding}" Margin="0,8,0,0"
-                            Background="#2BB673" Foreground="White" Padding="12,8"/>
+              Command="{Binding DataContext.PayPendingCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+              CommandParameter="{Binding}" Margin="0,8,0,0"
+              Background="#2BB673" Foreground="White" Padding="12,8"/>
                 </StackPanel>
             </Border>
         </DataTemplate>
 
-        <!-- Dòng hàng nước (POS) -->
-        <DataTemplate x:Key="DrinkRowTemplate">
+
+        <!-- Dòng Thuê vợt -->
+        <DataTemplate x:Key="RacketRowTemplate">
             <Grid Margin="0,6,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="110"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding TenHH}" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="1"
-                         Text="{Binding SoLuong, UpdateSourceTrigger=PropertyChanged}"
-                         HorizontalContentAlignment="Right" Margin="8,0" Padding="8"/>
-                <TextBlock Grid.Column="2" Text="{Binding ThanhTienStr}"
-                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding TenVot}" FontWeight="SemiBold"/>
+                    <TextBlock Text=" • " Foreground="{StaticResource ColSub}" Margin="4,0"/>
+                    <TextBlock Text="{Binding TrangThai}" Foreground="{StaticResource ColSub}"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Text="{Binding GioBatDau, UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalContentAlignment="Center" Padding="6" Style="{StaticResource RoundedInput}"/>
+                <TextBox Grid.Column="2" Text="{Binding GioTra, UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalContentAlignment="Center" Padding="6" Style="{StaticResource RoundedInput}"/>
+                <TextBox Grid.Column="3" Text="{Binding PhuPhi, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}}"
+                         HorizontalContentAlignment="Right" Padding="6" Style="{StaticResource RoundedInput}"/>
+                <TextBlock Grid.Column="4" Text="{Binding ThanhTienStr}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -197,18 +225,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Header -->
             <RowDefinition Height="Auto"/>
-            <!-- KPI -->
             <RowDefinition/>
-            <!-- Main -->
             <RowDefinition Height="Auto"/>
-            <!-- Action -->
             <RowDefinition Height="Auto"/>
-            <!-- Footer -->
         </Grid.RowDefinitions>
 
-        <!-- ===== Header ===== -->
+        <!-- Header -->
         <Grid Grid.Row="0" Margin="12,14,12,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -217,12 +240,11 @@
 
             <StackPanel Grid.Column="0">
                 <TextBlock Text="Thanh toán &amp; Hóa đơn" FontSize="24" FontWeight="Bold"/>
-                <TextBlock Text="Xử lý thanh toán và quản lý hóa đơn" Foreground="#6B7E74"/>
+                <TextBlock Text="Xử lý tất toán và quản lý hóa đơn" Foreground="{StaticResource ColSub}"/>
             </StackPanel>
 
-            <!-- Lịch sử hóa đơn (màu xám, hover xám đậm) -->
             <Button Grid.Column="1"
-                    Style="{StaticResource BtnGraySolidRounded}"
+                    Style="{StaticResource GrayGhostButton}"
                     Command="{Binding OpenLichSuCommand}"
                     HorizontalAlignment="Right"
                     Padding="14,8"
@@ -234,9 +256,8 @@
             </Button>
         </Grid>
 
-        <!-- ===== KPI (đồng bộ tổng quan + nổi bật hơn) ===== -->
+        <!-- KPI -->
         <UniformGrid Grid.Row="1" Columns="4" Margin="12,10,12,0">
-            <!-- Chờ thanh toán -->
             <Border Style="{StaticResource KpiCardStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -244,9 +265,9 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Chờ thanh toán" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="Đơn đang chơi cần tất toán" Style="{StaticResource KpiTitle}"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding SoChoThanhToan}" Style="{StaticResource KpiValue}" Margin="0,0,6,0"/>
+                            <TextBlock Text="{Binding SoPlayingCanTatToan}" Style="{StaticResource KpiValue}" Margin="0,0,6,0"/>
                             <TextBlock Text="đơn" Foreground="{StaticResource ColSub}"/>
                         </StackPanel>
                     </StackPanel>
@@ -256,7 +277,6 @@
                 </Grid>
             </Border>
 
-            <!-- Tổng chờ -->
             <Border Style="{StaticResource KpiCardStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -264,16 +284,15 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Tổng chờ" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding TongChoStr}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock Text="Giá trị chờ thanh toán" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding TongChoThanhToanStr}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
-                        <TextBlock Text="💰" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="💰" FontSize="20"/>
                     </Border>
                 </Grid>
             </Border>
 
-            <!-- Đã thu hôm nay -->
             <Border Style="{StaticResource KpiCardStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -281,16 +300,15 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Đã thu hôm nay" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding DaThuHomNayStr}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock Text="Doanh thu hôm nay (Paid)" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding DoanhThuHomNayStr}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
-                        <TextBlock Text="💵" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="💵" FontSize="20"/>
                     </Border>
                 </Grid>
             </Border>
 
-            <!-- Hóa đơn hôm nay -->
             <Border Style="{StaticResource KpiCardStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -298,11 +316,11 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Hóa đơn hôm nay" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoHoaDonHomNay}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock Text="Hóa đơn đã thanh toán hôm nay" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding SoHoaDonPaidHomNay}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
-                        <TextBlock Text="🧾" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="🧾" FontSize="20"/>
                     </Border>
                 </Grid>
             </Border>
@@ -319,26 +337,27 @@
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
 
-                    <!-- Thông tin khách -->
+                    <!-- Tạo hóa đơn mới (BỎ nền xám/ xanh nhạt, dùng card trắng + input trắng) -->
                     <Border Style="{StaticResource CardStyle}">
                         <StackPanel>
                             <TextBlock Text="Tạo hóa đơn mới" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
-                            <Border Background="#F3F8FF" CornerRadius="10" Padding="12">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Margin="0,0,12,0">
-                                        <TextBlock Text="Tên khách hàng" Foreground="{StaticResource ColSub}"/>
-                                        <TextBox Text="{Binding TenKH}" Padding="10"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Số điện thoại" Foreground="{StaticResource ColSub}"/>
-                                        <TextBox Text="{Binding SDT}" Padding="10"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Margin="0,0,12,0">
+                                    <TextBlock Text="Tên khách hàng" Foreground="{StaticResource ColSub}"/>
+                                    <TextBox Text="{Binding TenKH}" Style="{StaticResource RoundedInput}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Số điện thoại" Foreground="{StaticResource ColSub}"/>
+                                    <TextBox Text="{Binding SDT}" Style="{StaticResource RoundedInput}"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
@@ -389,24 +408,175 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Nước uống -->
+                    <!-- Thuê vợt (đẹp & gọn) -->
                     <Border Style="{StaticResource CardStyle}">
+                        <Border.Resources>
+                            <!-- Căn giữa text ở các cột thời gian/tiền -->
+                            <Style x:Key="CellCenter" TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                            <Style x:Key="CellRight" TargetType="TextBlock" BasedOn="{StaticResource CellCenter}">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                            <!-- Nút chip lọc trạng thái -->
+                            <Style x:Key="Chip" TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                                <Setter Property="Padding" Value="8,4"/>
+                                <Setter Property="Background" Value="#F2F4F7"/>
+                                <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Margin" Value="8,0,0,0"/>
+                            </Style>
+                        </Border.Resources>
+
                         <StackPanel>
-                            <DockPanel Margin="0,0,0,6">
-                                <TextBlock Text="Nước uống" FontWeight="SemiBold"/>
-                                <CheckBox DockPanel.Dock="Right" Content="Tách tiền nước thành hóa đơn riêng"
-                                          IsChecked="{Binding TachNuoc}"/>
+                            <!-- Header + toolbar -->
+                            <DockPanel Margin="0,0,0,8">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Thuê vợt" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Quản lý phiếu thuê–trả vợt"
+                           Foreground="{StaticResource ColSub}" FontSize="12"/>
+                                </StackPanel>
+
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <!-- Lọc trạng thái nhanh -->
+                                    <Border Style="{StaticResource Chip}">
+                                        <ComboBox Width="140"
+                              SelectedItem="{Binding LocTrangThaiThueVot}">
+                                            <ComboBoxItem>Tất cả</ComboBoxItem>
+                                            <ComboBoxItem>Đang thuê</ComboBoxItem>
+                                            <ComboBoxItem>Đã trả</ComboBoxItem>
+                                        </ComboBox>
+                                    </Border>
+
+                                    <!-- Chỉ tính phiếu đã trả -->
+                                    <CheckBox Content="Chỉ tính phiếu đã trả"
+                          Margin="8,0,0,0"
+                          IsChecked="{Binding ChiTinhPhieuDaTra}"/>
+
+                                    <!-- Mở form phiếu thuê -->
+                                    <Button Content="Mở phiếu thuê"
+                        Margin="8,0,0,0"
+                        Style="{StaticResource GrayGhostButton}"
+                        Command="{Binding OpenPhieuThueCommand}"/>
+                                </StackPanel>
                             </DockPanel>
-                            <ItemsControl ItemsSource="{Binding DanhMucNuoc}" ItemTemplate="{StaticResource DrinkRowTemplate}"/>
+
+                            <!-- DataGrid thuê vợt -->
+                            <DataGrid ItemsSource="{Binding DanhSachThueVot}"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="Column"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  Margin="0,0,0,8" RowHeight="34"
+                  GridLinesVisibility="Horizontal"
+                  BorderBrush="{StaticResource ColLine}" BorderThickness="1">
+                                <DataGrid.Columns>
+                                    <!-- Chọn -->
+                                    <DataGridTemplateColumn Width="40">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="#" HorizontalAlignment="Center"/>
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!-- Vợt -->
+                                    <DataGridTextColumn Header="Vợt" Binding="{Binding TenVot}" Width="*"/>
+
+                                    <!-- Trạng thái (chip nhẹ) -->
+                                    <DataGridTemplateColumn Header="Trạng thái" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border CornerRadius="10" Padding="8,4" Background="#EFF6FF" BorderBrush="#D6E3FF" BorderThickness="1">
+                                                    <TextBlock Text="{Binding TrangThai}" HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    
+                                    <!-- Bắt đầu -->
+                                    <DataGridTemplateColumn Header="Bắt đầu" Width="110">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding GioBatDau}" Style="{StaticResource CellCenter}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding GioBatDau, UpdateSourceTrigger=PropertyChanged}"
+                                     HorizontalContentAlignment="Center" Padding="6"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!-- Trả -->
+                                    <DataGridTemplateColumn Header="Trả" Width="110">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding GioTra}" Style="{StaticResource CellCenter}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding GioTra, UpdateSourceTrigger=PropertyChanged}"
+                                     HorizontalContentAlignment="Center" Padding="6"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!-- Phụ phí -->
+                                    <DataGridTemplateColumn Header="Phụ phí" Width="110">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding PhuPhi, StringFormat={}{0:N0}}" Style="{StaticResource CellRight}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding PhuPhi, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}}"
+                                     HorizontalContentAlignment="Right" Padding="6"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!-- Thành tiền -->
+                                    <DataGridTextColumn Header="Thành tiền"
+                                    Binding="{Binding ThanhTienStr}"
+                                    Width="120"
+                                    ElementStyle="{StaticResource CellRight}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <!-- Tổng thuê vợt -->
+                            <Border Background="#E8FFF4" CornerRadius="10" Padding="12" BorderBrush="{StaticResource ColLine}" BorderThickness="1">
+                                <DockPanel>
+                                    <TextBlock Text="Tổng thuê vợt" Foreground="{StaticResource ColSub}" />
+                                    <TextBlock Text="{Binding TongTienThueVotStr}" DockPanel.Dock="Right"
+                           FontWeight="Bold" />
+                                </DockPanel>
+                            </Border>
+
+                            <!-- Ghi chú -->
+                            <TextBlock Margin="0,6,0,0"
+                   Foreground="{StaticResource ColSub}"
+                   FontSize="12"
+                   Text="(*) Khi phiếu chuyển sang 'Đã trả', hệ thống tự động cộng chi phí thuê vào hóa đơn lúc tất toán."/>
                         </StackPanel>
                     </Border>
 
-                    <!-- Tổng cộng -->
-                    <Border Style="{StaticResource CardStyle}" Background="#E8FFF4">
-                        <StackPanel>
-                            <TextBlock Text="Tổng cộng:" Foreground="{StaticResource ColSub}"/>
-                            <TextBlock Text="{Binding TongThanhToanStr}" FontSize="22" FontWeight="Bold"/>
-                        </StackPanel>
+
+                    <!-- Tổng cộng (KHÔNG dùng nền xanh lợt, chỉ nhấn mạnh số) -->
+                    <Border Style="{StaticResource CardStyle}">
+                        <DockPanel>
+                            <TextBlock Text="Tổng cộng:" Foreground="{StaticResource ColSub}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding TongThanhToanStr}" FontSize="22" FontWeight="Bold"
+                                       DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="12,0,0,0"/>
+                        </DockPanel>
                     </Border>
                 </StackPanel>
             </ScrollViewer>
@@ -420,10 +590,9 @@
             </ScrollViewer>
         </Grid>
 
-        <!-- ===== Action buttons ===== -->
+        <!-- Action buttons -->
         <Border Grid.Row="3" Margin="12" Style="{StaticResource CardStyle}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <!-- Tạo hóa đơn: xám lợt, hover xám đậm -->
                 <Button Style="{StaticResource GrayGhostButton}"
                         Padding="20,12"
                         Command="{Binding CreateInvoiceCommand}"
@@ -435,10 +604,9 @@
                     </StackPanel>
                 </Button>
 
-                <!-- Thanh toán: bo góc, hover xanh đậm -->
                 <Button Style="{StaticResource BtnSolidGreenRounded}"
                         Command="{Binding PayNowCommand}"
-                        Width="120" Height="32" Click="Button_Click">
+                        Width="120" Height="32">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>
                         <TextBlock Text="Thanh toán"/>
@@ -447,7 +615,7 @@
             </StackPanel>
         </Border>
 
-        <!-- ===== Footer ===== -->
+        <!-- Footer -->
         <Border Grid.Row="4" Margin="12" Style="{StaticResource CardStyle}">
             <StackPanel>
                 <TextBlock Text="Đã thanh toán gần đây" FontWeight="Bold" Margin="0,0,0,6"/>
