@@ -1,6 +1,7 @@
 ﻿using QuanLiSanCauLong.LopDuLieu;
 using QuanLiSanCauLong.LopNghiepVu;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -63,14 +64,39 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 
 
 
-        private async Task<bool> IsHolidayAsync(DateTime date)
+        private static List<DateTime> GetFixedHolidays(int year)
+        {
+            var holidays = new List<DateTime>
+            {
+                // Tết Dương lịch (1 ngày)
+                new DateTime(year, 1, 1), 
+
+                // Giải phóng miền Nam (1 ngày)
+                new DateTime(year, 4, 30), 
+
+                // Quốc tế Lao động (1 ngày)
+                new DateTime(year, 5, 1), 
+                
+                // Quốc khánh (2 ngày: 2/9 và ngày liền kề theo quy định) - Chỉ lấy 2/9
+                new DateTime(year, 9, 2) 
+
+                // ⚠️ Nếu muốn thêm Giỗ Tổ Hùng Vương (10/3 Âm lịch) và Tết Nguyên Đán,
+                // bạn CẦN sử dụng một thư viện Lịch Âm để chuyển đổi.
+                // Ví dụ: new DateTime(year, 4, 21) // Giả sử Giỗ Tổ năm 2025
+            };
+
+            // Nếu bạn không dùng API, bạn có thể thêm các ngày nghỉ bù cuối tuần vào đây nếu cần.
+            return holidays;
+        }
+
+        public async Task<bool> IsHolidayAsync(DateTime date)
         {
             try
             {
-                // 🔹 Gọi API để lấy danh sách ngày lễ trong năm hiện tại
+                // 🔹 ƯU TIÊN 1: Gọi API
                 var holidays = await QuanLiSanCauLong.API.HolidayApiService.GetHolidaysAsync(date.Year);
 
-                // 🔹 So sánh xem ngày hiện tại có trùng ngày lễ nào không
+                // 🔹 So sánh ngày hiện tại với ngày lễ từ API
                 return holidays.Any(h =>
                 {
                     if (DateTime.TryParse(h.Date, out var holidayDate))
@@ -80,18 +106,14 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
             }
             catch (Exception ex)
             {
-//🔹 Nếu API lỗi(mất mạng, server down), fallback về danh sách cố định
+                // 🔹 FALLBACK: Nếu API lỗi, sử dụng danh sách cố định đã tạo
+                Console.WriteLine($"API Error: {ex.Message}. Falling back to fixed list.");
 
+                // Lấy danh sách ngày lễ cố định của năm đó
+                var fixedHolidays = GetFixedHolidays(date.Year);
 
-                if ((date.Month == 1 && date.Day == 1) ||      // Tết Dương lịch
-                    (date.Month == 4 && date.Day == 30) ||     // Ngày Giải phóng miền Nam
-                    (date.Month == 5 && date.Day == 1) ||      // Ngày Quốc tế Lao động
-                    (date.Month == 9 && date.Day == 2))        // Quốc khánh
-                {
-                    return true;
-                }
-
-                return false;
+                // Kiểm tra xem ngày có trùng với bất kỳ ngày nào trong danh sách cố định không
+                return fixedHolidays.Any(h => h.Date == date.Date);
             }
         }
 
