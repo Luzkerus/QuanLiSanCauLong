@@ -18,7 +18,12 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         public frmTaoLichDat()
         {
             InitializeComponent();
+
+            // Gán ngày mặc định cho ô "Ngày tạo đơn"
+            txtNgayTaoDon.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
+
+        
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -37,6 +42,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         {
             Close();
         }
+
+        
     }
 }
 

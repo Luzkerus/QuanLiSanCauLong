@@ -276,11 +276,13 @@
 
                                 <TextBlock Text="Ngày tạo đơn" Margin="2,8,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
-                                        Background="White" Padding="8,6">
-                                    <!-- sửa binding theo property bạn dùng, tạm để NgayTaoDon -->
-                                    <TextBox BorderThickness="0" Background="Transparent"
-                                             Text="{Binding NgayTaoDon, UpdateSourceTrigger=PropertyChanged}"/>
+        Background="White" Padding="8,6">
+                                    <TextBox x:Name="txtNgayTaoDon"
+             BorderThickness="0"
+             Background="Transparent"
+             IsReadOnly="True"/>
                                 </Border>
+
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -313,7 +315,7 @@
                                     <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}"
                                             BorderThickness="1" Background="#FFFFFF" Padding="4,0">
                                         <DatePicker SelectedDate="{Binding NgayDat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    BorderThickness="0" Height="38"/>
+                                                    BorderThickness="0" Height="30"/>
                                     </Border>
                                 </StackPanel>
 
@@ -322,7 +324,7 @@
                                     <TextBlock Text="Sân" Margin="2,0,0,4"/>
                                     <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1"
                                             Background="#FFFFFF" Padding="4,2">
-                                        <ComboBox MinHeight="34"
+                                        <ComboBox MinHeight="25"
                                                   ItemsSource="{Binding DanhSachSan}"
                                                   SelectedItem="{Binding SanDangChon}"/>
                                     </Border>
