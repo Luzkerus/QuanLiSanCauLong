@@ -150,6 +150,9 @@
     <Compile Include="LopTrinhBay\ManHinh\QuanLySan\ucQuanLySan.xaml.cs">
       <DependentUpon>ucQuanLySan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\ThanhToan\frmLichSuThanhToan.xaml.cs">
+      <DependentUpon>frmLichSuThanhToan.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\ThanhToan\ucThanhToan.xaml.cs">
       <DependentUpon>ucThanhToan.xaml</DependentUpon>
     </Compile>
@@ -253,6 +256,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\QuanLySan\ucQuanLySan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\ThanhToan\frmLichSuThanhToan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
