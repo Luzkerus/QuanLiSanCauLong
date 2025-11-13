@@ -276,11 +276,11 @@
 
                                 <TextBlock Text="Ngày tạo đơn" Margin="2,8,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
-        Background="White" Padding="8,6">
-                                    <TextBox x:Name="txtNgayTaoDon"
-             BorderThickness="0"
-             Background="Transparent"
-             IsReadOnly="True"/>
+                                    Background="White" Padding="8,6">
+                                                                <TextBox x:Name="txtNgayTaoDon"
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         IsReadOnly="True"/>
                                 </Border>
 
                             </StackPanel>
@@ -371,7 +371,7 @@
                                     Background="#FFF7DB" Padding="10" Margin="0,0,0,10">
                                 <StackPanel>
                                     <DockPanel Margin="0,0,0,6">
-                                        <TextBlock Text="Chi tiết giỏ đặt nhiều sân" FontWeight="SemiBold"
+                                        <TextBlock Text="Chi tiết đơn đặt nhiều sân" FontWeight="SemiBold"
                                                    Foreground="{StaticResource ColText}" DockPanel.Dock="Left"/>
                                         <TextBlock Text="{Binding GioCount, StringFormat={}{0} sân}"
                                                    Foreground="{StaticResource ColSub}" DockPanel.Dock="Right"/>
@@ -409,7 +409,7 @@
                                             <ColumnDefinition Width="613*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Tổng tiền giỏ (ước tính):" VerticalAlignment="Center"
+                                        <TextBlock Text="Tổng tiền (ước tính):" VerticalAlignment="Center"
                                                    Foreground="{StaticResource ColSub}" Grid.ColumnSpan="2"/>
                                         <TextBlock Grid.Column="2" Style="{StaticResource MoneyCell}"
                                                    Text="{Binding TongTienGio, StringFormat={}{0:N0} đ}"
@@ -518,13 +518,13 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Thêm vào giỏ đặt -->
+                <!-- Thêm vào đơn đặt -->
                 <Border Grid.Column="1"
                         Style="{StaticResource FooterGhostBorder}"
                         Margin="48,0,0,0">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="➕" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Thêm vào giỏ đặt" VerticalAlignment="Center"
+                        <TextBlock Text="Thêm vào đơn đặt" VerticalAlignment="Center"
                                    Foreground="#0D7049" FontWeight="SemiBold"/>
                     </StackPanel>
                     <Border.InputBindings>
