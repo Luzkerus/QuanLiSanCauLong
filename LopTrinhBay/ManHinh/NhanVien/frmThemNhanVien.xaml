@@ -262,13 +262,16 @@
                     <TextBlock Text="Loại nhân viên" Style="{StaticResource FieldLabel}"/>
                     <Border Style="{StaticResource FieldBox}" Padding="4,2">
                         <ComboBox BorderThickness="0"
-                              MinHeight="25"
-                              SelectedItem="{Binding VaiTro}">
+                            MinHeight="25"
+                            SelectedValue="{Binding VaiTro}"     
+                            SelectedValuePath="Content">
+                            <!-- lấy giá trị ở Content -->
                             <ComboBoxItem Content="Quản lý"/>
                             <ComboBoxItem Content="Full-time"/>
                             <ComboBoxItem Content="Part-time"/>
                         </ComboBox>
                     </Border>
+
 
 
                     <!-- Ngày vào làm -->
