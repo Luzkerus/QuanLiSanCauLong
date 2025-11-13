@@ -250,7 +250,7 @@
 
                     <!-- Thêm nhân viên (xanh) -->
                     <Button Style="{StaticResource HeaderBtnGreen}"
-                            Command="{Binding AddNhanVienCommand}">
+                            Click="BtnThemNhanVien_Click">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock FontFamily="Segoe MDL2 Assets"  Margin="0,0,0,0"/>
                             <TextBlock Text="Thêm nhân viên" FontSize="14"/>
@@ -261,7 +261,7 @@
         </StackPanel>
 
         <!-- ===== KPI: Full-time / Part-time + icon ===== -->
-        <UniformGrid DockPanel.Dock="Top" Rows="1" Columns="4" Margin="0,0,0,16">
+        <UniformGrid DockPanel.Dock="Top" Rows="1" Columns="3" Margin="0,0,0,16">
             <!-- Tổng nhân viên -->
             <Border Style="{StaticResource KpiCardStyle}" Margin="0,0,12,0">
                 <Grid>
@@ -313,22 +313,6 @@
                 </Grid>
             </Border>
 
-            <!-- Đang làm việc -->
-            <Border Style="{StaticResource KpiCardStyle}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <TextBlock Text="Đang làm việc" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoDangLamViec}" Style="{StaticResource KpiValue}"/>
-                    </StackPanel>
-                    <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
-                        <TextBlock Text="🟢" FontSize="20"/>
-                    </Border>
-                </Grid>
-            </Border>
         </UniformGrid>
 
         <!-- Danh sách nhân viên -->

@@ -12,16 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
 {
-    /// <summary>
-    /// Interaction logic for frmNhapHang.xaml
-    /// </summary>
     public partial class frmNhapHang : Window
     {
         public frmNhapHang()
         {
-            //InitializeComponent();
+            InitializeComponent();
         }
     }
 }

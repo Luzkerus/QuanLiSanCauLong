@@ -5,8 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1080"
-             Background="#F6FDF9"
-             MinWidth="1000" MinHeight="700">
+             Background="#F6FDF9">
 
     <!-- ============== RESOURCES ============== -->
     <UserControl.Resources>
@@ -109,12 +108,12 @@
             </Setter>
         </Style>
 
-        <!-- Nút dùng chung -->
+        <!-- Nút dùng chung (Primary – xanh) -->
         <Style x:Key="MainButton" TargetType="Button">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="{StaticResource ColAccent}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ColAccent}"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Padding" Value="20,8"/>
@@ -124,16 +123,80 @@
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="bd"
                                 CornerRadius="10"
-                                Background="{TemplateBinding Background}">
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
+                            <!-- Hover -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#189B69"/>
+                                <Setter TargetName="bd" Property="Background" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="14"
+                                                          ShadowDepth="0"
+                                                          Opacity="0.30"
+                                                          Color="#0DAA78"/>
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
+                            <!-- Pressed -->
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#108357"/>
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Nút phụ (Secondary – trắng viền xám) dùng cho Hủy đơn -->
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D9D9D9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F3F4F6"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#D1D5DB"/>
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="10"
+                                                          ShadowDepth="0"
+                                                          Opacity="0.18"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <!-- Pressed -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -210,20 +273,15 @@
             </StackPanel>
 
             <!-- Nút Nhập hàng: to & dài hơn text -->
-            <Button Command="{Binding NhapHangNhanhCommand}"
-                    Cursor="Hand"
+            <Button Click="btnNhapHang"
+                    Style="{StaticResource MainButton}"
                     DockPanel.Dock="Right"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     Margin="0,0,8,0"
                     Padding="56,14"
-                    MinWidth="220"
+                    MinWidth="120"
                     Height="50"
-                    Background="#2BB673"
-                    BorderBrush="#2BB673"
-                    BorderThickness="1"
-                    Foreground="White"
-                    FontWeight="SemiBold"
                     FontSize="16"
                     Content="Nhập hàng">
                 <Button.Template>
@@ -384,14 +442,14 @@
             </StackPanel>
 
             <!-- Phải: Giỏ hàng -->
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.Column="1" Margin="8,0,0,0">
                 <Border Style="{StaticResource Card}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,8">
-                            <Border Background="#E8F5EE" CornerRadius="999" Width="28" Height="28" Margin="0,0,8,0">
+                            <Border Background="#E8F5EE" CornerRadius="999" Width="26" Height="26" Margin="0,0,8,0">
                                 <TextBlock Text="🛒" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Giỏ hàng" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
+                            <TextBlock Text="Giỏ hàng" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
                         </StackPanel>
 
                         <ItemsControl ItemsSource="{Binding CartItems}" ItemTemplate="{StaticResource CartRowTemplate}">
@@ -414,7 +472,7 @@
                         <Button Style="{StaticResource MainButton}" Content="Thanh toán" Command="{Binding CheckoutCommand}" Margin="0,0,0,8" Height="42"/>
                         <Button Background="White" BorderBrush="#D9D9D9" BorderThickness="1" Foreground="#21382D"
                                 FontWeight="SemiBold" Content="Hủy đơn"
-                                Command="{Binding ClearCartCommand}" Height="38" Cursor="Hand"/>
+                                Command="{Binding ClearCartCommand}" Margin="0,0,0,8" Height="38" Cursor="Hand"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

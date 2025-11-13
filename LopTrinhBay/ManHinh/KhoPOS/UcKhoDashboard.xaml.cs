@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS;
+
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
 {
     /// <summary>
@@ -22,26 +24,30 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
         public UcKhoDashboard()
         {
             InitializeComponent();
+
             this.Loaded += (s, e) =>
             {
                 if (DataContext == null)
-                    DataContext = new UcKhoDashboard();
+                    DataContext = this;
             };
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnNhapHang(object sender, RoutedEventArgs e)
         {
+            var parentWindow = Window.GetWindow(this);
 
+            var frm = new frmNhapHang();
+
+
+            if (parentWindow != null)
+            {
+                frm.Owner = parentWindow;
+                frm.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+
+            frm.ShowDialog();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
+

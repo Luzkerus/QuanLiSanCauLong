@@ -189,7 +189,7 @@
             </Button>
         </Grid>
 
-        <!-- KPI (GIỮ NGUYÊN) -->
+        <!-- KPI -->
         <UniformGrid Grid.Row="1" Columns="4" Margin="12,10,12,0">
             <Border Style="{StaticResource KpiCardStyle}">
                 <Grid>
@@ -198,10 +198,10 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Đơn đang chơi cần tất toán" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="Tổng đơn tháng" Style="{StaticResource KpiTitle}"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding SoPlayingCanTatToan}" Style="{StaticResource KpiValue}" Margin="0,0,6,0"/>
-                            <TextBlock Text="đơn" Foreground="{StaticResource ColSub}"/>
+                            <TextBlock Text="{Binding Tongdonthang}" Style="{StaticResource KpiValue}" Margin="0,0,6,0"/>
+                            <TextBlock Foreground="{StaticResource ColSub}"/>
                         </StackPanel>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#FFF8E1" CornerRadius="12" Padding="10" Margin="8,0,0,28">
@@ -217,8 +217,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Giá trị chờ thanh toán" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding TongChoThanhToanStr}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock Text="Doanh thu tháng" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock Text="{Binding DoanhThuThangStr}" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="💰" FontSize="20"/>

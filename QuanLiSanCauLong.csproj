@@ -135,6 +135,9 @@
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\UcKhoDashboard.xaml.cs">
       <DependentUpon>UcKhoDashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\NhanVien\frmThemNhanVien.xaml.cs">
+      <DependentUpon>frmThemNhanVien.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\NhanVien\ucNhanVien.xaml.cs">
       <DependentUpon>ucNhanVien.xaml</DependentUpon>
     </Compile>
@@ -236,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\KhoPOS\UcKhoDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\NhanVien\frmThemNhanVien.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
