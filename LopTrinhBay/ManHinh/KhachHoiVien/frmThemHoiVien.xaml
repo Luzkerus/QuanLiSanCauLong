@@ -162,7 +162,7 @@
             <!-- ===== Số điện thoại ===== -->
             <StackPanel Grid.Row="3" Margin="0,0,0,8">
                 <TextBlock Text="Số điện thoại hiện tại" Style="{StaticResource LabelStyle}"/>
-                <TextBox x:Name="txtSdt"  Style="{StaticResource RoundedTextBox}" IsReadOnly="True" />
+                <TextBox x:Name="txtSdt"  Style="{StaticResource RoundedTextBox}" />
 
                 <TextBlock Text="Số điện thoại mới (nếu muốn thay đổi)" Style="{StaticResource LabelStyle}" Margin="0,8,0,0"/>
                 <TextBox x:Name="txtSdtPhu" Style="{StaticResource RoundedTextBox}" />

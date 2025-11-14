@@ -94,9 +94,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LopDuLieu\BangGiaChung.cs" />
+    <Compile Include="LopDuLieu\ChiTietDatSan.cs" />
+    <Compile Include="LopDuLieu\ChiTietDatSanVM.cs" />
+    <Compile Include="LopDuLieu\DatSan.cs" />
     <Compile Include="LopDuLieu\KhachHang.cs" />
     <Compile Include="LopDuLieu\San.cs" />
     <Compile Include="LopNghiepVu\BangGiaBLL.cs" />
+    <Compile Include="LopNghiepVu\DatSanBLL.cs" />
     <Compile Include="LopNghiepVu\KhachHangBLL.cs" />
     <Compile Include="LopNghiepVu\SanBLL.cs" />
     <Compile Include="LopTrinhBay\Controls\ucHeader.xaml.cs">
@@ -163,7 +167,9 @@
       <DependentUpon>ucTongQuan.xaml</DependentUpon>
     </Compile>
     <Compile Include="LopTruyCapDuLieu\BangGiaDAL.cs" />
+    <Compile Include="LopTruyCapDuLieu\ChiTietDatSanDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ConnectString.cs" />
+    <Compile Include="LopTruyCapDuLieu\DatSanDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\KhachHangDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using QuanLiSanCauLong.LopDuLieu;
+using System.Runtime.Remoting.Messaging;
 
 namespace QuanLiSanCauLong.LopTruyCapDuLieu
 {
@@ -63,11 +64,15 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return rows > 0;
             }
         }
-        public bool XoaSan(int maSan)
+        public bool NgungHoatDongSan(int maSan)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "DELETE FROM San WHERE MaSan = @MaSan";
+                string query = @"
+            UPDATE San 
+            SET TrangThai = N'Ngừng hoạt động'
+            WHERE MaSan = @MaSan";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@MaSan", maSan);
 
@@ -75,6 +80,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+
 
         public bool CapNhatSan(San san)
         {
@@ -141,6 +147,39 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 int count = (int)cmd.ExecuteScalar();
                 return count > 0;
             }
+        }
+
+
+        public List<San> LaySanHoatDongTheoNgay(DateTime ngayDat)
+        {
+            List<San> ds = new List<San>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT MaSan, TenSan, TrangThai, NgayBaoTri
+            FROM San
+            WHERE TrangThai = N'Đang hoạt động'
+              AND (NgayBaoTri IS NULL OR NgayBaoTri <> @NgayDat)
+        ";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@NgayDat", ngayDat.Date);
+
+                conn.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    ds.Add(new San
+                    {
+                        MaSan = r.GetInt32(0),
+                        TenSan = r.GetString(1),
+                        TrangThai = r.GetString(2),
+                        NgayBaoTri = r.IsDBNull(3) ? (DateTime?)null : r.GetDateTime(3)
+                    });
+                }
+            }
+            return ds;
         }
 
     }

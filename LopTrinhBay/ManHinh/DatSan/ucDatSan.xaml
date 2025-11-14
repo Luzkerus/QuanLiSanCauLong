@@ -429,7 +429,7 @@
                 </Grid>
 
                 <!-- List -->
-                <ListView ItemsSource="{Binding DanhSachDatSan}">
+                <ListView ItemsSource="{Binding DanhSachDatSan}" x:Name="lvDanhSachDatSan">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Padding" Value="12,8"/>
@@ -464,7 +464,7 @@
 
                             <!-- Sân -->
                             <GridViewColumn Header="Sân" Width="auto"
-                                            DisplayMemberBinding="{Binding TenSan}"/>
+                                            DisplayMemberBinding="{Binding TenSanCached}"/>
 
                             <!-- Thời gian (Ngày + khung giờ bắt đầu/kết thúc) -->
                             <!-- Ngày đặt -->
@@ -504,7 +504,7 @@
                             <GridViewColumn Header="Giá gốc" Width="auto">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding GiaGoc, StringFormat={}{0:N0} đ}"
+                                        <TextBlock Text="{Binding DonGia, StringFormat={}{0:N0} đ}"
                                             Foreground="{StaticResource ColText}"
                                             FontSize="12"/>
                                     </DataTemplate>
@@ -515,7 +515,7 @@
                             <GridViewColumn Header="Phụ thu" Width="auto">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding PhuThu, StringFormat={}{0:N0} đ}"
+                                        <TextBlock Text="{Binding PhuThuLe, StringFormat={}{0:N0} đ}"
                                             Foreground="{StaticResource ColSub}"
                                             FontSize="12"/>
                                     </DataTemplate>

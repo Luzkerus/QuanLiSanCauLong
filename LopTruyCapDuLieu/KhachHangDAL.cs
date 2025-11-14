@@ -1,10 +1,11 @@
-﻿using System;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using QuanLiSanCauLong.LopDuLieu;
-using System.Data.SqlClient;
 
 namespace QuanLiSanCauLong.LopTruyCapDuLieu
 {
@@ -43,25 +44,49 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
             return dsKhachHang;
         }
-        public void CapNhatKhachHang(KhachHang kh)
+        public void CapNhatKhachHang(KhachHang kh, string sdtMoi)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = conn.CreateCommand())
             {
                 conn.Open();
-                cmd.CommandText = @"
-UPDATE KhachHang
-SET Ten = @ten,
-    Email = @email,
-    SDTPhu = @sdtPhu
-WHERE SDT = @sdt";
-                cmd.Parameters.AddWithValue("@ten", kh.Ten);
-                cmd.Parameters.AddWithValue("@email", (object)kh.Email ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@sdtPhu", (object)kh.SDTPhu ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@sdt", kh.SDT);
-                cmd.ExecuteNonQuery();
+                using (var tran = conn.BeginTransaction())
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.Transaction = tran;
+
+                    try
+                    {
+                        // 1. Cập nhật các bảng liên quan nếu SDT thay đổi
+                       
+
+                        // 2. Cập nhật KhachHang
+                        cmd.CommandText = @"
+                        UPDATE KhachHang
+                        SET SDT = @sdtMoi,
+                            Ten = @ten,
+                            Email = @email,
+                            SDTPhu = @sdtPhu
+                        WHERE SDT = @sdtCu";
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@ten", kh.Ten);
+                        cmd.Parameters.AddWithValue("@email", (object)kh.Email ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@sdtPhu", (object)kh.SDTPhu ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@sdtMoi", sdtMoi);
+                        cmd.Parameters.AddWithValue("@sdtCu", kh.SDT);
+
+                        cmd.ExecuteNonQuery();
+
+                        tran.Commit();
+                    }
+                    catch
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
+                }
             }
         }
+
 
         // Kiểm tra SDT mới đã tồn tại chưa (SDT chính hoặc SDT phụ)
         public bool KiemTraTrungSDT(string sdtMoi)
@@ -74,6 +99,21 @@ WHERE SDT = @sdt";
                 cmd.Parameters.AddWithValue("@sdt", sdtMoi);
                 return cmd.ExecuteScalar() != null;
             }
+        }
+        public DataTable LayKhachHangTheoSDT(string sdt)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT TOP 1 * FROM KhachHang WHERE SDT=@sdt OR SDTPhu=@sdt";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@sdt", sdt);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+            return dt;
         }
     }
 }

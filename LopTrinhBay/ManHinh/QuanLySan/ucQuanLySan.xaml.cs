@@ -30,7 +30,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
         public DataTable BangGiaChung { get; set; }
 
         public int TongSoSan => DanhSachSan?.Count ?? 0;
-        public int TongSoSanKhongBaoTri => DanhSachSan?.Count(s => s.TrangThai != "Bảo trì") ?? 0;
+        public int TongSoSanKhongBaoTri => DanhSachSan?.Count(s => s.TrangThai == "Đang hoạt động") ?? 0;
         public int TongSoSanBaoTri => DanhSachSan?.Count(s => s.TrangThai == "Bảo trì") ?? 0;
 
 
@@ -129,7 +129,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    bool xoaThanhCong = sanBLL.XoaSan(san.MaSan);
+                    bool xoaThanhCong = sanBLL.NgungHoatDongSan(san.MaSan);
 
                     if (xoaThanhCong)
                     {

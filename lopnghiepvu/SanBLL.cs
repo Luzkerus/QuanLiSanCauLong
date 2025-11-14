@@ -29,12 +29,12 @@ namespace QuanLiSanCauLong.LopNghiepVu
 
             return sanDAL.ThemSanMoi(san);
         }
-        public bool XoaSan(int maSan)
+        public bool NgungHoatDongSan(int maSan)
         {
             if (maSan <= 0)
                 throw new Exception("Mã sân không hợp lệ.");
 
-            return sanDAL.XoaSan(maSan);
+            return sanDAL.NgungHoatDongSan(maSan);
         }
         public bool CapNhatSan(San san)
         {
@@ -48,6 +48,10 @@ namespace QuanLiSanCauLong.LopNghiepVu
             return sanDAL.CapNhatSan(san);
         }
 
+        public List<San> LaySanHoatDongTheoNgay(DateTime ngayDat)
+        {
+                        return sanDAL.LaySanHoatDongTheoNgay(ngayDat);
+        }
 
     }
 }

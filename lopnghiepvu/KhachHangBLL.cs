@@ -1,10 +1,11 @@
-﻿using System;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using QuanLiSanCauLong.LopTruyCapDuLieu;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using QuanLiSanCauLong.LopDuLieu;
-using QuanLiSanCauLong.LopTruyCapDuLieu;
 
 namespace QuanLiSanCauLong.LopNghiepVu
 {
@@ -39,15 +40,32 @@ namespace QuanLiSanCauLong.LopNghiepVu
             DateTime now = DateTime.Now;
             return ds.Count(kh => kh.TuNgay.Month == now.Month && kh.TuNgay.Year == now.Year);
         }
-        public void CapNhatKhachHang(KhachHang kh)
+        public void CapNhatKhachHang(KhachHang kh, string sdtmoi)
         {
-            khachHangDAL.CapNhatKhachHang(kh);
+            khachHangDAL.CapNhatKhachHang(kh, sdtmoi);
         }
 
         // Kiểm tra SDT mới có bị trùng
         public bool KiemTraTrungSDT(string sdtMoi)
         {
             return khachHangDAL.KiemTraTrungSDT(sdtMoi);
+        }
+        public KhachHang LayKhachHangTheoSDT(string sdt)
+        {
+            DataTable dt = khachHangDAL.LayKhachHangTheoSDT(sdt);
+            if (dt.Rows.Count > 0)
+            {
+                var row = dt.Rows[0];
+                return new KhachHang
+                {
+                    SDT = row["SDT"].ToString(),
+                    SDTPhu = row["SDTPhu"].ToString(),
+                    Ten = row["Ten"].ToString(),
+                    Email = row["Email"].ToString()
+                    // map thêm các field khác
+                };
+            }
+            return null;
         }
     }
 }

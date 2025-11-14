@@ -315,6 +315,10 @@
                                                         <Setter Property="Background" Value="#FFE5E5"/>
                                                         <Setter Property="BorderBrush" Value="#CC0000"/>
                                                     </DataTrigger>
+                                                    <DataTrigger Binding="{Binding TrangThai}" Value="Ngừng hoạt động">
+                                                        <Setter Property="Background" Value="Gray"/>
+                                                        <Setter Property="BorderBrush" Value="Black"/>
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Border.Resources>

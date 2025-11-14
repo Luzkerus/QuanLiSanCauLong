@@ -254,14 +254,14 @@
                                 <TextBlock Text="Tên khách hàng*" Margin="2,0,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
                                         Background="White" Padding="8,6">
-                                    <TextBox BorderThickness="0" Background="Transparent"
+                                    <TextBox BorderThickness="0" Background="Transparent" x:Name="txtTenKH"
                                              Text="{Binding TenKH, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
 
                                 <TextBlock Text="Số điện thoại*" Margin="2,8,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
                                         Background="White" Padding="8,6">
-                                    <TextBox BorderThickness="0" Background="Transparent"
+                                    <TextBox BorderThickness="0" Background="Transparent" x:Name="txtSDT" TextChanged="txtSDT_TextChanged"
                                              Text="{Binding SDT, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
                             </StackPanel>
@@ -270,7 +270,7 @@
                                 <TextBlock Text="Email" Margin="2,0,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
                                         Background="White" Padding="8,6">
-                                    <TextBox BorderThickness="0" Background="Transparent"
+                                    <TextBox BorderThickness="0" Background="Transparent" x:Name="txtEmail"
                                              Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
 
@@ -314,7 +314,7 @@
                                     <TextBlock Text="Ngày đặt" Margin="2,0,0,4"/>
                                     <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}"
                                             BorderThickness="1" Background="#FFFFFF" Padding="4,0">
-                                        <DatePicker SelectedDate="{Binding NgayDat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        <DatePicker Name="dpNgayDat" SelectedDateChanged="dpNgayDat_SelectedDateChanged" SelectedDate="{Binding NgayDat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     BorderThickness="0" Height="30"/>
                                     </Border>
                                 </StackPanel>
@@ -324,7 +324,7 @@
                                     <TextBlock Text="Sân" Margin="2,0,0,4"/>
                                     <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1"
                                             Background="#FFFFFF" Padding="4,2">
-                                        <ComboBox MinHeight="25"
+                                        <ComboBox x:Name="cboSan" MinHeight="25"
                                                   ItemsSource="{Binding DanhSachSan}"
                                                   SelectedItem="{Binding SanDangChon}"/>
                                     </Border>
@@ -347,7 +347,7 @@
                                             Background="#FFFFFF" Padding="8,6">
                                         <TextBox Text="{Binding GioBatDau}"
                                                  Style="{StaticResource WatermarkTextBox}"
-                                                 Tag="--:--"
+                                                 Tag="--:--" x:Name="txtGioBatDau"
                                                  BorderThickness="0" Background="Transparent"/>
                                     </Border>
                                 </StackPanel>
@@ -358,7 +358,7 @@
                                             Background="#FFFFFF" Padding="8,6">
                                         <TextBox Text="{Binding GioKetThuc}"
                                                  Style="{StaticResource WatermarkTextBox}"
-                                                 Tag="--:--"
+                                                 Tag="--:--" x:Name="txtGioKetThuc"
                                                  BorderThickness="0" Background="Transparent"/>
                                     </Border>
                                 </StackPanel>
@@ -378,29 +378,29 @@
                                     </DockPanel>
 
                                     <DataGrid ItemsSource="{Binding GioDat}" AutoGenerateColumns="False" HeadersVisibility="Column"
-                                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
-                                              BorderBrush="#F1E9C7" BorderThickness="1" RowBackground="White"
-                                              AlternatingRowBackground="#FFF3D6"
-                                              Margin="0,4,0,8">
+          CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
+          BorderBrush="#F1E9C7" BorderThickness="1" RowBackground="White"
+          AlternatingRowBackground="#FFF3D6" x:Name="dgChiTietDat"
+          Margin="0,4,0,8">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Sân" Binding="{Binding TenSan}" Width="*"/>
-                                            <DataGridTextColumn Header="Ngày" Binding="{Binding Ngay, StringFormat={}{0:dd/MM/yyyy}}" Width="*"/>
+                                            <DataGridTextColumn Header="Sân" Binding="{Binding TenSanCached}" Width="*"/>
+                                            <DataGridTextColumn Header="Ngày" Binding="{Binding NgayDat, StringFormat={}{0:dd/MM/yyyy}}" Width="*"/>
                                             <DataGridTextColumn Header="Bắt đầu" Binding="{Binding GioBatDau}" Width="90"/>
                                             <DataGridTextColumn Header="Kết thúc" Binding="{Binding GioKetThuc}" Width="90"/>
-                                            <DataGridTextColumn Header="Giá gốc" Binding="{Binding GiaGoc, StringFormat={}{0:N0}}" Width="*"/>
-                                            <DataGridTextColumn Header="Giá lễ" Binding="{Binding GiaNgayLe, StringFormat={}{0:N0}}" Width="*"/>
+                                            <DataGridTextColumn Header="Giá gốc" Binding="{Binding DonGia, StringFormat={}{0:N0}}" Width="*"/>
+                                            <DataGridTextColumn Header="Phụ thu" Binding="{Binding PhuThuLe, StringFormat={}{0:N0}}" Width="*"/>
                                             <DataGridTextColumn Header="Thành tiền" Binding="{Binding ThanhTien, StringFormat={}{0:N0} đ}" Width="*"/>
                                             <DataGridTemplateColumn Header="">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Content="✕" Padding="6,2" Cursor="Hand"
-                                                                Command="{Binding DataContext.XoaDongGioDatCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                CommandParameter="{Binding}"/>
+                                                        <Button Content="✕" Padding="6,2" Cursor="Hand" Click="BtnXoaGio_Click"
+                            Tag="{Binding}"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
+
 
                                     <!-- Tổng giỏ -->
                                     <Grid>
@@ -520,7 +520,7 @@
 
                 <!-- Thêm vào đơn đặt -->
                 <Border Grid.Column="1"
-                        Style="{StaticResource FooterGhostBorder}"
+                        Style="{StaticResource FooterGhostBorder}" MouseLeftButtonDown="BtnThemVaoGio_Click"
                         Margin="48,0,0,0">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="➕" Margin="0,0,6,0" VerticalAlignment="Center"/>
@@ -528,7 +528,7 @@
                                    Foreground="#0D7049" FontWeight="SemiBold"/>
                     </StackPanel>
                     <Border.InputBindings>
-                        <MouseBinding MouseAction="LeftClick"
+                        <MouseBinding MouseAction="LeftClick" 
                                       Command="{Binding ThemVaoGioCommand}"/>
                     </Border.InputBindings>
                 </Border>
@@ -546,7 +546,7 @@
                 </Border>
 
                 <!-- Tạo đơn -->
-                <Border Grid.Column="5"
+                <Border Grid.Column="5" MouseLeftButtonDown="BtnTaoDon_Click"
                         Style="{StaticResource FooterPrimaryBorder}"
                         Padding="12,0"
                         MinWidth="140">
