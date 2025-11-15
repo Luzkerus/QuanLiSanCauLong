@@ -100,6 +100,7 @@
     <Compile Include="LopDuLieu\KhachHang.cs" />
     <Compile Include="LopDuLieu\San.cs" />
     <Compile Include="LopNghiepVu\BangGiaBLL.cs" />
+    <Compile Include="LopNghiepVu\ChiTietDatSanBLL.cs" />
     <Compile Include="LopNghiepVu\DatSanBLL.cs" />
     <Compile Include="LopNghiepVu\KhachHangBLL.cs" />
     <Compile Include="LopNghiepVu\SanBLL.cs" />

@@ -50,6 +50,14 @@ namespace QuanLiSanCauLong.LopNghiepVu
         {
             return khachHangDAL.KiemTraTrungSDT(sdtMoi);
         }
+        public bool KiemTraTrungSDTPhu(string sdtPhuMoi, string sdtCu)
+        {
+            return khachHangDAL.KiemTraTrungSDTPhu(sdtPhuMoi, sdtCu);
+        }
+        public bool KiemTraTrungSDTChinh(string sdtPhuMoi, string sdtCu)
+        {
+            return khachHangDAL.KiemTraTrungSDTChinh(sdtPhuMoi, sdtCu);
+        }
         public KhachHang LayKhachHangTheoSDT(string sdt)
         {
             DataTable dt = khachHangDAL.LayKhachHangTheoSDT(sdt);
@@ -66,6 +74,10 @@ namespace QuanLiSanCauLong.LopNghiepVu
                 };
             }
             return null;
+        }
+        public bool ThemKhachHangMoi(KhachHang kh)
+        {
+            return khachHangDAL.ThemKhachHang(kh);
         }
     }
 }

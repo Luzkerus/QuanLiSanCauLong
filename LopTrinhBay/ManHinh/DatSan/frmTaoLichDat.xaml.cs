@@ -21,7 +21,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         private SanBLL sanBLL = new SanBLL();
         private BangGiaBLL bgBLL = new BangGiaBLL();
         private List<ChiTietDatSan> GioDat = new List<ChiTietDatSan>();
-        public int GioCount => GioDat.Count;
+       // public int GioCount => GioDat.Count;
 
         public frmTaoLichDat()
         {
@@ -114,11 +114,28 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                  (gioBatDau <= g.GioBatDau && gioKetThuc >= g.GioKetThuc))
             );
 
+
             if (trungLap)
             {
                 MessageBox.Show("Sân này đã được đặt trong khoảng thời gian này.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            var chiTietBLL = new ChiTietDatSanBLL();
+
+            bool trungTrongDB = chiTietBLL.KiemTraTrungLich(
+                    san.MaSan,
+                    dpNgayDat.SelectedDate.Value,
+                    gioBatDau,
+                    gioKetThuc);
+
+            if (trungTrongDB)
+            {
+                MessageBox.Show("Khoảng thời gian này đã có người đặt trong hệ thống!", 
+                                "Trùng lịch", 
+                                MessageBoxButton.OK, 
+                                MessageBoxImage.Warning);
+                return;
+}
 
             // Tạo chi tiết đặt sân
             var chiTiet = new ChiTietDatSan
@@ -138,6 +155,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             dgChiTietDat.ItemsSource = null;
             dgChiTietDat.ItemsSource = GioDat;
             CapNhatGioCount();
+            ClearInputFields();
 
 
         }
@@ -161,14 +179,25 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             }
 
         }
+        // Cập nhật số lượng sân trong giỏ
         private void CapNhatGioCount()
         {
-            // Gán lại DataContext để refresh Binding
-            this.DataContext = null;
-            this.DataContext = this;
+            txtGioCount.Text = $"{GioDat.Count} sân";
         }
 
 
+
+        // Xóa các trường nhập sau khi thêm vào giỏ
+        private void ClearInputFields()
+        {
+            dpNgayDat.SelectedDate = null;
+            cboSan.SelectedIndex = -1;
+
+            txtGioBatDau.Text = "";
+            txtGioKetThuc.Text = "";
+        }
+
+        // Xử lý sự kiện khi nhấn nút "Tạo đơn"
         private void BtnTaoDon_Click(object sender, RoutedEventArgs e)
         {
             if (GioDat.Count == 0)
@@ -178,24 +207,140 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             }
 
             string sdt = txtSDT.Text.Trim();
+            string tenKH = txtTenKH.Text.Trim();
+            string emailKH = txtEmail.Text.Trim();
+
             if (string.IsNullOrEmpty(sdt))
             {
-                MessageBox.Show("Chưa có khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Chưa có số điện thoại khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            var kh = khBLL.LayKhachHangTheoSDT(sdt);
+
+            // Nếu khách hàng chưa có, tạo mới
+            if (kh == null)
+            {
+                kh = new KhachHang
+                {
+                    SDT = sdt,
+                    Ten = string.IsNullOrEmpty(tenKH) ? "Khách mới" : tenKH,
+                    Email = emailKH
+                };
+
+                bool taoKH = khBLL.ThemKhachHangMoi(kh); // cần phương thức trong BLL để tạo khách
+                if (!taoKH)
+                {
+                    MessageBox.Show("Không thể tạo khách hàng mới!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
+            // Tạo đơn với khách hàng đã có hoặc vừa tạo
             var bll = new DatSanBLL();
-            bool kq = bll.TaoDon(sdt, GioDat);
+            bool kq = bll.TaoDon(kh.SDT, GioDat);
 
             if (kq)
             {
                 MessageBox.Show("Tạo đơn thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                GioDat.Clear();
-                dgChiTietDat.ItemsSource = null;
-                CapNhatGioCount();
+                // Thay vì clear giỏ, trả về DialogResult = true và đóng form
+                this.DialogResult = true;
+                this.Close();
             }
             else
                 MessageBox.Show("Lỗi khi lưu đơn!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        // Xử lý sự kiện PreviewTextInput để chỉ cho phép nhập số và dấu ":"
+        private void Gio_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Chỉ cho phép nhập số (0-9) và dấu hai chấm (:)
+            if (char.IsDigit(e.Text, 0) || e.Text == ":")
+            {
+                e.Handled = false; // Cho phép nhập
+            }
+            else
+            {
+                e.Handled = true;  // Chặn nhập
+            }
+        }
+        // Xử lý sự kiện TextChanged để định dạng giờ
+        private void Gio_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            // Lọc ra chỉ các chữ số
+            string currentDigits = new string(textBox.Text.Where(char.IsDigit).ToArray());
+            int caretIndex = textBox.CaretIndex;
+
+            // 1. Giới hạn số chữ số tối đa là 4 (hhmm)
+            if (currentDigits.Length > 4)
+            {
+                currentDigits = currentDigits.Substring(0, 4);
+                // Điều chỉnh vị trí con trỏ sau khi cắt bớt
+                caretIndex = 5;
+            }
+
+            string newFormattedText = currentDigits;
+
+            // 2. Tự động chèn dấu ":" nếu có đủ 2 chữ số
+            if (currentDigits.Length >= 2)
+            {
+                // Chèn dấu ":" vào vị trí thứ 2
+                newFormattedText = currentDigits.Insert(2, ":");
+            }
+
+            // 3. Cập nhật TextBox nếu văn bản đã thay đổi
+            if (textBox.Text != newFormattedText)
+            {
+                textBox.Text = newFormattedText;
+
+                // 4. Điều chỉnh vị trí con trỏ (cần được thực hiện sau khi gán Text)
+                if (caretIndex >= 2 && caretIndex < 5 && newFormattedText.Length == 5)
+                {
+                    // Nếu con trỏ nằm ở vị trí thứ 2, sau khi chèn ":" nó phải là 3
+                    // Nếu con trỏ nằm ở vị trí thứ 3/4, sau khi chèn ":" nó phải tăng 1
+                    if (textBox.CaretIndex == 2 && currentDigits.Length == 2)
+                    {
+                        textBox.CaretIndex = 3;
+                    }
+                    else
+                    {
+                        textBox.CaretIndex = newFormattedText.Length < 5 ? newFormattedText.Length : 5;
+                    }
+                }
+                else
+                {
+                    textBox.CaretIndex = newFormattedText.Length < 5 ? newFormattedText.Length : 5;
+                }
+            }
+
+            // 5. Kiểm tra giới hạn giá trị (23:59)
+            if (textBox.Text.Length == 5)
+            {
+                string hourStr = textBox.Text.Substring(0, 2);
+                string minuteStr = textBox.Text.Substring(3, 2);
+                bool textChangedDueToValidation = false;
+
+                if (int.TryParse(hourStr, out int hour) && hour > 23)
+                {
+                    hourStr = "23";
+                    textChangedDueToValidation = true;
+                }
+
+                if (int.TryParse(minuteStr, out int minute) && minute > 59)
+                {
+                    minuteStr = "59";
+                    textChangedDueToValidation = true;
+                }
+
+                if (textChangedDueToValidation)
+                {
+                    textBox.Text = hourStr + ":" + minuteStr;
+                    // Đặt con trỏ về cuối sau khi sửa
+                    textBox.CaretIndex = 5;
+                }
+            }
         }
 
 
@@ -209,15 +354,18 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
 
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            this.WindowState = WindowState.Minimized;
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+        private void Huy_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
 
-        
     }
 }
 

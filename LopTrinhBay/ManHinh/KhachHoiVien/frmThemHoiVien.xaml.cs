@@ -56,15 +56,22 @@ namespace QuanLiSanCauLong.LopTrinhBay.KhachHoiVien
             khachHangSua.SDTPhu = string.IsNullOrWhiteSpace(txtSdtPhu.Text) ? null : txtSdtPhu.Text.Trim();
 
             string sdtMoi = string.IsNullOrWhiteSpace(txtSdt.Text) ? khachHangSua.SDT : txtSdt.Text.Trim();
+            string sdtPhuMoi = string.IsNullOrWhiteSpace(txtSdtPhu.Text) ? null : txtSdtPhu.Text.Trim();
 
             try
             {
                 KhachHangBLL bll = new KhachHangBLL();
 
                 // Kiểm tra trùng SDT mới với SDT chính hoặc SDT phụ
-                if (!string.IsNullOrWhiteSpace(sdtMoi) && bll.KiemTraTrungSDT(sdtMoi))
+                if (!string.IsNullOrWhiteSpace(sdtMoi) && bll.KiemTraTrungSDTChinh(sdtMoi, khachHangSua.SDT))
                 {
-                    lblError.Text = "Số điện thoại mới đã tồn tại.";
+                    lblError.Text = "Số điện thoại chính mới đã tồn tại.";
+                    return;
+                }
+
+                if (!string.IsNullOrWhiteSpace(sdtPhuMoi) && bll.KiemTraTrungSDTPhu(sdtPhuMoi, khachHangSua.SDT))
+                {
+                    lblError.Text = "Số điện thoại phụ mới đã tồn tại.";
                     return;
                 }
 

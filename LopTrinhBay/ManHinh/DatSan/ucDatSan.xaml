@@ -292,7 +292,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Tổng đơn hôm nay" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding TongDonHomNay}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock x:Name="txtTongDonHomNay" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="🧾" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -309,7 +309,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Đang chơi" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoDangChoi}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock x:Name="txtSoDangChoi" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="🏃‍♂️" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -326,7 +326,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Đã đặt" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoDaDat}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock x:Name="txtSoDaDat" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="📅" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -343,7 +343,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Hoàn thành" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoHoanThanh}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock x:Name="txtSoHoanThanh" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="✅" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -363,6 +363,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- Search -->
@@ -372,7 +373,7 @@
                             <Grid>
                                 <!-- TextBox thật -->
                                 <TextBox x:Name="txtSearch"
-                                     BorderThickness="0"
+                                     BorderThickness="0" TextChanged="txtSearch_TextChanged"
                                      VerticalContentAlignment="Center"
                                      Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="Tìm theo tên, SĐT, sân..."/>      
@@ -418,14 +419,16 @@
                     <!-- Trạng thái -->
                     <ComboBox Grid.Column="1" Margin="12,0,0,0"
                               x:Name="cboTrangThai"
-                              Style="{StaticResource ComboStatusStyle}"
-                              SelectedItem="{Binding SelectedTrangThai, Mode=TwoWay}">
+                              Style="{StaticResource ComboStatusStyle}" SelectionChanged="cboTrangThai_SelectionChanged" 
+                              SelectedIndex="0">
                         <ComboBoxItem>Tất cả trạng thái</ComboBoxItem>
-                        <ComboBoxItem>Đã đặt</ComboBoxItem>
+                        <ComboBoxItem>Chưa bắt đầu</ComboBoxItem>
                         <ComboBoxItem>Đang chơi</ComboBoxItem>
                         <ComboBoxItem>Hoàn thành</ComboBoxItem>
                         <ComboBoxItem>Đã hủy</ComboBoxItem>
                     </ComboBox>
+                    <DatePicker Grid.Column="2" x:Name="dpNgayDat" Margin="12,0,0,0"
+                SelectedDateChanged="dpNgayDat_SelectedDateChanged"/>
                 </Grid>
 
                 <!-- List -->
@@ -554,18 +557,19 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                             <Button Content="Bắt đầu" Margin="0,0,6,0" Padding="10,4"
-                                                    Command="{Binding DataContext.CmdStart, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}"/>
+                        Click="BatDau_Click"
+                        DataContext="{Binding}"/>
                                             <Button Content="Kết thúc" Margin="0,0,6,0" Padding="10,4"
-                                                    Command="{Binding DataContext.CmdFinish, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}"/>
+                        Click="KetThuc_Click"
+                        DataContext="{Binding}"/>
                                             <Button Content="Hủy" Padding="10,4"
-                                                    Command="{Binding DataContext.CmdCancel, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}"/>
+                        Click="Huy_Click"
+                        DataContext="{Binding}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
+
 
                         </GridView>
                     </ListView.View>

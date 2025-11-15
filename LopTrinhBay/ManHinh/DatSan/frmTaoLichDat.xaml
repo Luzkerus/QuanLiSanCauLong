@@ -345,10 +345,13 @@
                                     <TextBlock Text="Giờ bắt đầu" Margin="2,0,0,4"/>
                                     <Border CornerRadius="10" BorderBrush="{StaticResource ColBorder}" BorderThickness="1"
                                             Background="#FFFFFF" Padding="8,6">
-                                        <TextBox Text="{Binding GioBatDau}"
-                                                 Style="{StaticResource WatermarkTextBox}"
-                                                 Tag="--:--" x:Name="txtGioBatDau"
-                                                 BorderThickness="0" Background="Transparent"/>
+                                        <TextBox Text="{Binding GioBatDau, UpdateSourceTrigger=PropertyChanged}" 
+         Style="{StaticResource WatermarkTextBox}" 
+         Tag="--:--" x:Name="txtGioBatDau"
+         BorderThickness="0" Background="Transparent"
+         PreviewTextInput="Gio_PreviewTextInput"
+         TextChanged="Gio_TextChanged"/>
+
                                     </Border>
                                 </StackPanel>
 
@@ -358,7 +361,8 @@
                                             Background="#FFFFFF" Padding="8,6">
                                         <TextBox Text="{Binding GioKetThuc}"
                                                  Style="{StaticResource WatermarkTextBox}"
-                                                 Tag="--:--" x:Name="txtGioKetThuc"
+                                                 Tag="--:--" x:Name="txtGioKetThuc"     PreviewTextInput="Gio_PreviewTextInput"
+    TextChanged="Gio_TextChanged"
                                                  BorderThickness="0" Background="Transparent"/>
                                     </Border>
                                 </StackPanel>
@@ -534,7 +538,7 @@
                 </Border>
 
                 <!-- Hủy -->
-                <Border Grid.Column="3"
+                <Border Grid.Column="3" MouseLeftButtonDown="Huy_Click"
                         Style="{StaticResource FooterGrayBorder}"
                         Padding="16,0">
                     <TextBlock Text="Hủy" VerticalAlignment="Center"
@@ -557,7 +561,7 @@
                                    FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <Border DockPanel.Dock="Right" Background="#FFFFFF22" BorderBrush="#FFFFFF55" BorderThickness="1"
                                 CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding GioCount, StringFormat={}{0} sân, TargetNullValue=0 sân, FallbackValue=0 sân}"
+                            <TextBlock x:Name="txtGioCount" Text="{Binding GioCount, StringFormat={}{0} sân, TargetNullValue=0 sân, FallbackValue=0 sân}"
                                        Foreground="Black" FontSize="12" FontWeight="SemiBold"/>
                         </Border>
                     </DockPanel>
