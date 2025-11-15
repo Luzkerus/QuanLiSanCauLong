@@ -120,6 +120,9 @@
     <Compile Include="LopTrinhBay\ManHinh\HeThong\frmDangNhap.xaml.cs">
       <DependentUpon>frmDangNhap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\HeThong\frmThemVaiTro.xaml.cs">
+      <DependentUpon>frmThemVaiTro.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\HeThong\ucCauHinhHeThong.xaml.cs">
       <DependentUpon>ucCauHinhHeThong.xaml</DependentUpon>
     </Compile>
@@ -222,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\HeThong\frmDangNhap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\HeThong\frmThemVaiTro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

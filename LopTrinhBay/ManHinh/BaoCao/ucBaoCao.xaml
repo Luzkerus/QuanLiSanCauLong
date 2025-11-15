@@ -12,7 +12,12 @@
         <SolidColorBrush x:Key="CardBg" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="CardBorder" Color="#E7ECEB"/>
 
-        <!-- Card style -->
+        <!-- Màu dùng chung -->
+        <SolidColorBrush x:Key="ColText"   Color="#21382D"/>
+        <SolidColorBrush x:Key="ColSub"    Color="#6B7E74"/>
+        <SolidColorBrush x:Key="ColAccent" Color="#0FBF84"/>
+
+        <!-- Card style chung -->
         <Style x:Key="Card" TargetType="Border">
             <Setter Property="CornerRadius" Value="16"/>
             <Setter Property="Background" Value="{StaticResource CardBg}"/>
@@ -28,7 +33,36 @@
             </Setter>
         </Style>
 
-        <!-- Text styles -->
+        <!-- Card KPI: nổi + scale khi hover -->
+        <Style x:Key="KpiCardStyle" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="18" ShadowDepth="0" Opacity="0.18"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.28"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Text styles KPI -->
         <Style x:Key="KpiLabel" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#6B7E74"/>
             <Setter Property="FontSize" Value="12"/>
@@ -37,6 +71,57 @@
             <Setter Property="Foreground" Value="#21382D"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="22"/>
+        </Style>
+
+        <!-- Nút Xuất Excel (header primary button) -->
+        <Style x:Key="HeaderPrimaryButton" TargetType="Button">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource ColAccent}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColAccent}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="12"
+                                                          ShadowDepth="0"
+                                                          Opacity="0.28"
+                                                          Color="#0DAA78"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <!-- Pressed -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
@@ -51,24 +136,50 @@
 
         <!-- Header -->
         <DockPanel Grid.Row="0" Margin="0,0,0,8">
+            <!-- Bên trái: tiêu đề -->
             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                <TextBlock Text="Báo cáo &amp; Thống kê" FontSize="22" FontWeight="Bold" Foreground="#21382D"/>
-                <TextBlock Text="Phân tích doanh thu và hiệu suất kinh doanh" Foreground="#6B7E74" FontSize="12"/>
+                <TextBlock Text="Báo cáo &amp; Thống kê"
+                           FontSize="24" FontWeight="Bold"
+                           Foreground="{StaticResource ColText}"/>
+                <TextBlock Text="Phân tích doanh thu và hiệu suất kinh doanh"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource ColSub}"
+                           FontSize="12"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <ComboBox Width="140" ItemsSource="{Binding TimeRanges}"
-                          SelectedItem="{Binding SelectedTimeRange}"
-                          HorizontalAlignment="Right" VerticalAlignment="Center"
-                          Margin="0,0,8,0"/>
-                <Border Padding="8" Background="#F0F7F5" CornerRadius="12" Margin="0,0,8,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="20" Height="20" Fill="#0FBF84" Margin="0,0,6,0"/>
-                        <TextBlock Text="{Binding CurrentUserDisplay}" Foreground="#21382D"/>
-                    </StackPanel>
-                </Border>
-                <Button Content="Xuất Excel" Padding="12,6" Command="{Binding ExportExcelCommand}"
-                        Cursor="Hand" Background="#0FBF84" BorderBrush="#C5F3DF" />
+            <!-- Bên phải: Từ ngày - Đến ngày + Xuất Excel -->
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+
+                <!-- Từ ngày -->
+                <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                    <TextBlock Text="Từ ngày"
+                               FontSize="11"
+                               Foreground="{StaticResource ColSub}"
+                               Margin="0,0,0,2"/>
+                    <DatePicker SelectedDate="{Binding FromDate}"
+                                Width="150"
+                                Height="25"/>
+                </StackPanel>
+
+                <!-- Đến ngày -->
+                <StackPanel Orientation="Vertical" Margin="0,0,12,0">
+                    <TextBlock Text="Đến ngày"
+                               FontSize="11"
+                               Foreground="{StaticResource ColSub}"
+                               Margin="0,0,0,2"/>
+                    <DatePicker SelectedDate="{Binding ToDate}"
+                                Width="150"
+                                Height="25"/>
+                </StackPanel>
+
+                <!-- Nút Xuất Excel -->
+                <Button Style="{StaticResource HeaderPrimaryButton}"
+                        Command="{Binding ExportExcelCommand}">
+                    <TextBlock Text="Xuất Excel"/>
+                </Button>
             </StackPanel>
         </DockPanel>
 
@@ -81,7 +192,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Style="{StaticResource Card}" Grid.Column="0">
+            <!-- Tổng doanh thu -->
+            <Border Style="{StaticResource KpiCardStyle}" Grid.Column="0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -89,16 +201,19 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Tổng doanh thu" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding TotalRevenueDisplay}" Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
+                        <TextBlock Text="{Binding TotalRevenueDisplay}"
+                                   Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding TotalRevenueDelta}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
+                    <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12"
+                            Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
                         <TextBlock Text="💵" FontSize="16"/>
                     </Border>
                 </Grid>
             </Border>
 
-            <Border Style="{StaticResource Card}" Grid.Column="1">
+            <!-- Doanh thu sân -->
+            <Border Style="{StaticResource KpiCardStyle}" Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -106,16 +221,19 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Doanh thu sân" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding CourtRevenueDisplay}" Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
+                        <TextBlock Text="{Binding CourtRevenueDisplay}"
+                                   Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding CourtRevenuePercent}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
+                    <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12"
+                            Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
                         <TextBlock Text="📈" FontSize="16"/>
                     </Border>
                 </Grid>
             </Border>
 
-            <Border Style="{StaticResource Card}" Grid.Column="2">
+            <!-- Doanh thu POS -->
+            <Border Style="{StaticResource KpiCardStyle}" Grid.Column="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -123,16 +241,19 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Doanh thu POS" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding POSRevenueDisplay}" Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
+                        <TextBlock Text="{Binding POSRevenueDisplay}"
+                                   Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding POSPercentOfTotal}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
+                    <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12"
+                            Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
                         <TextBlock Text="🧃" FontSize="16"/>
                     </Border>
                 </Grid>
             </Border>
 
-            <Border Style="{StaticResource Card}" Grid.Column="3">
+            <!-- Lượt khách -->
+            <Border Style="{StaticResource KpiCardStyle}" Grid.Column="3">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -140,10 +261,12 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Lượt khách" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding CustomerCountDisplay}" Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
+                        <TextBlock Text="{Binding CustomerCountDisplay}"
+                                   Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding CustomerAvgPerDay}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
-                    <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
+                    <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12"
+                            Padding="10" Margin="8,0,0,0" VerticalAlignment="Top">
                         <TextBlock Text="👥" FontSize="16"/>
                     </Border>
                 </Grid>
@@ -161,7 +284,8 @@
 
                 <StackPanel Orientation="Vertical" Grid.Row="0">
                     <TextBlock Text="Biểu đồ doanh thu" FontWeight="Bold" Foreground="#21382D"/>
-                    <TextBlock Text="Doanh thu theo ngày (7 ngày qua)" Foreground="#6B7E74" FontSize="11"/>
+                    <TextBlock Text="Doanh thu theo ngày (trong khoảng đã chọn)"
+                               Foreground="#6B7E74" FontSize="11"/>
                 </StackPanel>
 
                 <Grid Grid.Row="1" Margin="0,8,0,8">
@@ -185,16 +309,6 @@
             </Grid>
         </Border>
 
-        <!-- Titles row -->
-        <Grid Grid.Row="3" Margin="0,0,0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Công suất sử dụng sân" FontWeight="Bold" Foreground="#21382D" Grid.ColumnSpan="2" Margin="10,0,574,0"/>
-            <TextBlock Grid.Column="1" Text="Tổng hợp chi tiết" FontWeight="Bold" Foreground="#21382D" Margin="24,-5,-24,5"/>
-        </Grid>
-
         <!-- Bottom content -->
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -202,31 +316,232 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!-- TRÁI: Top ca đông / vắng khách -->
             <Border Style="{StaticResource Card}" Grid.Column="0">
-                <ItemsControl ItemsSource="{Binding CourtUtilizations}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,4">
-                                <DockPanel>
-                                    <TextBlock Text="{Binding CourtName}" DockPanel.Dock="Left" Width="160"/>
-                                    <TextBlock Text="{Binding UtilPercent, StringFormat={}{0}%}" DockPanel.Dock="Right" Foreground="#6B7E74"/>
-                                </DockPanel>
-                                <ProgressBar Value="{Binding UtilPercent}" Height="8" Minimum="0" Maximum="100"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <StackPanel>
+                    <TextBlock Text="Top ca đông / vắng khách"
+                   FontWeight="SemiBold"
+                   Foreground="{StaticResource ColText}"
+                   Margin="0,0,0,8"/>
+
+                    <ItemsControl ItemsSource="{Binding TopTimeSlots}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F9FAFB"
+                            CornerRadius="10"
+                            Padding="10"
+                            Margin="0,4,0,4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Thông tin ca -->
+                                        <StackPanel Grid.Column="0">
+                                            <!-- Ví dụ: "Ca 18:00 - 20:00" -->
+                                            <TextBlock Text="{Binding TimeRange}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource ColText}"/>
+                                            <!-- Ví dụ: "Lượt đặt: 23" -->
+                                            <TextBlock Text="{Binding BookingsDisplay}"
+                                           FontSize="11"
+                                           Foreground="{StaticResource ColSub}"
+                                           Margin="0,2,0,0"/>
+                                        </StackPanel>
+
+                                        <!-- % công suất + chip Đông / Vắng -->
+                                        <StackPanel Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+                                            <TextBlock x:Name="PercentText"
+                                           Text="{Binding UtilPercent, StringFormat={}{0}%}"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Right"
+                                           Foreground="#16A34A"/>
+
+                                            <Border x:Name="StatusChip"
+                                        Background="#DCFCE7"
+                                        CornerRadius="999"
+                                        Padding="6,1"
+                                        Margin="0,4,0,0"
+                                        HorizontalAlignment="Right">
+                                                <!-- Ví dụ: "Ca đông" / "Ca vắng" -->
+                                                <TextBlock Text="{Binding StatusText}"
+                                               FontSize="10"
+                                               Foreground="#166534"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <!-- ĐỔI MÀU NẾU KHÔNG PHẢI CA ĐÔNG -->
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsPeak}" Value="False">
+                                        <Setter TargetName="PercentText"
+                                    Property="Foreground"
+                                    Value="#4B5563"/>
+                                        <Setter TargetName="StatusChip"
+                                    Property="Background"
+                                    Value="#E5E7EB"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </Border>
 
+
+            <!-- Phải: Tổng hợp chi tiết (3 block như hình, có scroll) -->
             <Border Style="{StaticResource Card}" Grid.Column="1" Margin="12,0,0,0">
-                <DataGrid ItemsSource="{Binding SummaryRows}" AutoGenerateColumns="False" HeadersVisibility="Column"
-                          CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Chỉ tiêu" Binding="{Binding Title}" Width="*"/>
-                        <DataGridTextColumn Header="Giá trị" Binding="{Binding Value}" Width="200"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- tiêu đề -->
+                        <RowDefinition Height="*"/>
+                        <!-- nội dung cuộn -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Tiêu đề -->
+                    <TextBlock Grid.Row="0"
+                           Text="Tổng hợp chi tiết"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource ColText}"
+                           Margin="0,0,0,8"/>
+
+                    <!-- Nội dung có scroll -->
+                    <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto" Margin="0,10,0,-10">
+                        <StackPanel>
+
+                            <!-- Block 1: Đặt sân -->
+                            <Border Background="#E8FFF5"
+                                BorderBrush="#C3F7DE"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="12"
+                                Margin="0,0,0,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Text="Tổng số đơn đặt sân"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Text="{Binding TongSoDonDatSan}"
+                                           Foreground="#15803D"
+                                           FontWeight="SemiBold"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Text="Tổng giờ chơi"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Text="{Binding TongGioChoiDisplay}"
+                                           Foreground="#15803D"
+                                           FontWeight="SemiBold"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0"
+                                           Text="Giá trung bình/giờ"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Text="{Binding GiaTrungBinhGioDisplay}"
+                                           Foreground="#15803D"
+                                           FontWeight="SemiBold"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Block 2: POS -->
+                            <Border Background="#FFF8E7"
+                                BorderBrush="#FFE0B2"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="12"
+                                Margin="0,0,0,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Text="Số lượng POS"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Text="{Binding SoLuongPOS}"
+                                           Foreground="#B45309"
+                                           FontWeight="SemiBold"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Text="Giá trị trung bình"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Text="{Binding GiaTriPOSTrungBinhDisplay}"
+                                           Foreground="#B45309"
+                                           FontWeight="SemiBold"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0"
+                                           Text="Mặt hàng bán chạy"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Text="{Binding MatHangBanChay}"
+                                           Foreground="#2563EB"
+                                           FontWeight="SemiBold"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Block 3: Hội viên -->
+                            <Border Background="#EEF4FF"
+                                BorderBrush="#D1E0FF"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Text="Hội viên mới"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1"
+                                           Text="{Binding HoiVienMoi}"
+                                           Foreground="#1D4ED8"
+                                           FontWeight="SemiBold"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0"
+                                           Text="Tỉ lệ quay lại"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1"
+                                           Text="{Binding TiLeQuayLaiDisplay}"
+                                           Foreground="#1D4ED8"
+                                           FontWeight="SemiBold"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0"
+                                           Text="Điểm tích lũy phát hành"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                           Text="{Binding DiemTichLuyPhatHanh}"
+                                           Foreground="#1D4ED8"
+                                           FontWeight="SemiBold"/>
+                                </Grid>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </Border>
+
         </Grid>
     </Grid>
 </UserControl>

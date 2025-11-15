@@ -171,8 +171,8 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Quản lý Sân bãi" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
-                <TextBlock Text="Theo dõi và vận hành trạng thái sân realtime" Foreground="#7A8A83"/>
+                <TextBlock Text="Quản lý Sân bãi" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
+                <TextBlock Text="Theo dõi và vận hành trạng thái sân realtime" FontWeight="SemiBold" Foreground="#7A8A83"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">

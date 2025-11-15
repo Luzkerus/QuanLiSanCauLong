@@ -204,7 +204,7 @@
             </Setter>
         </Style>
 
-        <!-- Product card -->
+        <!-- Product card (dùng cho tab POS) -->
         <DataTemplate x:Key="ProductCardTemplate">
             <Border Style="{StaticResource Card}" Margin="0,0,12,12" Width="240">
                 <StackPanel>
@@ -269,7 +269,7 @@
         <DockPanel Grid.Row="0" Margin="0,0,0,12">
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Kho &amp; POS Nước uống" FontSize="24" FontWeight="Bold"/>
-                <TextBlock Text="Quản lý kho hàng và bán nước uống" Foreground="#6B7E74"/>
+                <TextBlock Text="Quản lý kho hàng và bán nước uống" FontWeight="SemiBold" Foreground="#6B7E74"/>
             </StackPanel>
 
             <!-- Nút Nhập hàng: to & dài hơn text -->
@@ -327,7 +327,7 @@
                                    Style="{StaticResource KpiValue}"/>
                     </StackPanel>
 
-                    <!-- Icon bên PHẢI (nền pastel + padding + margin đáy) -->
+                    <!-- Icon bên phải -->
                     <Border Grid.Column="1" Background="#E8F5EE" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="📦" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
@@ -422,19 +422,91 @@
                             <TabItem.Header>
                                 <TextBlock Text="Quản lý kho"/>
                             </TabItem.Header>
+
                             <StackPanel Margin="0,8,0,0">
-                                <TextBox Tag="Tìm theo tên hàng" Style="{StaticResource WatermarkTextBox}"
-                                         Margin="0,0,0,12" Height="36"
+                                <!-- Ô tìm kiếm -->
+                                <TextBox Tag="Tìm theo tên / mã hàng"
+                                         Style="{StaticResource WatermarkTextBox}"
+                                         Margin="0,0,0,12"
+                                         Height="36"
                                          Text="{Binding KhoSearch, UpdateSourceTrigger=PropertyChanged}"/>
-                                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl ItemsSource="{Binding KhoProducts}" ItemTemplate="{StaticResource ProductCardTemplate}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </ScrollViewer>
+
+                                <!-- Bảng quản lý kho -->
+                                <DataGrid ItemsSource="{Binding KhoProducts}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="None"
+                                          BorderBrush="{StaticResource ColBorder}"
+                                          BorderThickness="1"
+                                          RowHeight="30"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          Margin="0,0,0,4">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#F1F5F9"/>
+                                            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
+                                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                            <Setter Property="Padding" Value="8,4"/>
+                                        </Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Mã hàng"
+                                                            Binding="{Binding MaHH}"
+                                                            Width="80"/>
+
+                                        <DataGridTextColumn Header="Tên hàng"
+                                                            Binding="{Binding TenHH}"
+                                                            Width="2*"/>
+
+                                        <DataGridTextColumn Header="ĐVT"
+                                                            Binding="{Binding DonViTinh}"
+                                                            Width="*"/>
+
+                                        <DataGridTextColumn Header="Giá nhập"
+                                                            Binding="{Binding GiaNhap, StringFormat={}{0:N0} đ}"
+                                                            Width="*">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+
+                                        <DataGridTextColumn Header="Giá bán"
+                                                            Binding="{Binding GiaBan, StringFormat={}{0:N0} đ}"
+                                                            Width="*">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+
+                                        <DataGridTextColumn Header="Tồn"
+                                                            Binding="{Binding SoLuongHienCo}"
+                                                            Width="*">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+
+                                        <DataGridTextColumn Header="Lần nhập cuối"
+                                                            Binding="{Binding NgayNhapCuoi, StringFormat={}{0:dd/MM/yyyy}}"
+                                                            Width="*"/>
+
+                                        <DataGridTextColumn Header="Trạng thái"
+                                                            Binding="{Binding TrangThai}"
+                                                            Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </StackPanel>
                         </TabItem>
                     </TabControl>
@@ -466,13 +538,27 @@
 
                         <DockPanel Margin="0,0,0,12">
                             <TextBlock Text="Tổng cộng:" Foreground="{StaticResource ColSub}"/>
-                            <TextBlock Text="{Binding CartTotal, StringFormat={}{0:N0}đ}" FontWeight="Bold" DockPanel.Dock="Right"/>
+                            <TextBlock Text="{Binding CartTotal, StringFormat={}{0:N0}đ}"
+                                       FontWeight="Bold"
+                                       DockPanel.Dock="Right"/>
                         </DockPanel>
 
-                        <Button Style="{StaticResource MainButton}" Content="Thanh toán" Command="{Binding CheckoutCommand}" Margin="0,0,0,8" Height="42"/>
-                        <Button Background="White" BorderBrush="#D9D9D9" BorderThickness="1" Foreground="#21382D"
-                                FontWeight="SemiBold" Content="Hủy đơn"
-                                Command="{Binding ClearCartCommand}" Margin="0,0,0,8" Height="38" Cursor="Hand"/>
+                        <Button Style="{StaticResource MainButton}"
+                                Content="Thanh toán"
+                                Command="{Binding CheckoutCommand}"
+                                Margin="0,0,0,8"
+                                Height="42"/>
+
+                        <Button Background="White"
+                                BorderBrush="#D9D9D9"
+                                BorderThickness="1"
+                                Foreground="#21382D"
+                                FontWeight="SemiBold"
+                                Content="Hủy đơn"
+                                Command="{Binding ClearCartCommand}"
+                                Margin="0,0,0,8"
+                                Height="38"
+                                Cursor="Hand"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
