@@ -19,4 +19,5 @@ public class ChiTietDatSanVM
     public string Email { get; set; }
 
     public string TrangThai { get; set; } = "Chưa bắt đầu"; // hoặc dữ liệu thực tế
+    public string TrangThaiThanhToan { get; set; }
 }

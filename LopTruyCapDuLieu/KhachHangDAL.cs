@@ -39,8 +39,10 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                         TuNgay = reader.GetDateTime(6),
                         DiemTichLuy = reader.GetInt32(7)
                     };
+                    kh.LuotChoi = DemLuotChoi(kh.SDT);
                     dsKhachHang.Add(kh);
                 }
+
             }
             return dsKhachHang;
         }
@@ -188,6 +190,23 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return n > 0;
             }
         }
+        public int DemLuotChoi(string sdt)
+{
+    using (SqlConnection conn = new SqlConnection(connectionString))
+    using (SqlCommand cmd = conn.CreateCommand())
+    {
+        conn.Open();
+        cmd.CommandText = @"
+            SELECT COUNT(*)
+            FROM DatSan d
+            JOIN ChiTietDatSan ct ON d.MaPhieu = ct.MaPhieu
+            WHERE d.SDT = @sdt AND ct.TrangThai = N'Hoàn thành'";
+        
+        cmd.Parameters.AddWithValue("@sdt", sdt);
+
+        return (int)cmd.ExecuteScalar();
+    }
+}
 
     }
 }

@@ -550,6 +550,17 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
+                            <GridViewColumn Header="Trạng thái thanh toán" Width="auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="12" Padding="8,2" Background="#DFF7EA">
+                                            <TextBlock Text="{Binding TrangThaiThanhToan}"
+                              FontSize="12"
+                              Foreground="#1E7F4C"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
                             <!-- Thao tác -->
                             <GridViewColumn Header="Thao tác" Width="auto">

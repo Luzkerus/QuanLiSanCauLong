@@ -205,6 +205,18 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 MessageBox.Show("Chưa có sân nào trong giỏ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            if (!KiemTraSDT(txtSDT.Text))
+            {
+                MessageBox.Show("Số điện thoại không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // 2. Email
+            if (!KiemTraEmail(txtEmail.Text))
+            {
+                MessageBox.Show("Email không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             string sdt = txtSDT.Text.Trim();
             string tenKH = txtTenKH.Text.Trim();
@@ -343,7 +355,34 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             }
         }
 
+        // Kiểm tra định dạng số điện thoại
+        private bool KiemTraSDT(string sdt)
+        {
+            if (string.IsNullOrWhiteSpace(sdt)) return false;
 
+            // Chỉ chứa số
+            if (!sdt.All(char.IsDigit))
+                return false;
+
+            // Độ dài hợp lệ
+            return sdt.Length >= 9 && sdt.Length <= 11;
+        }
+        private bool KiemTraEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return true; // cho phép bỏ trống
+
+            try
+            {
+                var mail = new System.Net.Mail.MailAddress(email);
+                return mail.Address == email;
+            }
+            catch { return false; }
+        }
+
+
+
+
+        // Xử lý kéo thả cửa sổ
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

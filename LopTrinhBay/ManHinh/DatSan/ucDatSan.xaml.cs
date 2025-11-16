@@ -79,6 +79,37 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 MessageBox.Show("Không lấy được chi tiết!");
                 return;
             }
+            DateTime now = DateTime.Now;
+            DateTime gioBatDauThucTe = chiTiet.NgayDat.Date + chiTiet.GioBatDau;
+            if (now > gioBatDauThucTe.AddMinutes(15))
+            {
+                ChiTietDatSanDAL ctdal = new ChiTietDatSanDAL();
+                bool kq = ctdal.CapNhatTrangThai(chiTiet.MaChiTiet, "Đã hủy");
+
+                if (kq)
+                {
+                    chiTiet.TrangThai = "Đã hủy";
+                    lvDanhSachDatSan.Items.Refresh();
+                    CapNhatKpi();
+
+                    MessageBox.Show(
+                        $"Chi tiết {chiTiet.MaChiTiet} đã tự động hủy vì trễ hơn 15 phút.",
+                        "Đã hủy",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+
+                    return; // dừng luôn, không cho bắt đầu
+                }
+            }
+            if (now < gioBatDauThucTe)
+            {
+                MessageBox.Show(
+                    $"Chưa đến giờ bắt đầu!\nGiờ bắt đầu: {chiTiet.GioBatDau}",
+                    "Không thể bắt đầu",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
 
             if (chiTiet.TrangThai != "Chưa bắt đầu" && chiTiet.TrangThai != "Đã đặt")
             {

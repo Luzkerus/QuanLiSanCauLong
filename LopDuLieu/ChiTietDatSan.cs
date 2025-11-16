@@ -13,4 +13,5 @@ public class ChiTietDatSan
     public decimal PhuThuLe { get; set; }
     public decimal ThanhTien { get; set; }
     public string TrangThai { get; set; }
+    public string TrangThaiThanhToan { get; set; }
 }

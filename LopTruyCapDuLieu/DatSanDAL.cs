@@ -130,7 +130,8 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                             TenKH = reader["TenKH"].ToString(),
                             SDT = reader["SDT"].ToString(),
                             Email = reader["Email"].ToString(),
-                            TrangThai = reader["TrangThai"].ToString()
+                            TrangThai = reader["TrangThai"].ToString(),
+                            TrangThaiThanhToan = reader["TrangThaiThanhToan"].ToString()
                         });
                     }
                 }
