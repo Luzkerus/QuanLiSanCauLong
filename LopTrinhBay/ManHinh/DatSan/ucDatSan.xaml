@@ -276,8 +276,8 @@
             </Button>
 
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Đặt Sân" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
-                <TextBlock Text="Quản lý, tạo, sửa và hủy các lượt đặt sân" Foreground="#7A8A83"/>
+                <TextBlock Text="Đặt Sân" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
+                <TextBlock Text="Quản lý, tạo, sửa và hủy các lượt đặt sân" FontWeight="SemiBold" Foreground="#7A8A83"/>
             </StackPanel>
         </Grid>
 

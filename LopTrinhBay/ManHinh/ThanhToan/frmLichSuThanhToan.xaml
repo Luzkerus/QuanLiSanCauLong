@@ -6,7 +6,7 @@
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         mc:Ignorable="d"
         Title="Lịch sử thanh toán hóa đơn"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         SizeToContent="Manual"
         WindowStyle="None"
@@ -245,7 +245,6 @@
                             <Button Content="Xem"        Command="{Binding ReloadCommand}"   Style="{StaticResource BtnPrimary}" Margin="0,8,8,0"/>
                             <Button Content="Làm mới"    Command="{Binding RefreshCommand}"  Style="{StaticResource BtnInfo}"    Margin="0,8,8,0"/>
                             <Button Content="Xuất Excel"  Command="{Binding ExportExcelCommand}" Style="{StaticResource BtnSuccess}" Margin="0,8,8,0"/>
-                            <Button Content="Xuất PDF"    Command="{Binding ExportPdfCommand}"   Style="{StaticResource BtnDanger}"  Margin="0,8,0,0"/>
                         </StackPanel>
                     </DockPanel>
                 </Border>
@@ -256,14 +255,14 @@
                     <DataGrid ItemsSource="{Binding Invoices}" SelectedItem="{Binding SelectedInvoice}"
                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Số HĐ"           Binding="{Binding SoHD}" Width="120" MinWidth="100"/>
-                            <DataGridTextColumn Header="Ngày lập"        Binding="{Binding NgayLap, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="160" MinWidth="140"/>
-                            <DataGridTextColumn Header="Khách hàng"      Binding="{Binding TenKH}" Width="*"   MinWidth="160"/>
-                            <DataGridTextColumn Header="SĐT"             Binding="{Binding SDT}" Width="140"   MinWidth="120"/>
-                            <DataGridTextColumn Header="Mã Đặt sân"      Binding="{Binding MaDatSan}" Width="140" MinWidth="120"/>
-                            <DataGridTextColumn Header="Phương thức"     Binding="{Binding PhuongThuc}" Width="160" MinWidth="140"/>
-                            <DataGridTextColumn Header="Trạng thái"      Binding="{Binding TrangThai}" Width="140" MinWidth="120"/>
-                            <DataGridTextColumn Header="Tổng thanh toán" Binding="{Binding TongThanhToan, StringFormat={}{0:N0} ₫}" Width="180" MinWidth="160"/>
+                            <DataGridTextColumn Header="Số HĐ"           Binding="{Binding SoHD}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="Ngày lập"        Binding="{Binding NgayLap, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="Khách hàng"      Binding="{Binding TenKH}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="SĐT"             Binding="{Binding SDT}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="Sân đã đặt"      Binding="{Binding MaDatSan}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="Phương thức"     Binding="{Binding PhuongThuc}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="Trạng thái"      Binding="{Binding TrangThai}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="Tổng thanh toán" Binding="{Binding TongThanhToan, StringFormat={}{0:N0} ₫}" Width="*" MinWidth="10"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

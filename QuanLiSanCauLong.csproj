@@ -125,6 +125,9 @@
     <Compile Include="LopTrinhBay\ManHinh\HeThong\frmDangNhap.xaml.cs">
       <DependentUpon>frmDangNhap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\HeThong\frmThemVaiTro.xaml.cs">
+      <DependentUpon>frmThemVaiTro.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\HeThong\ucCauHinhHeThong.xaml.cs">
       <DependentUpon>ucCauHinhHeThong.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,9 @@
     </Compile>
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\UcKhoDashboard.xaml.cs">
       <DependentUpon>UcKhoDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\NhanVien\frmPhanCaNhanVien.xaml.cs">
+      <DependentUpon>frmPhanCaNhanVien.xaml</DependentUpon>
     </Compile>
     <Compile Include="LopTrinhBay\ManHinh\NhanVien\frmThemNhanVien.xaml.cs">
       <DependentUpon>frmThemNhanVien.xaml</DependentUpon>
@@ -229,6 +235,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LopTrinhBay\ManHinh\HeThong\frmThemVaiTro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LopTrinhBay\ManHinh\HeThong\ucCauHinhHeThong.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -246,6 +256,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\KhoPOS\UcKhoDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\NhanVien\frmPhanCaNhanVien.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

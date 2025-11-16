@@ -63,5 +63,10 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.NhanVien
 
             // Nếu chưa có ViewModel, bạn có thể TODO ở đây để sau này bổ sung.
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -20,6 +20,22 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.BaoCao
         {
           InitializeComponent(); // ← KHÔNG được comment
         }
+
+        //public DateTime? FromDate
+        //{
+        //    get => _fromDate;
+        //    set { _fromDate = value; OnPropertyChanged(); LoadReport(); }
+        //}
+
+        //public DateTime? ToDate
+        //{
+        //    get => _toDate;
+        //    set { _toDate = value; OnPropertyChanged(); LoadReport(); }
+        }
+
     }
-}
+
+
+
+
 

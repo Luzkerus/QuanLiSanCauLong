@@ -36,7 +36,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Height" Value="25"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
@@ -52,11 +52,19 @@
         <!-- Card tổng tiền -->
         <Style x:Key="SumCard" TargetType="Border">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Padding" Value="12"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="10"/>
             <Setter Property="BorderBrush" Value="#E8F0EC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="MinWidth" Value="180"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8"
+                                      ShadowDepth="0"
+                                      Opacity="0.12"/>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Nút primary bo góc -->
@@ -64,8 +72,12 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#2BB673"/>
             <Setter Property="BorderBrush" Value="#2BB673"/>
-            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Padding" Value="16,8"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="MinHeight" Value="32"/>
+            <Setter Property="MinWidth" Value="110"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -86,8 +98,8 @@
                                 <Setter TargetName="bd" Property="BorderBrush"  Value="#1E8F55"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="bd" Property="Background" Value="#CFE9DE"/>
-                                <Setter TargetName="bd" Property="BorderBrush"  Value="#CFE9DE"/>
+                                <Setter TargetName="bd" Property="Background" Value="#16A34A"/>
+                                <Setter TargetName="bd" Property="BorderBrush"  Value="#5E8F55"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -100,8 +112,12 @@
             <Setter Property="Foreground" Value="#21382D"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#D9D9D9"/>
-            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Padding" Value="16,8"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="MinHeight" Value="32"/>
+            <Setter Property="MinWidth" Value="100"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -146,8 +162,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Orientation="Vertical">
@@ -155,14 +169,30 @@
                 <TextBlock Text="Tạo phiếu nhập kho" Foreground="#6B7E74"/>
             </StackPanel>
 
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                <!-- Lưu phiếu -->
+                <Button Style="{StaticResource PrimaryButton}"
+                        Command="{Binding LuuPhieuCommand}">
+                    <TextBlock Text="Lưu phiếu" FontSize="16" FontWeight="SemiBold"/>
+                </Button>
 
-            <Button Grid.Column="3" Style="{StaticResource PrimaryButton}"
-                    Command="{Binding LuuPhieuCommand}">
-                <TextBlock Text="Lưu phiếu" FontSize ="16"  FontWeight="SemiBold"/>
-            </Button>
+                <!-- Xuất phiếu (ngay sau Lưu phiếu) -->
+                <Button Style="{StaticResource GhostButton}"
+                    Command="{Binding XuatPhieuCommand}"
+                    Margin="8,0,0,0"
+                    Background="#0EA5E9"
+                    BorderBrush="#0EA5E9"
+                    Foreground="White">
+                    <TextBlock Text="Xuất phiếu" FontSize="16" FontWeight="SemiBold"/>
+                </Button>
+
+            </StackPanel>
         </Grid>
 
-        <!-- ===== Thông tin phiếu (đÃ BỎ KHO NHẬP & THUẾ SUẤT; NCC nhập tay) ===== -->
+        <!-- ===== Thông tin phiếu ===== -->
         <Border Grid.Row="1" Background="White" CornerRadius="12" Padding="12" Margin="0,0,0,12">
             <Grid>
                 <Grid.RowDefinitions>
@@ -177,51 +207,52 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Hàng 1 -->
-                <!-- Nhà cung cấp (nhập tay + gợi ý lịch sử) -->
+                <!-- Nhà cung cấp (TextBox + khung bo góc) -->
                 <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,8">
                     <TextBlock Text="Nhà cung cấp" Foreground="#6B7E74"/>
-                    <ComboBox Height="25"
-                              IsEditable="True"
-                              IsTextSearchEnabled="True"
-                              StaysOpenOnEdit="True"
-                              ItemsSource="{Binding LichSuNhaCungCap}"            
-                              Text="{Binding NhaCungCapText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              />
+
+                    <Border Background="White"
+                        CornerRadius="0"
+                        BorderBrush="#E1F0EC"
+                        BorderThickness="1"
+                        Padding="0">
+                        <TextBox Style="{StaticResource WatermarkTextBox}"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Tag="Nhập tên nhà cung cấp..."
+                             Text="{Binding NhaCungCapText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border>
                 </StackPanel>
+
 
                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,12,8">
                     <TextBlock Text="Ngày nhập" Foreground="#6B7E74"/>
-                    <DatePicker SelectedDate="{Binding NgayPhieu}" Height="25"/>
+                    <DatePicker SelectedDate="{Binding NgayPhieu}" Height="32"/>
                 </StackPanel>
 
-                <!-- Tạo số phiếu bằng thuộc tính đặt biệt kiểu -->
-                <!-- ví dụ:
-                    PN20251105-001
-                    trong đó:
-                    PN = tiền tố “Phiếu Nhập”
-                    20251105 = ngày hiện tại (yyyyMMdd)
-                    001 = số thứ tự tăng dần trong ngày -->
+                <!-- Số phiếu -->
                 <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
                     <TextBlock Text="Số phiếu" Foreground="#6B7E74"/>
-                    <TextBox Text="{Binding SoPhieu}" Height="25" IsReadOnly="True"/>
+                    <TextBox Text="{Binding SoPhieu}" Height="32" IsReadOnly="True"/>
                 </StackPanel>
 
                 <!-- Hàng 2 -->
                 <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,12,0">
                     <TextBlock Text="Ghi chú" Foreground="#6B7E74"/>
-                    <TextBox Text="{Binding GhiChu}" Height="25"/>
+                    <TextBox Text="{Binding GhiChu}" Height="32"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.Column="2">
                     <TextBlock Text="Tùy chọn" Foreground="#6B7E74"/>
                     <CheckBox Content="Giá đã gồm thuế (VAT 10%)"
                               IsChecked="{Binding GiaDaGomThue}"
-                              Height="25" VerticalAlignment="Center"/>
+                              Height="32"
+                              VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- ===== Lưới hàng hóa: NHẬP NHANH (trước) + TÌM KIẾM (sau) + DATAGRID ===== -->
+        <!-- ===== Lưới hàng hóa: NHẬP NHANH + TÌM KIẾM + DATAGRID ===== -->
         <Border Grid.Row="2" Background="White" CornerRadius="12" Padding="12">
             <Grid>
                 <Grid.RowDefinitions>
@@ -235,88 +266,104 @@
                     <!-- DataGrid -->
                 </Grid.RowDefinitions>
 
-                <!-- NHẬP NHANH (đặt lên trên) -->
+                <!-- ========== NHẬP NHANH ========== -->
                 <Border Grid.Row="0" Padding="10"
                         Background="#F9FBFA" CornerRadius="10"
                         BorderBrush="#E8F0EC" BorderThickness="1">
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <!-- Mã hàng -->
                             <ColumnDefinition Width="2*"/>
                             <!-- Tên hàng -->
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="100"/>
                             <!-- ĐVT -->
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="80"/>
                             <!-- SL -->
                             <ColumnDefinition Width="120"/>
-                            <!-- Giá -->
-                            <ColumnDefinition Width="110"/>
+                            <!-- Giá nhập -->
+                            <ColumnDefinition Width="80"/>
                             <!-- CK% -->
-                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="120"/>
                             <!-- Số lô -->
-                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="130"/>
                             <!-- HSD -->
                             <ColumnDefinition Width="Auto"/>
                             <!-- Nút -->
                         </Grid.ColumnDefinitions>
 
-                        <!-- Tên hàng -->
+                        <!-- Mã hàng -->
                         <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Mã hàng" Foreground="#6B7E74"/>
+                            <TextBox Height="32"
+                                     Text="{Binding NhapNhanh_MaHang, UpdateSourceTrigger=PropertyChanged}"
+                                     VerticalContentAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Tên hàng -->
+                        <StackPanel Grid.Column="1" Margin="0,0,8,0">
                             <TextBlock Text="Tên hàng" Foreground="#6B7E74"/>
-                            <TextBox Height="25"
+                            <TextBox Height="32"
                                      Text="{Binding NhapNhanh_TenHang, UpdateSourceTrigger=PropertyChanged}"
-                                     Tag="Nhập tên hàng..."/>
+                                     Tag="Nhập tên hàng..."
+                                     VerticalContentAlignment="Center"/>
                         </StackPanel>
 
                         <!-- Đơn vị -->
-                        <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                        <StackPanel Grid.Column="2" Margin="0,0,8,0">
                             <TextBlock Text="Đơn vị" Foreground="#6B7E74"/>
-                            <TextBox Height="25"
-                                Text="{Binding NhapNhanh_DonVi, UpdateSourceTrigger=PropertyChanged}"
-                                Tag="Nhập đơn vị..."
-                                VerticalContentAlignment="Center"/>     
+                            <TextBox Height="32"
+                                     Text="{Binding NhapNhanh_DonVi, UpdateSourceTrigger=PropertyChanged}"
+                                     Tag="Chai, lon, lốc..."
+                                     VerticalContentAlignment="Center"/>
                         </StackPanel>
 
-
                         <!-- Số lượng -->
-                        <StackPanel Grid.Column="2" Margin="0,0,8,0">
+                        <StackPanel Grid.Column="3" Margin="0,0,8,0">
                             <TextBlock Text="Số lượng" Foreground="#6B7E74"/>
-                            <TextBox Height="25"
+                            <TextBox Height="32"
                                      Text="{Binding NhapNhanh_SoLuong, UpdateSourceTrigger=PropertyChanged}"
-                                     HorizontalContentAlignment="Right"/>
+                                     HorizontalContentAlignment="Right"
+                                     VerticalContentAlignment="Center"/>
                         </StackPanel>
 
                         <!-- Giá nhập -->
-                        <StackPanel Grid.Column="3" Margin="0,0,8,0">
+                        <StackPanel Grid.Column="4" Margin="0,0,8,0">
                             <TextBlock Text="Giá nhập" Foreground="#6B7E74"/>
-                            <TextBox Height="25"
+                            <TextBox Height="32"
                                      Text="{Binding NhapNhanh_GiaNhap, UpdateSourceTrigger=PropertyChanged}"
-                                     HorizontalContentAlignment="Right"/>
+                                     HorizontalContentAlignment="Right"
+                                     VerticalContentAlignment="Center"/>
                         </StackPanel>
 
-                        <!-- Chiếc Khấu % -->
-                        <StackPanel Grid.Column="4" Margin="0,0,8,0">
-                            <TextBlock Text="Chiếc khấu %" Foreground="#6B7E74"/>
-                            <TextBox Height="25"
+                        <!-- Chiết khấu % -->
+                        <StackPanel Grid.Column="5" Margin="0,0,8,0">
+                            <TextBlock Text="Chiết khấu %" Foreground="#6B7E74"/>
+                            <TextBox Height="32"
                                      Text="{Binding NhapNhanh_CKPercent, UpdateSourceTrigger=PropertyChanged}"
-                                     HorizontalContentAlignment="Right"/>
+                                     HorizontalContentAlignment="Right"
+                                     VerticalContentAlignment="Center"/>
                         </StackPanel>
 
                         <!-- Số lô -->
-                        <StackPanel Grid.Column="5" Margin="0,0,8,0">
+                        <StackPanel Grid.Column="6" Margin="0,0,8,0">
                             <TextBlock Text="Số lô" Foreground="#6B7E74"/>
-                            <TextBox Height="25" Text="{Binding NhapNhanh_SoLo}"/>
+                            <TextBox Height="32"
+                                     Text="{Binding NhapNhanh_SoLo}"
+                                     VerticalContentAlignment="Center"/>
                         </StackPanel>
 
                         <!-- HSD -->
-                        <StackPanel Grid.Column="6" Margin="0,0,8,0">
+                        <StackPanel Grid.Column="7" Margin="0,0,8,0">
                             <TextBlock Text="HSD" Foreground="#6B7E74"/>
-                            <DatePicker Height="25" SelectedDate="{Binding NhapNhanh_HSD}"/>
+                            <DatePicker Height="32"
+                                        SelectedDate="{Binding NhapNhanh_HSD}"/>
                         </StackPanel>
 
                         <!-- Nút thêm hàng -->
-                        <StackPanel Grid.Column="7" VerticalAlignment="Bottom">
-                            <Button Height="25" Padding="14,6"
-                                    Style="{StaticResource PrimaryButton}"
+                        <StackPanel Grid.Column="8" VerticalAlignment="Bottom">
+                            <Button Style="{StaticResource PrimaryButton}"
+                                    Padding="16,4"
                                     Command="{Binding ThemNhanhCommand}">
                                 <TextBlock Text="Thêm hàng" FontWeight="SemiBold"/>
                             </Button>
@@ -324,26 +371,30 @@
                     </Grid>
                 </Border>
 
-                <!-- TÌM KIẾM (full-width, nút dạt phải) -->
+                <!-- ========== TÌM KIẾM ========== -->
                 <Grid Grid.Row="2" Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0" Style="{StaticResource WatermarkTextBox}"
+                    <TextBox Grid.Column="0"
+                             Style="{StaticResource WatermarkTextBox}"
                              Tag="Nhập mã / tên hàng để tìm..."
                              Text="{Binding TuKhoaTim}"/>
 
-                    <!-- Nút tìm kiếm: đổi từ 'Thêm từ danh mục' -->
                     <Button Grid.Column="1" Margin="8,0,0,0"
-                            Style="{StaticResource GhostButton}"
-                            Command="{Binding TimKiemHangCommand}">
-                        <TextBlock Text="Tìm kiếm" FontWeight="SemiBold"/>
+                        Style="{StaticResource GhostButton}"
+                        Command="{Binding TimKiemHangCommand}"
+                        Background="DarkGray"
+                        BorderBrush="DimGray"
+                        Foreground="White">
+                        <TextBlock Text="Tìm kiếm" />
                     </Button>
+
                 </Grid>
 
-                <!-- DATAGRID -->
+                <!-- ========== DATAGRID ========== -->
                 <DataGrid Grid.Row="3"
                           ItemsSource="{Binding DongHangs}"
                           AutoGenerateColumns="False"
@@ -355,76 +406,124 @@
                           ColumnHeaderHeight="34"
                           MinRowHeight="30">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Mã" Binding="{Binding MaHH}" Width="120" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Tên hàng" Binding="{Binding TenHH}" Width="2*" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DonVi}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Mã"
+                                            Binding="{Binding MaHH}"
+                                            Width="120"
+                                            IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="Tên hàng"
+                                            Binding="{Binding TenHH}"
+                                            Width="2*"
+                                            IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="ĐVT"
+                                            Binding="{Binding DonVi}"
+                                            Width="*"
+                                            IsReadOnly="True"/>
 
                         <DataGridTextColumn Header="SL"
                             Binding="{Binding SoLuong, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
-                            ElementStyle="{StaticResource CellRight}" EditingElementStyle="{StaticResource EditRight}" Width="*"/>
+                            ElementStyle="{StaticResource CellRight}"
+                            EditingElementStyle="{StaticResource EditRight}"
+                            Width="*"/>
 
                         <DataGridTextColumn Header="Giá nhập"
                             Binding="{Binding GiaNhap, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}}"
-                            ElementStyle="{StaticResource CellRight}" EditingElementStyle="{StaticResource EditRight}" Width="*"/>
+                            ElementStyle="{StaticResource CellRight}"
+                            EditingElementStyle="{StaticResource EditRight}"
+                            Width="*"/>
 
                         <DataGridTextColumn Header="CK %"
                             Binding="{Binding ChietKhauPercent, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
-                            ElementStyle="{StaticResource CellRight}" EditingElementStyle="{StaticResource EditRight}" Width="90"/>
+                            ElementStyle="{StaticResource CellRight}"
+                            EditingElementStyle="{StaticResource EditRight}"
+                            Width="90"/>
 
                         <DataGridTextColumn Header="CK tiền"
                             Binding="{Binding ChietKhauTien, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}}"
-                            ElementStyle="{StaticResource CellRight}" EditingElementStyle="{StaticResource EditRight}" Width="*"/>
+                            ElementStyle="{StaticResource CellRight}"
+                            EditingElementStyle="{StaticResource EditRight}"
+                            Width="*"/>
 
                         <DataGridTextColumn Header="VAT %"
                             Binding="{Binding VatPercent, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
-                            ElementStyle="{StaticResource CellRight}" EditingElementStyle="{StaticResource EditRight}" Width="90"/>
+                            ElementStyle="{StaticResource CellRight}"
+                            EditingElementStyle="{StaticResource EditRight}"
+                            Width="90"/>
 
-                        <DataGridTextColumn Header="Số lô" Binding="{Binding SoLo}" Width="120"/>
+                        <DataGridTextColumn Header="Số lô"
+                                            Binding="{Binding SoLo}"
+                                            Width="120"/>
+
                         <DataGridTextColumn Header="HSD"
-                            Binding="{Binding HanSuDung, StringFormat={}{0:dd/MM/yyyy}}" Width="130"/>
+                            Binding="{Binding HanSuDung, StringFormat={}{0:dd/MM/yyyy}}"
+                            Width="130"/>
 
                         <DataGridTextColumn Header="Thành tiền"
                             Binding="{Binding ThanhTien, StringFormat={}{0:N0}}"
-                            IsReadOnly="True" ElementStyle="{StaticResource CellRight}" Width="*"/>
+                            IsReadOnly="True"
+                            ElementStyle="{StaticResource CellRight}"
+                            Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </Border>
 
-        <!-- ===== Tổng cộng ===== -->
-        <Grid Grid.Row="3" Margin="0,12,0,0">
+        <!-- ===== Tổng cộng (UI mới) ===== -->
+        <Grid Grid.Row="3" Margin="0,16,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="1" Style="{StaticResource SumCard}">
-                <StackPanel>
-                    <TextBlock Text="Tổng" FontSize ="14" Foreground="#6B7E74"/>
-                    <TextBlock Text="{Binding TongTruocThue, StringFormat={}{0:N0} ₫}"
-                               FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </Border>
+            <!-- Cụm tổng tiền bên phải -->
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
 
-            <Border Grid.Column="3" Style="{StaticResource SumCard}">
-                <StackPanel>
-                    <TextBlock Text="Thuế" FontSize ="14" Foreground="#6B7E74"/>
-                    <TextBlock Text="{Binding Thue, StringFormat={}{0:N0} ₫}"
-                               FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </Border>
+                <!-- Tổng -->
+                <Border Style="{StaticResource SumCard}"                      
+                        >
+                    <StackPanel>
+                        <TextBlock Text="Tổng" FontSize="13" Foreground="#6B7E74"/>
+                        <TextBlock Text="{Binding TongTruocThue, StringFormat={}{0:N0} ₫}"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
 
-            <Border Grid.Column="5" Style="{StaticResource SumCard}" Background="#2BB673">
-                <StackPanel>
-                    <TextBlock Text="Tổng thanh toán" FontSize ="14" Foreground="White"/>
-                    <TextBlock Text="{Binding TongThanhToan, StringFormat={}{0:N0} ₫}"
-                               FontSize="22" FontWeight="Black" HorizontalAlignment="Right" Foreground="White"/>
-                </StackPanel>
-            </Border>
+                <!-- Thuế -->
+                <Border Style="{StaticResource SumCard}" Background="#F2C94C">
+                    <StackPanel>
+                        <TextBlock Text="Thuế" FontSize="13" Foreground="White"/>
+                        <TextBlock Text="{Binding Thue, StringFormat={}{0:N0} ₫}"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tổng thanh toán (card nổi bật) -->
+                <Border Style="{StaticResource SumCard}"
+                        Background="#2BB673"
+                        Margin="0,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Tổng thanh toán"
+                                   FontSize="13"
+                                   Foreground="White"/>
+                        <TextBlock Text="{Binding TongThanhToan, StringFormat={}{0:N0} ₫}"
+                                   FontSize="20"
+                                   FontWeight="Black"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,2,0,0"
+                                   Foreground="White"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

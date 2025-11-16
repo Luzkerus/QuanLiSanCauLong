@@ -233,21 +233,12 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Quản lý Nhân viên" FontSize="20" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
-                    <TextBlock Text="Hồ sơ nhân viên và phân ca làm việc" Foreground="{StaticResource ColSub}" Margin="0,4,0,0"/>
+                    <TextBlock Text="Quản lý Nhân viên" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
+                    <TextBlock Text="Hồ sơ nhân viên và phân ca làm việc" FontWeight="SemiBold" Foreground="{StaticResource ColSub}" Margin="0,4,0,0"/>
                 </StackPanel>
 
                 <!-- Cụm nút đã thay style -->
                 <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
-                    <!-- Phân ca (xám) -->
-                    <Button Style="{StaticResource HeaderBtnGray}"
-                            Command="{Binding OpenPhanCaCommand}" Margin="0,0,8,0">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE793;" FontSize="14" Margin="0,0,0,0"/>
-                            <TextBlock Text="Phân ca" FontSize="14"/>
-                        </StackPanel>
-                    </Button>
-
                     <!-- Thêm nhân viên (xanh) -->
                     <Button Style="{StaticResource HeaderBtnGreen}"
                             Click="BtnThemNhanVien_Click">
@@ -325,7 +316,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Danh sách nhân viên" FontWeight="SemiBold"
+                    <TextBlock Text="🗍 Danh sách nhân viên" FontWeight="SemiBold"
                                VerticalAlignment="Center"/>
 
                     <!-- Search box sát phải -->
@@ -378,7 +369,7 @@
                           AutoGenerateColumns="False" HeadersVisibility="Column"
                           GridLinesVisibility="None" RowHeight="50"
                           CanUserAddRows="False" CanUserDeleteRows="False"
-                          BorderThickness="0" Background="Transparent">
+                          BorderThickness="0" Background="Transparent" SelectionChanged="DataGrid_SelectionChanged">
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Background" Value="#F5F8F7"/>
@@ -409,8 +400,8 @@
                                             Binding="{Binding Email}"
                                             Width="*"/>
 
-                        <!-- 4) Loại nhân viên (Full-time/Part-time) -->
-                        <DataGridTemplateColumn Header="Loại nhân viên" Width="*">
+                        <!-- 4) Vai trò (Quản lý/ Full-time/Part-time) -->
+                        <DataGridTemplateColumn Header="Vai trò" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource RoleBadge}">

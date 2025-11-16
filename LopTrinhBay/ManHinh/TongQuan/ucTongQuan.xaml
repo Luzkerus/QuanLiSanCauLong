@@ -158,8 +158,8 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,12,0">
-                <TextBlock Text="Tổng quan hệ thống" FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
-                <TextBlock Text="Chào mừng trở lại! Đây là tổng quan hoạt động hôm nay."
+                <TextBlock Text="Tổng quan hệ thống" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
+                <TextBlock Text="Chào mừng trở lại! Đây là tổng quan hoạt động hôm nay." FontWeight="SemiBold"
                            Foreground="{StaticResource ColSub}" FontSize="12"/>
             </StackPanel>
 
