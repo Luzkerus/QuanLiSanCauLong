@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuanLiSanCauLong.LopDuLieu;
 
 namespace QuanLiSanCauLong.LopTruyCapDuLieu
 {
@@ -55,6 +56,43 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
         }
 
+        public List<ChiTietChuaThanhToan> LayDanhSachChuaThanhToan(string sdt)
+        {
+            const string sql = @"
+        SELECT ct.TenSanCached, ct.NgayDat, ct.GioBatDau, ct.GioKetThuc, ct.ThanhTien
+        FROM ChiTietDatSan ct
+        JOIN DatSan d ON ct.MaPhieu = d.MaPhieu
+        JOIN KhachHang kh ON d.SDT = kh.SDT
+        WHERE kh.SDT = @SDT
+          AND ct.TrangThaiThanhToan = N'Chưa thanh toán' AND ct.TrangThai <> N'Đã hủy';
+    ";
+
+            var result = new List<ChiTietChuaThanhToan>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@SDT", sdt);
+
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(new ChiTietChuaThanhToan
+                        {
+                            TenSanCached = reader.GetString(0),
+                            NgayDat = reader.GetDateTime(1),
+                            GioBatDau = reader.GetTimeSpan(2),
+                            GioKetThuc = reader.GetTimeSpan(3),
+                            ThanhTien = reader.GetDecimal(4)
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
 
 
     }

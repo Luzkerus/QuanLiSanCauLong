@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuanLiSanCauLong.LopDuLieu;
 
 namespace QuanLiSanCauLong.LopNghiepVu
 {
@@ -19,6 +20,9 @@ namespace QuanLiSanCauLong.LopNghiepVu
         {
             return dal.CapNhatTrangThai(maChiTiet, trangThaiMoi);
         }
-
+        public List<ChiTietChuaThanhToan> LayDanhSachChuaThanhToan(string sdt)
+        {
+            return dal.LayDanhSachChuaThanhToan(sdt);
+        }
     }
 }

@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LopDuLieu\BangGiaChung.cs" />
+    <Compile Include="LopDuLieu\ChiTietChuaThanhToan.cs" />
     <Compile Include="LopDuLieu\ChiTietDatSan.cs" />
     <Compile Include="LopDuLieu\ChiTietDatSanVM.cs" />
     <Compile Include="LopDuLieu\DatSan.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="LopTruyCapDuLieu\DatSanDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\KhachHangDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />
+    <Compile Include="LopTruyCapDuLieu\ThanhToanDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

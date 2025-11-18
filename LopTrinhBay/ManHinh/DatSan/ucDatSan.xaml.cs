@@ -175,9 +175,9 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             var chiTiet = btn?.DataContext as ChiTietDatSanVM;
             if (chiTiet == null) return;
 
-            if (chiTiet.TrangThai == "Hoàn thành")
+            if (chiTiet.TrangThai == "Hoàn thành" ||chiTiet.TrangThai =="Đang chơi")
             {
-                MessageBox.Show($"Chi tiết {chiTiet.MaChiTiet} đã hoàn thành, không thể hủy.",
+                MessageBox.Show($"Chi tiết {chiTiet.MaChiTiet} đang chơi hoặc đã hoàn thành, không thể hủy.",
                                 "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
