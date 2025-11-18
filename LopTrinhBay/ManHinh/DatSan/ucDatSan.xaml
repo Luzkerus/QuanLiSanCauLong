@@ -427,8 +427,17 @@
                         <ComboBoxItem>Hoàn thành</ComboBoxItem>
                         <ComboBoxItem>Đã hủy</ComboBoxItem>
                     </ComboBox>
-                    <DatePicker Grid.Column="2" x:Name="dpNgayDat" Margin="12,0,0,0"
-                SelectedDateChanged="dpNgayDat_SelectedDateChanged"/>
+                    <StackPanel Margin="12,0,0,0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <DatePicker x:Name="dpNgayDat"
+                Width="130"
+                SelectedDateChanged="dpNgayDat_SelectedDateChanged"
+                SelectedDate="{x:Null}"/>
+
+                        <Button Content="X" Width="25" Height="25" Margin="16,0,0,0" HorizontalAlignment="Right"
+            ToolTip="Xóa ngày lọc"
+            Click="BtnClearDate_Click"/>
+                    </StackPanel>
+
                 </Grid>
 
                 <!-- List -->

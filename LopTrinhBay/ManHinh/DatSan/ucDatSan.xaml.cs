@@ -254,6 +254,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         {
             ApplyFilter();
         }
+        private void BtnClearDate_Click(object sender, RoutedEventArgs e)
+        {
+            dpNgayDat.SelectedDate = null;
+            ApplyFilter(); // khi ngày null → xem tất cả
+        }
 
 
 
