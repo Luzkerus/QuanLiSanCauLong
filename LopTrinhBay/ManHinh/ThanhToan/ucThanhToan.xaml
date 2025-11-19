@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignWidth="1080" d:DesignHeight="800"
+             d:DesignWidth="1080" d:DesignHeight="1000"
              Background="#F6FDF9">
 
     <!-- ========= RESOURCES ========= -->
@@ -200,7 +200,7 @@
                     <StackPanel>
                         <TextBlock Text="Tổng đơn tháng" Style="{StaticResource KpiTitle}"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Tongdonthang}" Style="{StaticResource KpiValue}" Margin="0,0,6,0"/>
+                            <TextBlock x:Name="txtTongDonThang"  Style="{StaticResource KpiValue}" Margin="0,0,6,0"/>
                             <TextBlock Foreground="{StaticResource ColSub}"/>
                         </StackPanel>
                     </StackPanel>
@@ -218,7 +218,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Doanh thu tháng" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding DoanhThuThangStr}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock x:Name="txtDoanhThuThang" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="💰" FontSize="20"/>
@@ -233,8 +233,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Doanh thu hôm nay (Paid)" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding DoanhThuHomNayStr}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock Text="Doanh thu hôm nay" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock x:Name="txtDoanhThuHomNay" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="💵" FontSize="20"/>
@@ -249,8 +249,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Hóa đơn đã thanh toán hôm nay" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoHoaDonPaidHomNay}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock Text="Hóa đơn hôm nay" Style="{StaticResource KpiTitle}"/>
+                        <TextBlock x:Name="txtSoHoaDonHomNay" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="🧾" FontSize="20"/>
@@ -291,19 +291,7 @@
                     <StackPanel>
                         <DockPanel>
                             <TextBlock Text="Chi tiết đặt sân (đang chơi / đã hoàn tất)" FontWeight="SemiBold"/>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Width="331">
-                                <CheckBox Content="Chọn tất cả"
-                                          IsChecked="{Binding ChonTatCaChiTiet}"
-                                          Command="{Binding ToggleChonTatCaCommand}"/>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <RadioButton Content="Thanh toán toàn bộ"
-                                                 GroupName="PayMode" Margin="0,0,12,0"
-                                                 IsChecked="{Binding IsThanhToanToanBo}"/>
-                                    <RadioButton Content="Chỉ các dòng đã chọn"
-                                                 GroupName="PayMode"
-                                                 IsChecked="{Binding IsThanhToanChon}"/>
-                                </StackPanel>
-                            </StackPanel>
+                            
                         </DockPanel>
 
                         <DataGrid ItemsSource="{Binding ChiTietDatSanList}"
@@ -315,7 +303,7 @@
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn Width="42">
                                     <DataGridTemplateColumn.Header>
-                                        <CheckBox x:Name="chkSelectAll" Content="#" Checked="ChkSelectAll_Checked" Unchecked="ChkSelectAll_Unchecked"/>
+                                        <CheckBox x:Name="chkSelectAll" Checked="ChkSelectAll_Checked" Unchecked="ChkSelectAll_Unchecked"/>
                                         <!-- Thêm event cho "Chọn tất cả" nếu chưa -->
                                     </DataGridTemplateColumn.Header>
                                     <DataGridTemplateColumn.CellTemplate>
@@ -360,23 +348,23 @@
                                 <DockPanel Margin="0,6,0,0">
                                     <Button Style="{StaticResource GrayGhostButton}"
                                             Width="36" Height="36" Content="−"
-                                            Command="{Binding GiamSoLuongVotCommand}"/>
+                                            Click="BtnGiamVot_Click"/>
                                     <TextBox Text="{Binding SoLuongVot, UpdateSourceTrigger=PropertyChanged}"
                                              IsReadOnly="True"
-                                             HorizontalContentAlignment="Center"
+                                             HorizontalContentAlignment="Center" x:Name="txtSoLuongVot"
                                              Width="70" Height="36" Margin="8,0,8,0"
                                              Style="{StaticResource RoundedInput}"/>
                                     <Button Style="{StaticResource GrayGhostButton}"
                                             Width="36" Height="36" Content="+"
-                                            Command="{Binding TangSoLuongVotCommand}"/>
+                                            Click="BtnTangVot_Click"/>
                                 </DockPanel>
                             </StackPanel>
 
                             <!-- Đơn giá / cây -->
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="Đơn giá / cây" Foreground="{StaticResource ColSub}"/>
-                                <TextBox Text="{Binding DonGiaThueVot, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}}"
-                                         Height="36" Style="{StaticResource RoundedInput}"
+                                <TextBox  
+                                         Height="36" Style="{StaticResource RoundedInput}" x:Name="txtDonGiaThueVot" TextChanged="txtDonGiaThueVot_TextChanged"
                                          ToolTip="VNĐ / cây"/>
                             </StackPanel>
 
@@ -429,9 +417,19 @@
                 <Border Grid.Row="3" Margin="12" Style="{StaticResource CardStyle}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Style="{StaticResource GrayGhostButton}"
+Padding="20,12"
+Click="btnReset_Click"
+Margin="0,0,12,0" 
+Width="120" Height="32">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>
+                                <TextBlock Text="Reset"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource GrayGhostButton}"
                      Padding="20,12"
-                     Command="{Binding CreateInvoiceCommand}"
-                     Margin="0,0,12,0"
+                     Click="btnTaoHD_Click"
+                     Margin="0,0,12,0" x:Name="btnTaoHD"
                      Width="120" Height="32">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>
@@ -440,7 +438,7 @@
                         </Button>
 
                         <Button Style="{StaticResource BtnSolidGreenRounded}"
-                     Command="{Binding PayNowCommand}"
+                     Click="btnThanhToan_Click"
                      Width="120" Height="32">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,8,0"/>

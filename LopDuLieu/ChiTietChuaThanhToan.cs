@@ -8,6 +8,7 @@ namespace QuanLiSanCauLong.LopDuLieu
 {
     public class ChiTietChuaThanhToan
     {
+        public string MaPhieu { get; set; }
         public string TenSanCached { get; set; }
         public DateTime NgayDat { get; set; }
         public TimeSpan GioBatDau { get; set; }

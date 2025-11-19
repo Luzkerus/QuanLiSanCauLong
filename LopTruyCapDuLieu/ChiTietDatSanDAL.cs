@@ -59,7 +59,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         public List<ChiTietChuaThanhToan> LayDanhSachChuaThanhToan(string sdt)
         {
             const string sql = @"
-        SELECT ct.TenSanCached, ct.NgayDat, ct.GioBatDau, ct.GioKetThuc, ct.ThanhTien
+        SELECT ct.MaPhieu, ct.TenSanCached, ct.NgayDat, ct.GioBatDau, ct.GioKetThuc, ct.ThanhTien
         FROM ChiTietDatSan ct
         JOIN DatSan d ON ct.MaPhieu = d.MaPhieu
         JOIN KhachHang kh ON d.SDT = kh.SDT
@@ -81,11 +81,12 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                     {
                         result.Add(new ChiTietChuaThanhToan
                         {
-                            TenSanCached = reader.GetString(0),
-                            NgayDat = reader.GetDateTime(1),
-                            GioBatDau = reader.GetTimeSpan(2),
-                            GioKetThuc = reader.GetTimeSpan(3),
-                            ThanhTien = reader.GetDecimal(4)
+                            MaPhieu = reader.GetString(0),
+                            TenSanCached = reader.GetString(1),
+                            NgayDat = reader.GetDateTime(2),
+                            GioBatDau = reader.GetTimeSpan(3),
+                            GioKetThuc = reader.GetTimeSpan(4),
+                            ThanhTien = reader.GetDecimal(5)
                         });
                     }
                 }
@@ -94,6 +95,24 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             return result;
         }
 
+        public bool CapNhatTrangThaiDanhSach(List<string> danhSachMaChiTiet, string trangThaiMoi)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                foreach (var maChiTiet in danhSachMaChiTiet)
+                {
+                    using (SqlCommand cmd = new SqlCommand(
+                        "UPDATE ChiTietDatSan SET TrangThaiThanhToan = @TrangThai WHERE MaPhieu = @MaChiTiet", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
+                        cmd.Parameters.AddWithValue("@MaChiTiet", maChiTiet);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+        }
 
     }
 }
