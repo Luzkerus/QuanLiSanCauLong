@@ -251,19 +251,22 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="Tên khách hàng*" Margin="2,0,0,4"/>
+
+                                <TextBlock Text="Số điện thoại*" Margin="2,0,0,4"/>
+                                <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
+                                        Background="White" Padding="8,6">
+                                    <TextBox BorderThickness="0" Background="Transparent" x:Name="txtSDT" TextChanged="txtSDT_TextChanged"
+                                             Text="{Binding SDT, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Border>
+                                
+                                <TextBlock Text="Tên khách hàng*" Margin="2,8,0,4"/>
                                 <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
                                         Background="White" Padding="8,6">
                                     <TextBox BorderThickness="0" Background="Transparent" x:Name="txtTenKH"
                                              Text="{Binding TenKH, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
 
-                                <TextBlock Text="Số điện thoại*" Margin="2,8,0,4"/>
-                                <Border CornerRadius="10" BorderBrush="#D7EAFB" BorderThickness="1"
-                                        Background="White" Padding="8,6">
-                                    <TextBox BorderThickness="0" Background="Transparent" x:Name="txtSDT" TextChanged="txtSDT_TextChanged"
-                                             Text="{Binding SDT, UpdateSourceTrigger=PropertyChanged}"/>
-                                </Border>
+
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
