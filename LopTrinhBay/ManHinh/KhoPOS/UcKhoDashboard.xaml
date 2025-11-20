@@ -523,59 +523,99 @@
             </Grid.ColumnDefinitions>
 
             <!-- Trái: Danh sách sản phẩm -->
-            <StackPanel Grid.Column="0" Orientation="Vertical">
-                <Border Style="{StaticResource Card}" Padding="12" Margin="0,0,0,12">
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Tiêu đề -->
+                    <RowDefinition Height="*"/>
+                    <!-- Nội dung (TabControl) -->
+                </Grid.RowDefinitions>
+
+                <!-- Header "Danh sách sản phẩm" -->
+                <Border Grid.Row="0"
+                    Style="{StaticResource Card}"
+                    Padding="12"
+                    Margin="0,0,0,12">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Background="#E8F5EE" CornerRadius="999" Width="28" Height="28" Margin="0,0,8,0">
-                            <TextBlock Text="🧃" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Background="#E8F5EE"
+                            CornerRadius="999"
+                            Width="28"
+                            Height="28"
+                            Margin="0,0,8,0">
+                            <TextBlock Text="🧃"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock Text="Danh sách sản phẩm" FontSize="16" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
+                        <TextBlock Text="Danh sách sản phẩm"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource ColText}"/>
                     </StackPanel>
                 </Border>
 
-                <Border Style="{StaticResource Card}">
-                    <TabControl Background="Transparent" BorderThickness="0">
-                        <!-- POS -->
+                <!-- Nội dung: Tab POS + Quản lý kho -->
+                <Border Grid.Row="1"
+                    Style="{StaticResource Card}">
+                    <TabControl Background="Transparent"
+                            BorderThickness="0"
+                            VerticalAlignment="Stretch">
+
+                        <!-- ============ TAB POS ============ -->
                         <TabItem>
                             <TabItem.Header>
                                 <TextBlock Text="Bán hàng (POS)"/>
                             </TabItem.Header>
-                            <StackPanel Margin="0,8,0,0">
-                                <Border Background="White"
-                                        CornerRadius="8"
-                                        BorderBrush="#C7D7D0"
-                                        BorderThickness="1.5"
-                                        Padding="6"
-                                        Margin="0,0,0,12">
 
+                            <!-- Dùng Grid để giới hạn chiều cao, ScrollViewer mới scroll được -->
+                            <Grid Margin="0,8,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Ô tìm kiếm -->
+                                    <RowDefinition Height="*"/>
+                                    <!-- Danh sách sản phẩm -->
+                                </Grid.RowDefinitions>
+
+                                <!-- Ô tìm kiếm -->
+                                <Border Grid.Row="0"
+                                    Background="White"
+                                    CornerRadius="8"
+                                    BorderBrush="#C7D7D0"
+                                    BorderThickness="1.5"
+                                    Padding="6"
+                                    Margin="0,0,0,12">
                                     <TextBox Style="{StaticResource WatermarkTextBox}"
-                                             Background="Transparent"
-                                             BorderThickness="0"
-                                             Height="26"
-                                             FontSize="14"
-                                             Tag="Tìm sản phẩm"
-                                             Text="{Binding PosSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Height="26"
+                                         FontSize="14"
+                                         Tag="Tìm sản phẩm"
+                                         Text="{Binding PosSearch, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
-                                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl ItemsSource="{Binding PosProducts}" ItemTemplate="{StaticResource ProductCardTemplate}">
+
+                                <!-- Danh sách sản phẩm + Scroll -->
+                                <ScrollViewer Grid.Row="1"
+                                          VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding PosProducts}"
+                                              ItemTemplate="{StaticResource ProductCardTemplate}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <WrapPanel Margin="0,4,0,0"
-                                                           HorizontalAlignment="Left"/>
+                                                <!-- Căn trái, wrap theo chiều ngang -->
+                                                <WrapPanel Margin="4,3,0,0"
+                                                       HorizontalAlignment="Left"
+/>
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </ScrollViewer>
-                            </StackPanel>
+                            </Grid>
                         </TabItem>
 
-                        <!-- Tab QUẢN LÝ KHO -->
+                        <!-- ============ TAB QUẢN LÝ KHO ============ -->
                         <TabItem>
                             <TabItem.Header>
                                 <TextBlock Text="Quản lý kho"/>
                             </TabItem.Header>
 
-                            <!-- Bọc toàn panel trong Grid để tránh ScrollViewer che mất -->
                             <Grid Margin="0,8,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -585,35 +625,35 @@
                                 </Grid.RowDefinitions>
 
                                 <!-- Ô tìm kiếm -->
-                                <Border Background="White"
+                                <Border Grid.Row="0"
+                                    Background="White"
                                     CornerRadius="8"
                                     BorderBrush="#C7D7D0"
                                     BorderThickness="1"
                                     Padding="6"
                                     Margin="0,0,0,12">
-
                                     <TextBox Tag="Tìm theo tên / mã hàng"
-                                             Style="{StaticResource WatermarkTextBox}"
-                                             Background="Transparent"
-                                             BorderThickness="0"
-                                             FontSize="14"
-                                             Height="26"
-                                             VerticalContentAlignment="Center"
-                                             Text="{Binding KhoSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Style="{StaticResource WatermarkTextBox}"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         FontSize="14"
+                                         Height="26"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding KhoSearch, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
 
                                 <!-- Bảng quản lý kho -->
                                 <DataGrid Grid.Row="1"
-                                          ItemsSource="{Binding KhoProducts}"
-                                          AutoGenerateColumns="False"
-                                          IsReadOnly="True"
-                                          HeadersVisibility="Column"
-                                          GridLinesVisibility="None"
-                                          BorderBrush="{StaticResource ColBorder}"
-                                          BorderThickness="1"
-                                          RowHeight="32"
-                                          CanUserAddRows="False"
-                                          CanUserDeleteRows="False">
+                                      ItemsSource="{Binding KhoProducts}"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      HeadersVisibility="Column"
+                                      GridLinesVisibility="None"
+                                      BorderBrush="{StaticResource ColBorder}"
+                                      BorderThickness="1"
+                                      RowHeight="32"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False">
                                     <DataGrid.Resources>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="Background" Value="#F1F5F9"/>
@@ -631,8 +671,8 @@
                                         <DataGridTextColumn Header="ĐVT" Binding="{Binding DonViTinh}" Width="*"/>
 
                                         <DataGridTextColumn Header="Giá nhập"
-                                                            Binding="{Binding GiaNhap, StringFormat={}{0:N0} đ}"
-                                                            Width="*">
+                                                        Binding="{Binding GiaNhap, StringFormat={}{0:N0} đ}"
+                                                        Width="*">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -641,8 +681,8 @@
                                         </DataGridTextColumn>
 
                                         <DataGridTextColumn Header="Giá bán"
-                                                            Binding="{Binding GiaBan, StringFormat={}{0:N0} đ}"
-                                                            Width="*">
+                                                        Binding="{Binding GiaBan, StringFormat={}{0:N0} đ}"
+                                                        Width="*">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -660,17 +700,20 @@
                                         </DataGridTextColumn>
 
                                         <DataGridTextColumn Header="Lần nhập cuối"
-                                                            Binding="{Binding NgayNhapCuoi, StringFormat={}{0:dd/MM/yyyy}}"
-                                                            Width="*"/>
+                                                        Binding="{Binding NgayNhapCuoi, StringFormat={}{0:dd/MM/yyyy}}"
+                                                        Width="*"/>
 
-                                        <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="*"/>
+                                        <DataGridTextColumn Header="Trạng thái"
+                                                        Binding="{Binding TrangThai}"
+                                                        Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
                         </TabItem>
+
                     </TabControl>
                 </Border>
-            </StackPanel>
+            </Grid>
 
             <!-- Phải: Giỏ hàng -->
             <StackPanel Grid.Column="1" Margin="8,0,0,0">
