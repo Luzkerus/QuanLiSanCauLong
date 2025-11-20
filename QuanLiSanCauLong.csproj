@@ -199,8 +199,14 @@
     <Compile Include="LopTrinhBay\ManHinh\KhachHoiVien\ucKhachHoiVien.xaml.cs">
       <DependentUpon>ucKhachHoiVien.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmLichsunhap.xaml.cs">
+      <DependentUpon>frmLichsunhap.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmNhapHang.xaml.cs">
       <DependentUpon>frmNhapHang.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmPhieuThanhToanPOS.xaml.cs">
+      <DependentUpon>frmPhieuThanhToanPOS.xaml</DependentUpon>
     </Compile>
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\UcKhoDashboard.xaml.cs">
       <DependentUpon>UcKhoDashboard.xaml</DependentUpon>
@@ -314,7 +320,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LopTrinhBay\ManHinh\KhoPOS\frmLichsunhap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LopTrinhBay\ManHinh\KhoPOS\frmNhapHang.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\KhoPOS\frmPhieuThanhToanPOS.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

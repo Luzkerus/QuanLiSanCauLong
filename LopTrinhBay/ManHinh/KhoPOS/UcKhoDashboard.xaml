@@ -126,6 +126,9 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Border>
@@ -142,51 +145,9 @@
                                                           Color="#0DAA78"/>
                                     </Setter.Value>
                                 </Setter>
-                            </Trigger>
-                            <!-- Pressed -->
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
-                            </Trigger>
-                            <!-- Disabled -->
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Nút phụ (Secondary – trắng viền xám) dùng cho Hủy đơn -->
-        <Style x:Key="SecondaryButton" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#D9D9D9"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="bd"
-                                CornerRadius="10"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <!-- Hover -->
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#F3F4F6"/>
-                                <Setter TargetName="bd" Property="BorderBrush" Value="#D1D5DB"/>
-                                <Setter TargetName="bd" Property="Effect">
+                                <Setter TargetName="bd" Property="RenderTransform">
                                     <Setter.Value>
-                                        <DropShadowEffect BlurRadius="10"
-                                                          ShadowDepth="0"
-                                                          Opacity="0.18"/>
+                                        <ScaleTransform ScaleX="1.03" ScaleY="1.03"/>
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -204,23 +165,210 @@
             </Setter>
         </Style>
 
+        <!-- Nút phụ (Secondary – trắng viền xám) -->
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D9D9D9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F3F4F6"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#D1D5DB"/>
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="10"
+                                                          ShadowDepth="0"
+                                                          Opacity="0.18"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.03" ScaleY="1.03"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <!-- Pressed -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Nút đỏ Hủy (Danger) -->
+        <Style x:Key="DangerButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#EF4444"/>
+            <Setter Property="BorderBrush" Value="#EF4444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="20,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#DC2626"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#DC2626"/>
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="14"
+                                                          ShadowDepth="0"
+                                                          Opacity="0.30"
+                                                          Color="#DC2626"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="bd" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.03" ScaleY="1.03"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <!-- Pressed -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ========== STYLE CARD SẢN PHẨM POS (HOVER NỔI LÊN) ========== -->
+        <Style x:Key="ProductCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="Margin" Value="0,0,20,20"/>
+            <Setter Property="Width" Value="230"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="0" Opacity="0.06"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="18" ShadowDepth="0" Opacity="0.20"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.03" ScaleY="1.03"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="BorderBrush" Value="#C2E4D5"/>
+                    <Setter Property="Background" Value="#F7FFFB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Product card (dùng cho tab POS) -->
         <DataTemplate x:Key="ProductCardTemplate">
-            <Border Style="{StaticResource Card}" Margin="0,0,12,12" Width="240">
-                <StackPanel>
-                    <Border Height="140" Background="#F1F7F4" CornerRadius="10"/>
-                    <TextBlock Text="{Binding TenHH}" Margin="0,10,0,2" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding GiaBan, StringFormat={}{0:N0}đ}" Foreground="{StaticResource ColText}" FontWeight="Bold"/>
-                        <Border Background="#EDF7F1" CornerRadius="999" Padding="8,2" Margin="8,0,0,0">
-                            <TextBlock Text="{Binding SoLuongHienCo}" Foreground="{StaticResource ColSub}" FontSize="12"/>
-                        </Border>
+            <Border Style="{StaticResource ProductCardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="140"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Ảnh / placeholder -->
+                    <Border Grid.Row="0"
+                            Background="#F1F7F4"
+                            CornerRadius="12"
+                            Margin="0,0,0,10"/>
+
+                    <!-- Tên sản phẩm -->
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding TenHH}"
+                               Margin="0,0,0,4"
+                               TextWrapping="Wrap"
+                               FontWeight="SemiBold"
+                               FontSize="14"
+                               Foreground="{StaticResource ColText}"/>
+
+                    <!-- Giá + tồn + nút -->
+                    <StackPanel Grid.Row="2">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,0,6">
+                            <TextBlock Text="{Binding GiaBan, StringFormat={}{0:N0}đ}"
+                                       Foreground="{StaticResource ColText}"
+                                       FontWeight="Bold"
+                                       FontSize="14"/>
+                            <Border Background="#EDF7F1"
+                                    CornerRadius="999"
+                                    Padding="8,2"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{Binding SoLuongHienCo}"
+                                           Foreground="{StaticResource ColSub}"
+                                           FontSize="11"/>
+                            </Border>
+                        </StackPanel>
+
+                        <Button Style="{StaticResource MainButton}"
+                                Margin="0,0,0,0"
+                                Content="Thêm vào giỏ"
+                                HorizontalAlignment="Stretch"
+                                Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"/>
                     </StackPanel>
-                    <Button Style="{StaticResource MainButton}" Margin="0,10,0,0"
-                            Content="Thêm vào giỏ"
-                            Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                            CommandParameter="{Binding}"/>
-                </StackPanel>
+                </Grid>
             </Border>
         </DataTemplate>
 
@@ -267,47 +415,38 @@
 
         <!-- Header + Actions -->
         <DockPanel Grid.Row="0" Margin="0,0,0,12">
+            <!-- Tiêu đề bên trái -->
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Kho &amp; POS Nước uống" FontSize="24" FontWeight="Bold"/>
                 <TextBlock Text="Quản lý kho hàng và bán nước uống" FontWeight="SemiBold" Foreground="#6B7E74"/>
             </StackPanel>
 
-            <!-- Nút Nhập hàng: to & dài hơn text -->
-            <Button Click="btnNhapHang"
-                    Style="{StaticResource MainButton}"
-                    DockPanel.Dock="Right"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                    Margin="0,0,8,0"
-                    Padding="56,14"
-                    MinWidth="120"
-                    Height="50"
-                    FontSize="16"
-                    Content="Nhập hàng">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="bd"
-                                CornerRadius="12"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#27A567"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#1E8F55"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            <!-- Nhóm nút bên phải -->
+            <StackPanel DockPanel.Dock="Right"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+
+                <!-- Nút Lịch sử nhập -->
+                <Button Click="btnLichSuNhap"
+                        Style="{StaticResource SecondaryButton}"
+                        Margin="0,0,8,0"
+                        Padding="32,14"
+                        MinWidth="120"
+                        Height="50"
+                        FontSize="16"
+                        Content="Lịch sử nhập"/>
+                
+                <!-- Nút Nhập hàng -->
+                <Button Click="btnNhapHang"
+                        Style="{StaticResource MainButton}"
+                        Padding="56,14"
+                        MinWidth="120"
+                        Height="50"
+                        FontSize="16"
+                        Content="Nhập hàng"/>
+
+            </StackPanel>
         </DockPanel>
 
         <!-- ===== KPI (effect + icon position như ucThanhToan) ===== -->
@@ -402,14 +541,27 @@
                                 <TextBlock Text="Bán hàng (POS)"/>
                             </TabItem.Header>
                             <StackPanel Margin="0,8,0,0">
-                                <TextBox Tag="Tìm sản phẩm" Style="{StaticResource WatermarkTextBox}"
-                                         Margin="0,0,0,12" Height="36"
-                                         Text="{Binding PosSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Border Background="White"
+                                        CornerRadius="8"
+                                        BorderBrush="#C7D7D0"
+                                        BorderThickness="1.5"
+                                        Padding="6"
+                                        Margin="0,0,0,12">
+
+                                    <TextBox Style="{StaticResource WatermarkTextBox}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Height="26"
+                                             FontSize="14"
+                                             Tag="Tìm sản phẩm"
+                                             Text="{Binding PosSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Border>
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <ItemsControl ItemsSource="{Binding PosProducts}" ItemTemplate="{StaticResource ProductCardTemplate}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <WrapPanel/>
+                                                <WrapPanel Margin="0,4,0,0"
+                                                           HorizontalAlignment="Left"/>
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
@@ -417,32 +569,51 @@
                             </StackPanel>
                         </TabItem>
 
-                        <!-- Quản lý kho -->
+                        <!-- Tab QUẢN LÝ KHO -->
                         <TabItem>
                             <TabItem.Header>
                                 <TextBlock Text="Quản lý kho"/>
                             </TabItem.Header>
 
-                            <StackPanel Margin="0,8,0,0">
+                            <!-- Bọc toàn panel trong Grid để tránh ScrollViewer che mất -->
+                            <Grid Margin="0,8,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Tìm kiếm -->
+                                    <RowDefinition Height="*"/>
+                                    <!-- DataGrid -->
+                                </Grid.RowDefinitions>
+
                                 <!-- Ô tìm kiếm -->
-                                <TextBox Tag="Tìm theo tên / mã hàng"
-                                         Style="{StaticResource WatermarkTextBox}"
-                                         Margin="0,0,0,12"
-                                         Height="36"
-                                         Text="{Binding KhoSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Border Background="White"
+                                    CornerRadius="8"
+                                    BorderBrush="#C7D7D0"
+                                    BorderThickness="1"
+                                    Padding="6"
+                                    Margin="0,0,0,12">
+
+                                    <TextBox Tag="Tìm theo tên / mã hàng"
+                                             Style="{StaticResource WatermarkTextBox}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             FontSize="14"
+                                             Height="26"
+                                             VerticalContentAlignment="Center"
+                                             Text="{Binding KhoSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Border>
 
                                 <!-- Bảng quản lý kho -->
-                                <DataGrid ItemsSource="{Binding KhoProducts}"
+                                <DataGrid Grid.Row="1"
+                                          ItemsSource="{Binding KhoProducts}"
                                           AutoGenerateColumns="False"
                                           IsReadOnly="True"
                                           HeadersVisibility="Column"
                                           GridLinesVisibility="None"
                                           BorderBrush="{StaticResource ColBorder}"
                                           BorderThickness="1"
-                                          RowHeight="30"
+                                          RowHeight="32"
                                           CanUserAddRows="False"
-                                          CanUserDeleteRows="False"
-                                          Margin="0,0,0,4">
+                                          CanUserDeleteRows="False">
                                     <DataGrid.Resources>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="Background" Value="#F1F5F9"/>
@@ -455,17 +626,9 @@
                                     </DataGrid.Resources>
 
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Mã hàng"
-                                                            Binding="{Binding MaHH}"
-                                                            Width="80"/>
-
-                                        <DataGridTextColumn Header="Tên hàng"
-                                                            Binding="{Binding TenHH}"
-                                                            Width="2*"/>
-
-                                        <DataGridTextColumn Header="ĐVT"
-                                                            Binding="{Binding DonViTinh}"
-                                                            Width="*"/>
+                                        <DataGridTextColumn Header="Mã hàng" Binding="{Binding MaHH}" Width="65"/>
+                                        <DataGridTextColumn Header="Tên hàng" Binding="{Binding TenHH}" Width="1*"/>
+                                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DonViTinh}" Width="*"/>
 
                                         <DataGridTextColumn Header="Giá nhập"
                                                             Binding="{Binding GiaNhap, StringFormat={}{0:N0} đ}"
@@ -488,9 +651,7 @@
                                             </DataGridTextColumn.ElementStyle>
                                         </DataGridTextColumn>
 
-                                        <DataGridTextColumn Header="Tồn"
-                                                            Binding="{Binding SoLuongHienCo}"
-                                                            Width="*">
+                                        <DataGridTextColumn Header="Tồn" Binding="{Binding SoLuongHienCo}" Width="45">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -502,12 +663,10 @@
                                                             Binding="{Binding NgayNhapCuoi, StringFormat={}{0:dd/MM/yyyy}}"
                                                             Width="*"/>
 
-                                        <DataGridTextColumn Header="Trạng thái"
-                                                            Binding="{Binding TrangThai}"
-                                                            Width="*"/>
+                                        <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                            </StackPanel>
+                            </Grid>
                         </TabItem>
                     </TabControl>
                 </Border>
@@ -536,29 +695,61 @@
 
                         <Separator Margin="0,12,0,12" Background="{StaticResource ColBorder}" Height="1"/>
 
-                        <DockPanel Margin="0,0,0,12">
-                            <TextBlock Text="Tổng cộng:" Foreground="{StaticResource ColSub}"/>
-                            <TextBlock Text="{Binding CartTotal, StringFormat={}{0:N0}đ}"
-                                       FontWeight="Bold"
-                                       DockPanel.Dock="Right"/>
-                        </DockPanel>
+                        <!-- Tổng cộng  -->
+                        <StackPanel Margin="0,8,0,12">
 
-                        <Button Style="{StaticResource MainButton}"
-                                Content="Thanh toán"
-                                Command="{Binding CheckoutCommand}"
-                                Margin="0,0,0,8"
-                                Height="42"/>
+                            <!-- Dòng label nhỏ phía trên -->
+                            <TextBlock Text="Tổng cộng"
+                               FontSize="13"
+                               Foreground="{StaticResource ColSub}"
+                               Margin="0,0,0,2"/>
 
-                        <Button Background="White"
-                                BorderBrush="#D9D9D9"
-                                BorderThickness="1"
-                                Foreground="#21382D"
-                                FontWeight="SemiBold"
-                                Content="Hủy đơn"
-                                Command="{Binding ClearCartCommand}"
-                                Margin="0,0,0,8"
-                                Height="38"
-                                Cursor="Hand"/>
+                            <!-- Dòng số tiền + style đẹp -->
+                            <DockPanel LastChildFill="False">
+                                <TextBlock Text="Tổng tiền:"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource ColText}"
+                                   VerticalAlignment="Center"
+                                   DockPanel.Dock="Left"/>
+
+                                <TextBlock Text="{Binding CartTotal, StringFormat={}{0:N0} đ}"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="#0DAA78"
+                                   VerticalAlignment="Center"
+                                   DockPanel.Dock="Right"/>
+                            </DockPanel>
+
+                            <!-- Divider -->
+                            <Border Height="1"
+                                Background="{StaticResource ColBorder}"
+                                Margin="0,10,0,4"/>
+                        </StackPanel>
+
+
+                        <!-- Hai nút Thanh toán + Hủy đơn nằm ngang -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0"
+                                    Style="{StaticResource MainButton}"
+                                    Content="Thanh toán"
+                                    Click="btnThanhToan"
+                                    Margin="0,0,4,0"
+                                    Height="42"/>
+
+                            <Button Grid.Column="1"
+                                    Style="{StaticResource DangerButton}"
+                                    Content="Hủy đơn"
+                                    
+                                    Margin="4,0,0,0"
+                                    Height="42"/>
+                        </Grid>
+
                     </StackPanel>
                 </Border>
             </StackPanel>

@@ -48,6 +48,37 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             frm.ShowDialog();
         }
 
+        private void btnLichSuNhap(object sender, RoutedEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this);
+
+            var frm = new frmLichsunhap();
+
+
+            if (parentWindow != null)
+            {
+                frm.Owner = parentWindow;
+                frm.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+
+            frm.ShowDialog();
+        }
+
+        private void btnThanhToan(object sender, RoutedEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this);
+
+            var frm = new frmPhieuThanhToanPOS();
+
+
+            if (parentWindow != null)
+            {
+                frm.Owner = parentWindow;
+                frm.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+
+            frm.ShowDialog();
+        }
     }
 }
 
