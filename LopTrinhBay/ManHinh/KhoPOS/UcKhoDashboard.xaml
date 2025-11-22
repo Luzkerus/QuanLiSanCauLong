@@ -334,7 +334,7 @@
 
                     <!-- Tên sản phẩm -->
                     <TextBlock Grid.Row="1"
-                               Text="{Binding TenHH}"
+                               Text="{Binding TenHang}"
                                Margin="0,0,0,4"
                                TextWrapping="Wrap"
                                FontWeight="SemiBold"
@@ -355,7 +355,7 @@
                                     Padding="8,2"
                                     Margin="8,0,0,0"
                                     VerticalAlignment="Center">
-                                <TextBlock Text="{Binding SoLuongHienCo}"
+                                <TextBlock Text="{Binding TonKho}"
                                            Foreground="{StaticResource ColSub}"
                                            FontSize="11"/>
                             </Border>
@@ -595,7 +595,7 @@
                                 <!-- Danh sách sản phẩm + Scroll -->
                                 <ScrollViewer Grid.Row="1"
                                           VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl ItemsSource="{Binding PosProducts}"
+                                    <ItemsControl x:Name="isSanPham"
                                               ItemTemplate="{StaticResource ProductCardTemplate}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -636,15 +636,15 @@
                                          Style="{StaticResource WatermarkTextBox}"
                                          Background="Transparent"
                                          BorderThickness="0"
-                                         FontSize="14"
+                                         FontSize="14" x:Name="txtTimKiemKho"
                                          Height="26"
-                                         VerticalContentAlignment="Center"
-                                         Text="{Binding KhoSearch, UpdateSourceTrigger=PropertyChanged}"/>
+                                         VerticalContentAlignment="Center" TextChanged="txtTimKiemKho_TextChanged"
+                                        />
                                 </Border>
 
                                 <!-- Bảng quản lý kho -->
                                 <DataGrid Grid.Row="1"
-                                      ItemsSource="{Binding KhoProducts}"
+                                      x:Name="dgKho"
                                       AutoGenerateColumns="False"
                                       IsReadOnly="True"
                                       HeadersVisibility="Column"
@@ -666,16 +666,16 @@
                                     </DataGrid.Resources>
 
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Mã hàng" Binding="{Binding MaHH}" Width="65"/>
-                                        <DataGridTextColumn Header="Tên hàng" Binding="{Binding TenHH}" Width="1*"/>
-                                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DonViTinh}" Width="*"/>
+                                        <DataGridTextColumn Header="Mã hàng" Binding="{Binding MaHang}" Width="*"/>
+                                        <DataGridTextColumn Header="Tên hàng" Binding="{Binding TenHang}" Width="1*"/>
+                                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DVT}" Width="0.8*"/>
 
                                         <DataGridTextColumn Header="Giá nhập"
                                                         Binding="{Binding GiaNhap, StringFormat={}{0:N0} đ}"
                                                         Width="*">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
                                                 </Style>
                                             </DataGridTextColumn.ElementStyle>
                                         </DataGridTextColumn>
@@ -691,7 +691,7 @@
                                             </DataGridTextColumn.ElementStyle>
                                         </DataGridTextColumn>
 
-                                        <DataGridTextColumn Header="Tồn" Binding="{Binding SoLuongHienCo}" Width="45">
+                                        <DataGridTextColumn Header="Tồn kho" Binding="{Binding TonKho}" Width="*">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -700,12 +700,13 @@
                                         </DataGridTextColumn>
 
                                         <DataGridTextColumn Header="Lần nhập cuối"
-                                                        Binding="{Binding NgayNhapCuoi, StringFormat={}{0:dd/MM/yyyy}}"
+                                                        Binding="{Binding LanCuoiNhap, StringFormat={}{0:dd/MM/yyyy}}"
                                                         Width="*"/>
 
                                         <DataGridTextColumn Header="Trạng thái"
                                                         Binding="{Binding TrangThai}"
                                                         Width="*"/>
+                                        
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
