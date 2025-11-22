@@ -210,6 +210,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
                 // Xóa DataGrid và reset UI nếu muốn
                 dgChiTiet.Items.Clear();
                 LoadPhieu();
+                DialogResult = true;
 
             }
             catch (Exception ex)

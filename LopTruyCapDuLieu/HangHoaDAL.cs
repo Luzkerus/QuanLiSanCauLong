@@ -38,7 +38,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             {
                 string sql = @"
                 INSERT INTO HangHoa(MaHang, TenHang, DVT, TonKho, GiaNhap, GiaBan, LanCuoiNhap)
-                VALUES(@MaHang, @TenHang, @DVT, @TonKho, @GiaNhap, @GiaNhap, GETDATE())";
+                VALUES(@MaHang, @TenHang, @DVT, @TonKho, @GiaNhap, @GiaNhap+3000, GETDATE())";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -62,6 +62,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 UPDATE HangHoa SET 
                     TonKho = TonKho + @SL,
                     GiaNhap = @GiaNhap,
+                    GiaBan = @GiaNhap + 3000,
                     LanCuoiNhap = GETDATE()
                 WHERE MaHang = @MaHang";
 
@@ -177,7 +178,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                         MaHang = reader["MaHang"].ToString(),
                         TenHang = reader["TenHang"].ToString(),
                         DVT = reader["DVT"].ToString(),
-                        TonKhio = Convert.ToInt32(reader["TonKho"]),
+                        TonKho = Convert.ToInt32(reader["TonKho"]),
                         GiaNhap = Convert.ToDecimal(reader["GiaNhap"]),
                         GiaBan = Convert.ToDecimal(reader["GiaBan"]),
                         LanCuoiNhap = Convert.ToDateTime(reader["LanCuoiNhap"]),
@@ -188,6 +189,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
             return hangHoas;
         }
+
     }
 
 }

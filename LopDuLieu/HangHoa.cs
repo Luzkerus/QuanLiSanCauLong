@@ -12,9 +12,9 @@ namespace QuanLiSanCauLong.LopDuLieu
         public string TenHang { get; set; }
 
         public string DVT { get; set; }
-        public int TonKhio { get; set; }
+        public int TonKho { get; set; }
         public decimal GiaNhap { get; set; }
-        public decimal GiaBan { get; set; }
+        public decimal GiaBan { get; set; } 
         public DateTime LanCuoiNhap { get; set; }
         public string TrangThai { get; set; }
     }

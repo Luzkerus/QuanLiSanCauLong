@@ -71,6 +71,11 @@ namespace QuanLiSanCauLong.LopNghiepVu
         {
             return hangHoaDAL.LayMaHangByTenVaDVT(tenHang, dvt);
         }
+        public List<HangHoa> LayTatCaHangHoa()
+        {
+            return hangHoaDAL.LayTatCaHangHoa();
+        }
+
 
     }
 
