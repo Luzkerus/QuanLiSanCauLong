@@ -202,6 +202,315 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- ==== STYLE DATAGRID GIỐNG UC KHÁCH HỘI VIÊN ==== -->
+        <Style x:Key="DGHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#E8FBF2"/>
+            <Setter Property="BorderBrush" Value="#CDEFE3"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#0D7049"/>
+        </Style>
+
+        <Style x:Key="MoneyCell" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#0D7049"/>
+        </Style>
+
+        <!-- Row cao hơn một xíu -->
+        <Style x:Key="DGRow" TargetType="DataGridRow">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="38"/>
+            <!-- tăng nhẹ chiều cao hàng -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridRow">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Thanh màu bên trái -->
+                            <Border x:Name="Accent" Grid.Column="0" Background="Transparent"/>
+
+                            <!-- Nền hàng -->
+                            <Border x:Name="Bg" Grid.Column="1" Background="{TemplateBinding Background}"/>
+                            <DataGridCellsPresenter Grid.Column="1"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#F0FFF8"/>
+                                <Setter TargetName="Accent" Property="Background" Value="#0FBF84"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#D7F6EA"/>
+                                <Setter TargetName="Accent" Property="Background" Value="#0FBF84"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Cell padding rộng hơn một chút -->
+        <Style x:Key="DGCell" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <!-- Badge trạng thái đặt sân -->
+        <Style x:Key="StatusBadgeBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="10,3"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <!-- mặc định: xanh nhạt -->
+            <Setter Property="Background" Value="#DFF7EA"/>
+            <Setter Property="BorderBrush" Value="#A7F3D0"/>
+
+            <Style.Triggers>
+                <!-- Đã hủy: đỏ -->
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đã hủy">
+                    <Setter Property="Background" Value="#FEE2E2"/>
+                    <Setter Property="BorderBrush" Value="#FCA5A5"/>
+                </DataTrigger>
+
+                <!-- Đang chơi: xanh dương nhạt -->
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đang chơi">
+                    <Setter Property="Background" Value="#DBEAFE"/>
+                    <Setter Property="BorderBrush" Value="#93C5FD"/>
+                </DataTrigger>
+
+                <!-- Chưa bắt đầu: xám nhạt -->
+                <DataTrigger Binding="{Binding TrangThai}" Value="Chưa bắt đầu">
+                    <Setter Property="Background" Value="#E5E7EB"/>
+                    <Setter Property="BorderBrush" Value="#D1D5DB"/>
+                </DataTrigger>
+
+                <!-- Hoàn thành: xanh (giữ mặc định) -->
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="StatusBadgeText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#166534"/>
+            <!-- xanh mặc định -->
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đã hủy">
+                    <Setter Property="Foreground" Value="#B91C1C"/>
+                    <!-- đỏ -->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đang chơi">
+                    <Setter Property="Foreground" Value="#1D4ED8"/>
+                    <!-- xanh dương -->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TrangThai}" Value="Chưa bắt đầu">
+                    <Setter Property="Foreground" Value="#374151"/>
+                    <!-- xám đậm -->
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Badge trạng thái thanh toán -->
+        <Style x:Key="PayStatusBadgeBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="10,3"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <!-- mặc định: xanh đã thanh toán -->
+            <Setter Property="Background" Value="#DCFCE7"/>
+            <Setter Property="BorderBrush" Value="#86EFAC"/>
+
+            <Style.Triggers>
+                <!-- Chưa thanh toán: cam -->
+                <DataTrigger Binding="{Binding TrangThaiThanhToan}" Value="Chưa thanh toán">
+                    <Setter Property="Background" Value="#FEF3C7"/>
+                    <Setter Property="BorderBrush" Value="#FACC15"/>
+                </DataTrigger>
+
+                <!-- Đã thanh toán: giữ mặc định -->
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PayStatusBadgeText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#166534"/>
+            <!-- xanh -->
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding TrangThaiThanhToan}" Value="Chưa thanh toán">
+                    <Setter Property="Foreground" Value="#B45309"/>
+                    <!-- cam -->
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Row DatSan: cao hơn 1 xíu, có viền accent bên trái -->
+        <Style x:Key="DGRowDatSan" TargetType="DataGridRow">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridRow">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- thanh màu bên trái -->
+                            <Border x:Name="Accent" Grid.Column="0" Background="Transparent"/>
+
+                            <!-- nền dòng -->
+                            <Border x:Name="Bg" Grid.Column="1" Background="{TemplateBinding Background}"/>
+                            <DataGridCellsPresenter Grid.Column="1"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#F0FFF8"/>
+                                <Setter TargetName="Accent" Property="Background" Value="#0FBF84"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#D7F6EA"/>
+                                <Setter TargetName="Accent" Property="Background" Value="#0FBF84"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Badge trạng thái ĐẶT SÂN -->
+        <Style x:Key="BookingStatusBadge" TargetType="Border">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="7,2"/>
+            <Setter Property="Background" Value="#E5F9F0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="MinWidth" Value="90"/>
+
+            <!-- Mặc định: xanh lá nhẹ -->
+            <Style.Triggers>
+                <!-- Đang chơi / Hoàn thành: xanh -->
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đang chơi">
+                    <Setter Property="Background" Value="#BAF7C8"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TrangThai}" Value="Hoàn thành">
+                    <Setter Property="Background" Value="#166534"/>
+                </DataTrigger>
+
+                <!-- Chưa bắt đầu: xanh dương nhạt -->
+                <DataTrigger Binding="{Binding TrangThai}" Value="Chưa bắt đầu">
+                    <Setter Property="Background" Value="#DBEAFE
+"/>
+                </DataTrigger>
+
+                <!-- Đã hủy: đỏ -->
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đã hủy">
+                    <Setter Property="Background" Value="#EF4444
+"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Badge trạng thái THANH TOÁN -->
+        <Style x:Key="PaymentStatusBadge" TargetType="Border">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="7,2"/>
+            <Setter Property="Background" Value="#E5F9F0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="MinWidth" Value="120"/>
+
+            <Style.Triggers>
+                <!-- Chưa thanh toán: cam -->
+                <DataTrigger Binding="{Binding TrangThaiThanhToan}" Value="Chưa thanh toán">
+                    <Setter Property="Background" Value="#FF8C00"/>
+                </DataTrigger>
+
+                <!-- Đã thanh toán: xanh -->
+                <DataTrigger Binding="{Binding TrangThaiThanhToan}" Value="Đã thanh toán">
+                    <Setter Property="Background" Value="#166534"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Badge trạng thái Đặt sân -->
+        <DataTemplate x:Key="TrangThaiBadgeTemplate">
+            <Border x:Name="bd"
+            CornerRadius="6"
+            Padding="8,1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+                <TextBlock x:Name="txt"
+                   Text="{Binding}"
+                   FontSize="13"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+            </Border>
+
+            <DataTemplate.Triggers>
+
+                <!-- ĐANG CHƠI -->
+                <DataTrigger Binding="{Binding}" Value="Đang chơi">
+                    <Setter TargetName="bd" Property="Background" Value="#D1F5D9"/>
+                    <Setter TargetName="bd" Property="BorderBrush" Value="#27AE60"/>
+                    <Setter TargetName="bd" Property="BorderThickness" Value="1"/>
+                    <Setter TargetName="txt" Property="Foreground" Value="#1E8449"/>
+                </DataTrigger>
+
+                <!-- ĐÃ HỦY -->
+                <DataTrigger Binding="{Binding}" Value="Đã hủy">
+                    <Setter TargetName="bd" Property="Background" Value="#FFDDDD"/>
+                    <Setter TargetName="bd" Property="BorderBrush" Value="#FF4D4D"/>
+                    <Setter TargetName="bd" Property="BorderThickness" Value="1"/>
+                    <Setter TargetName="txt" Property="Foreground" Value="#C0392B"/>
+                </DataTrigger>
+
+                <!-- CHƯA BẮT ĐẦU -->
+                <DataTrigger Binding="{Binding}" Value="Chưa bắt đầu">
+                    <Setter TargetName="bd" Property="Background" Value="#E8ECFF"/>
+                    <Setter TargetName="bd" Property="BorderBrush" Value="#4C67FF"/>
+                    <Setter TargetName="bd" Property="BorderThickness" Value="1"/>
+                    <Setter TargetName="txt" Property="Foreground" Value="#2C3E95"/>
+                </DataTrigger>
+
+                <!-- HOÀN THÀNH -->
+                <DataTrigger Binding="{Binding}" Value="Hoàn thành">
+                    <Setter TargetName="bd" Property="Background" Value="#D7F6EA"/>
+                    <Setter TargetName="bd" Property="BorderBrush" Value="#2ECC71"/>
+                    <Setter TargetName="bd" Property="BorderThickness" Value="1"/>
+                    <Setter TargetName="txt" Property="Foreground" Value="#1E7F52"/>
+                </DataTrigger>
+
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+
+
+
+
     </UserControl.Resources>
 
     <!-- ================= CONTENT ================= -->
@@ -440,160 +749,142 @@
 
                 </Grid>
 
-                <!-- List -->
-                <ListView ItemsSource="{Binding DanhSachDatSan}" x:Name="lvDanhSachDatSan">
-                    <ListView.Resources>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="12,8"/>
-                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
-                            <Setter Property="Background" Value="Transparent"/>
+                <DataGrid x:Name="lvDanhSachDatSan"
+                          Grid.Row="1"
+                          ItemsSource="{Binding DanhSachDatSan}"
+                          IsReadOnly="True"
+                          AutoGenerateColumns="False"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="None"
+                          BorderThickness="0"
+                          AlternatingRowBackground="#FAFEFD"
+                          ColumnHeaderHeight="36"
+                          RowHeight="34"
+                          RowStyle="{StaticResource DGRowDatSan}"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{x:Null}">
+                            <Setter Property="Background" Value="#E8FBF2"/>
+                            <Setter Property="BorderBrush" Value="#CDEFE3"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                            <Setter Property="Padding" Value="10,8"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Foreground" Value="#0D7049"/>
                         </Style>
-                    </ListView.Resources>
+                    </DataGrid.ColumnHeaderStyle>
 
-                    <ListView.View>
-                        <GridView>
+                    <DataGrid.Columns>
+                        <!-- Khách hàng -->
+                        <DataGridTemplateColumn Header="Khách hàng" Width="0.5*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding TenKH}"
+                                   Foreground="{StaticResource ColText}"
+                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding SDT}"
+                                   Foreground="{StaticResource ColSub}"
+                                   FontSize="12"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                            <!-- Khách hàng (Tên + SĐT + Email) -->
-                            <GridViewColumn Header="Khách hàng" Width="210">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding TenKH}"
-                                                       Foreground="{StaticResource ColText}"
-                                                       FontWeight="SemiBold"/>
-                                            <TextBlock Text="{Binding SDT}"
-                                                       Foreground="{StaticResource ColSub}"
-                                                       FontSize="12"/>
-                                            <TextBlock Text="{Binding Email}"
-                                                       Foreground="{StaticResource ColSub}"
-                                                       FontSize="12"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                        <!-- Sân -->
+                        <DataGridTextColumn Header="Sân" Width="0.3*" Binding="{Binding TenSanCached}"/>
 
-                            <!-- Sân -->
-                            <GridViewColumn Header="Sân" Width="auto"
-                                            DisplayMemberBinding="{Binding TenSanCached}"/>
+                        <!-- Ngày / giờ -->
+                        <DataGridTextColumn Header="Ngày" Width="0.3*"
+                            Binding="{Binding NgayDat, StringFormat={}{0:dd/MM/yyyy}}"/>
+                        <DataGridTextColumn Header="Bắt đầu" Width="0.4*"
+                            Binding="{Binding GioBatDau}"/>
+                        <DataGridTextColumn Header="Kết thúc" Width="0.4*"
+                            Binding="{Binding GioKetThuc}"/>
 
-                            <!-- Thời gian (Ngày + khung giờ bắt đầu/kết thúc) -->
-                            <!-- Ngày đặt -->
-                            <GridViewColumn Header="Ngày" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding NgayDat, StringFormat={}{0:dd/MM/yyyy}}"
-                                            Foreground="{StaticResource ColText}"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                        <!-- Giá gốc / phụ thu / thành tiền -->
+                        <DataGridTextColumn Header="Giá gốc" Width="0.4*"
+                            Binding="{Binding DonGia, StringFormat={}{0:N0} đ}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                            <!-- Giờ bắt đầu -->
-                            <GridViewColumn Header="Bắt đầu" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding GioBatDau}"
-                                           Foreground="{StaticResource ColSub}"
-                                           FontSize="12"/>      
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                        <DataGridTextColumn Header="Phụ thu" Width="0.45*"
+                            Binding="{Binding PhuThuLe, StringFormat={}{0:N0} đ}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                            <!-- Giờ kết thúc -->
-                            <GridViewColumn Header="Kết thúc" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding GioKetThuc}"
-                                           Foreground="{StaticResource ColSub}"
-                                           FontSize="12"/>          
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                        <DataGridTextColumn Header="Thành tiền" Width="0.5*"
+                            Binding="{Binding ThanhTien, StringFormat={}{0:N0} đ}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Foreground" Value="#0D7049"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
+                        <!-- Trạng thái ĐẶT SÂN -->
+                        <DataGridTemplateColumn Header="Trạng thái" Width="0.6*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource BookingStatusBadge}">
+                                        <TextBlock Text="{Binding TrangThai}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                            <!-- Giá gốc -->
-                            <GridViewColumn Header="Giá gốc" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding DonGia, StringFormat={}{0:N0} đ}"
-                                            Foreground="{StaticResource ColText}"
-                                            FontSize="12"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                        <!-- Trạng thái THANH TOÁN -->
+                        <DataGridTemplateColumn Header="Trạng thái thanh toán" Width="1.2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource PaymentStatusBadge}">
+                                        <TextBlock Text="{Binding TrangThaiThanhToan}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                            <!-- Phụ thu -->
-                            <GridViewColumn Header="Phụ thu" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding PhuThuLe, StringFormat={}{0:N0} đ}"
-                                            Foreground="{StaticResource ColSub}"
-                                            FontSize="12"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                        <!-- Thao tác -->
+                        <DataGridTemplateColumn Header="Thao tác" Width="1.2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Content="Bắt đầu" Margin="0,0,6,0" Padding="10,4"
+                                                Click="BatDau_Click"
+                                                DataContext="{Binding}"/>
+                                        <Button Content="Kết thúc" Margin="0,0,6,0" Padding="10,4"
+                                                Click="KetThuc_Click"
+                                                DataContext="{Binding}"/>
+                                        <Button Content="Hủy" Padding="10,4"
+                                                Click="Huy_Click"
+                                                DataContext="{Binding}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                            <!-- Thành tiền -->
-                            <GridViewColumn Header="Thành tiền" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding ThanhTien, StringFormat={}{0:N0} đ}"
-                                            Foreground="#0D7049"
-                                            FontWeight="SemiBold"
-                                            FontSize="12"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-
-                            <!-- Trạng thái -->
-                            <GridViewColumn Header="Trạng thái" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Border CornerRadius="12" Padding="8,2" Background="#DFF7EA">
-                                            <TextBlock Text="{Binding TrangThai}"
-                                                       FontSize="12"
-                                                       Foreground="#1E7F4C"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Trạng thái thanh toán" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Border CornerRadius="12" Padding="8,2" Background="#DFF7EA">
-                                            <TextBlock Text="{Binding TrangThaiThanhToan}"
-                              FontSize="12"
-                              Foreground="#1E7F4C"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-                            <!-- Thao tác -->
-                            <GridViewColumn Header="Thao tác" Width="auto">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Content="Bắt đầu" Margin="0,0,6,0" Padding="10,4"
-                        Click="BatDau_Click"
-                        DataContext="{Binding}"/>
-                                            <Button Content="Kết thúc" Margin="0,0,6,0" Padding="10,4"
-                        Click="KetThuc_Click"
-                        DataContext="{Binding}"/>
-                                            <Button Content="Hủy" Padding="10,4"
-                        Click="Huy_Click"
-                        DataContext="{Binding}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                    </DataGrid.Columns>
+                </DataGrid>
 
 
             </StackPanel>
