@@ -174,20 +174,12 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center">
                 <!-- Lưu phiếu -->
-                <Button Style="{StaticResource PrimaryButton}"
-                        Command="{Binding LuuPhieuCommand}">
+                <Button Style="{StaticResource PrimaryButton}" Click="btnLuuPhieu_Click"
+                        >
                     <TextBlock Text="Lưu phiếu" FontSize="16" FontWeight="SemiBold"/>
                 </Button>
 
                 <!-- Xuất phiếu (ngay sau Lưu phiếu) -->
-                <Button Style="{StaticResource GhostButton}"
-                    Command="{Binding XuatPhieuCommand}"
-                    Margin="8,0,0,0"
-                    Background="#0EA5E9"
-                    BorderBrush="#0EA5E9"
-                    Foreground="White">
-                    <TextBlock Text="Xuất phiếu" FontSize="16" FontWeight="SemiBold"/>
-                </Button>
 
             </StackPanel>
         </Grid>
@@ -218,7 +210,7 @@
                         Padding="0">
                         <TextBox Style="{StaticResource WatermarkTextBox}"
                              BorderThickness="0"
-                             Background="Transparent"
+                             Background="Transparent" x:Name="txtNhaCungCap"
                              Tag="Nhập tên nhà cung cấp..."
                              Text="{Binding NhaCungCapText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Border>
@@ -227,28 +219,22 @@
 
                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,12,8">
                     <TextBlock Text="Ngày nhập" Foreground="#6B7E74"/>
-                    <DatePicker SelectedDate="{Binding NgayPhieu}" Height="32"/>
+                    <DatePicker x:Name="dpngayNhap"  Height="32" IsHitTestVisible="False" />
                 </StackPanel>
 
                 <!-- Số phiếu -->
                 <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
                     <TextBlock Text="Số phiếu" Foreground="#6B7E74"/>
-                    <TextBox Text="{Binding SoPhieu}" Height="32" IsReadOnly="True"/>
+                    <TextBox x:Name="txtSoPhieu" Height="32" IsReadOnly="True"/>
                 </StackPanel>
 
                 <!-- Hàng 2 -->
-                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,12,0">
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,0">
                     <TextBlock Text="Ghi chú" Foreground="#6B7E74"/>
-                    <TextBox Text="{Binding GhiChu}" Height="32"/>
+                    <TextBox x:Name="txtGhiChu" Text="{Binding GhiChu}" Height="32"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="2">
-                    <TextBlock Text="Tùy chọn" Foreground="#6B7E74"/>
-                    <CheckBox Content="Giá đã gồm thuế (VAT 10%)"
-                              IsChecked="{Binding GiaDaGomThue}"
-                              Height="32"
-                              VerticalAlignment="Center"/>
-                </StackPanel>
+             
             </Grid>
         </Border>
 
@@ -295,7 +281,7 @@
                         <!-- Mã hàng -->
                         <StackPanel Grid.Column="0" Margin="0,0,8,0">
                             <TextBlock Text="Mã hàng" Foreground="#6B7E74"/>
-                            <TextBox Height="32"
+                            <TextBox Height="32" x:Name="txtMaHang" IsReadOnly="True"
                                      Text="{Binding NhapNhanh_MaHang, UpdateSourceTrigger=PropertyChanged}"
                                      VerticalContentAlignment="Center"/>
                         </StackPanel>
@@ -303,7 +289,7 @@
                         <!-- Tên hàng -->
                         <StackPanel Grid.Column="1" Margin="0,0,8,0">
                             <TextBlock Text="Tên hàng" Foreground="#6B7E74"/>
-                            <TextBox Height="32"
+                            <TextBox Height="32" x:Name="txtTenHang" TextChanged="txtTenHang_TextChanged"
                                      Text="{Binding NhapNhanh_TenHang, UpdateSourceTrigger=PropertyChanged}"
                                      Tag="Nhập tên hàng..."
                                      VerticalContentAlignment="Center"/>
@@ -312,16 +298,23 @@
                         <!-- Đơn vị -->
                         <StackPanel Grid.Column="2" Margin="0,0,8,0">
                             <TextBlock Text="Đơn vị" Foreground="#6B7E74"/>
-                            <TextBox Height="32"
-                                     Text="{Binding NhapNhanh_DonVi, UpdateSourceTrigger=PropertyChanged}"
-                                     Tag="Chai, lon, lốc..."
-                                     VerticalContentAlignment="Center"/>
+                            <ComboBox 
+    Height="32" 
+    x:Name="cboDVT"  
+    VerticalContentAlignment="Center" SelectedIndex="0" LostFocus="cboDVT_LostFocus"
+>
+                               
+                                <ComboBoxItem Content="Hộp"/>
+                                <ComboBoxItem Content="Lon"/>
+                                <ComboBoxItem Content="Chai"/>
+
+                            </ComboBox>
                         </StackPanel>
 
                         <!-- Số lượng -->
                         <StackPanel Grid.Column="3" Margin="0,0,8,0">
                             <TextBlock Text="Số lượng" Foreground="#6B7E74"/>
-                            <TextBox Height="32"
+                            <TextBox Height="32" x:Name="txtSoLuong" PreviewTextInput="NumberTextBox"
                                      Text="{Binding NhapNhanh_SoLuong, UpdateSourceTrigger=PropertyChanged}"
                                      HorizontalContentAlignment="Right"
                                      VerticalContentAlignment="Center"/>
@@ -330,16 +323,17 @@
                         <!-- Giá nhập -->
                         <StackPanel Grid.Column="4" Margin="0,0,8,0">
                             <TextBlock Text="Giá nhập" Foreground="#6B7E74"/>
-                            <TextBox Height="32"
+                            <TextBox Height="32" x:Name="txtGiaNhap"
                                      Text="{Binding NhapNhanh_GiaNhap, UpdateSourceTrigger=PropertyChanged}"
-                                     HorizontalContentAlignment="Right"
+                                     HorizontalContentAlignment="Right" PreviewTextInput="NumberValidationTextBox"
                                      VerticalContentAlignment="Center"/>
+                            
                         </StackPanel>
 
                         <!-- Chiết khấu % -->
                         <StackPanel Grid.Column="5" Margin="0,0,8,0">
                             <TextBlock Text="Chiết khấu %" Foreground="#6B7E74"/>
-                            <TextBox Height="32"
+                            <TextBox Height="32" x:Name="txtChietKhau" PreviewTextInput="NumberValidationTextBox"
                                      Text="{Binding NhapNhanh_CKPercent, UpdateSourceTrigger=PropertyChanged}"
                                      HorizontalContentAlignment="Right"
                                      VerticalContentAlignment="Center"/>
@@ -348,7 +342,7 @@
                         <!-- Số lô -->
                         <StackPanel Grid.Column="6" Margin="0,0,8,0">
                             <TextBlock Text="Số lô" Foreground="#6B7E74"/>
-                            <TextBox Height="32"
+                            <TextBox Height="32" x:Name="txtSoLo"
                                      Text="{Binding NhapNhanh_SoLo}"
                                      VerticalContentAlignment="Center"/>
                         </StackPanel>
@@ -356,47 +350,27 @@
                         <!-- HSD -->
                         <StackPanel Grid.Column="7" Margin="0,0,8,0">
                             <TextBlock Text="HSD" Foreground="#6B7E74"/>
-                            <DatePicker Height="32"
-                                        SelectedDate="{Binding NhapNhanh_HSD}"/>
+                            <DatePicker x:Name="dpHSD" Height="32"/>
+
                         </StackPanel>
 
                         <!-- Nút thêm hàng -->
                         <StackPanel Grid.Column="8" VerticalAlignment="Bottom">
                             <Button Style="{StaticResource PrimaryButton}"
                                     Padding="16,4"
-                                    Command="{Binding ThemNhanhCommand}">
+                                    Click="btnThemHang_Click">
                                 <TextBlock Text="Thêm hàng" FontWeight="SemiBold"/>
                             </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <!-- ========== TÌM KIẾM ========== -->
-                <Grid Grid.Row="2" Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0"
-                             Style="{StaticResource WatermarkTextBox}"
-                             Tag="Nhập mã / tên hàng để tìm..."
-                             Text="{Binding TuKhoaTim}"/>
-
-                    <Button Grid.Column="1" Margin="8,0,0,0"
-                        Style="{StaticResource GhostButton}"
-                        Command="{Binding TimKiemHangCommand}"
-                        Background="DarkGray"
-                        BorderBrush="DimGray"
-                        Foreground="White">
-                        <TextBlock Text="Tìm kiếm" />
-                    </Button>
-
-                </Grid>
+        
 
                 <!-- ========== DATAGRID ========== -->
                 <DataGrid Grid.Row="3"
                           ItemsSource="{Binding DongHangs}"
+                          x:Name="dgChiTiet"
                           AutoGenerateColumns="False"
                           HeadersVisibility="Column"
                           CanUserAddRows="False"
@@ -407,17 +381,17 @@
                           MinRowHeight="30">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Mã"
-                                            Binding="{Binding MaHH}"
+                                            Binding="{Binding MaHang}"
                                             Width="120"
                                             IsReadOnly="True"/>
 
                         <DataGridTextColumn Header="Tên hàng"
-                                            Binding="{Binding TenHH}"
+                                            Binding="{Binding TenHang}"
                                             Width="2*"
                                             IsReadOnly="True"/>
 
                         <DataGridTextColumn Header="ĐVT"
-                                            Binding="{Binding DonVi}"
+                                            Binding="{Binding DVT}"
                                             Width="*"
                                             IsReadOnly="True"/>
 
@@ -434,7 +408,7 @@
                             Width="*"/>
 
                         <DataGridTextColumn Header="CK %"
-                            Binding="{Binding ChietKhauPercent, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
+                            Binding="{Binding ChietKhau, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
                             ElementStyle="{StaticResource CellRight}"
                             EditingElementStyle="{StaticResource EditRight}"
                             Width="90"/>
@@ -446,7 +420,7 @@
                             Width="*"/>
 
                         <DataGridTextColumn Header="VAT %"
-                            Binding="{Binding VatPercent, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
+                            Binding="{Binding VAT, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
                             ElementStyle="{StaticResource CellRight}"
                             EditingElementStyle="{StaticResource EditRight}"
                             Width="90"/>
@@ -456,7 +430,7 @@
                                             Width="120"/>
 
                         <DataGridTextColumn Header="HSD"
-                            Binding="{Binding HanSuDung, StringFormat={}{0:dd/MM/yyyy}}"
+                            Binding="{Binding HSD, StringFormat={}{0:dd/MM/yyyy}}"
                             Width="130"/>
 
                         <DataGridTextColumn Header="Thành tiền"
@@ -464,7 +438,19 @@
                             IsReadOnly="True"
                             ElementStyle="{StaticResource CellRight}"
                             Width="*"/>
+                        <DataGridTemplateColumn Width="50">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Xóa"
+                            Tag="{Binding}"
+                            Click="XoaDong_Click"
+                            ToolTip="Xóa dòng hàng này"
+                            />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
+                    
                 </DataGrid>
             </Grid>
         </Border>
@@ -483,29 +469,7 @@
                         VerticalAlignment="Center">
 
                 <!-- Tổng -->
-                <Border Style="{StaticResource SumCard}"                      
-                        >
-                    <StackPanel>
-                        <TextBlock Text="Tổng" FontSize="13" Foreground="#6B7E74"/>
-                        <TextBlock Text="{Binding TongTruocThue, StringFormat={}{0:N0} ₫}"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Right"
-                                   Margin="0,2,0,0"/>
-                    </StackPanel>
-                </Border>
-
-                <!-- Thuế -->
-                <Border Style="{StaticResource SumCard}" Background="#F2C94C">
-                    <StackPanel>
-                        <TextBlock Text="Thuế" FontSize="13" Foreground="White"/>
-                        <TextBlock Text="{Binding Thue, StringFormat={}{0:N0} ₫}"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Right"
-                                   Margin="0,2,0,0"/>
-                    </StackPanel>
-                </Border>
+        
 
                 <!-- Tổng thanh toán (card nổi bật) -->
                 <Border Style="{StaticResource SumCard}"
@@ -515,7 +479,7 @@
                         <TextBlock Text="Tổng thanh toán"
                                    FontSize="13"
                                    Foreground="White"/>
-                        <TextBlock Text="{Binding TongThanhToan, StringFormat={}{0:N0} ₫}"
+                        <TextBlock Text="0 ₫" x:Name="txtTongThanhToan"
                                    FontSize="20"
                                    FontWeight="Black"
                                    HorizontalAlignment="Right"
