@@ -40,6 +40,11 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                         DiemTichLuy = reader.GetInt32(7)
                     };
                     kh.LuotChoi = DemLuotChoi(kh.SDT);
+                    kh.TongChiTieu = TinhTongChiTieu(kh.SDT);
+                    kh.LuotChoi = DemLuotChoi(kh.SDT);
+                    //CapNhatDiemTichLuy(kh.SDT);
+                    LuuTongChiTieu(kh.SDT);
+                    CapNhatLuotChoi(kh.SDT);
                     dsKhachHang.Add(kh);
                 }
 
@@ -191,22 +196,92 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
         }
         public int DemLuotChoi(string sdt)
-{
-    using (SqlConnection conn = new SqlConnection(connectionString))
-    using (SqlCommand cmd = conn.CreateCommand())
-    {
-        conn.Open();
-        cmd.CommandText = @"
-            SELECT COUNT(*)
-            FROM DatSan d
-            JOIN ChiTietDatSan ct ON d.MaPhieu = ct.MaPhieu
-            WHERE d.SDT = @sdt AND ct.TrangThai = N'Hoàn thành'";
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = @"
+                    SELECT COUNT(*)
+                    FROM DatSan d
+                    JOIN ChiTietDatSan ct ON d.MaPhieu = ct.MaPhieu
+                    WHERE d.SDT = @sdt AND ct.TrangThai = N'Hoàn thành'";
         
-        cmd.Parameters.AddWithValue("@sdt", sdt);
+                cmd.Parameters.AddWithValue("@sdt", sdt);
 
-        return (int)cmd.ExecuteScalar();
-    }
-}
-
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+        public decimal TinhTongChiTieu(string sdt)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = @"
+                    SELECT ISNULL(SUM(tt.TongTien), 0)
+                    FROM ThanhToan tt
+                    WHERE tt.SDT = @sdt ";
+        
+                cmd.Parameters.AddWithValue("@sdt", sdt);
+                return (decimal)cmd.ExecuteScalar();
+            }
+        }
+        private void LuuTongChiTieu(string sdt)
+        {
+            decimal tongChiTieu = TinhTongChiTieu(sdt);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = @"
+                    UPDATE KhachHang
+                    SET TongChiTieu = @tongChiTieu
+                    WHERE SDT = @sdt";
+        
+                cmd.Parameters.AddWithValue("@tongChiTieu", tongChiTieu);
+                cmd.Parameters.AddWithValue("@sdt", sdt);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public int TinhDiemTichLuy(string sdt)
+        {
+            int diem = int.Parse(TinhTongChiTieu(sdt).ToString("0")) / 1000; // 1 điểm cho mỗi 100,000 VND chi tiêu   
+            return diem;
+        }
+        //public void CapNhatDiemTichLuy(string sdt)
+        //{
+        //    int diemTichLuy = TinhDiemTichLuy(sdt);
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    using (SqlCommand cmd = conn.CreateCommand())
+        //    {
+        //        conn.Open();
+        //        cmd.CommandText = @"
+        //            UPDATE KhachHang
+        //            SET DiemTichLuy = @diemTichLuy
+        //            WHERE SDT = @sdt";
+        
+        //        cmd.Parameters.AddWithValue("@diemTichLuy", diemTichLuy);
+        //        cmd.Parameters.AddWithValue("@sdt", sdt);
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}
+        private void CapNhatLuotChoi(string sdt)
+        {
+            int luotChoi = DemLuotChoi(sdt);
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                conn.Open();
+                cmd.CommandText = @"
+                    UPDATE KhachHang
+                    SET LuotChoi = @luotChoi
+                    WHERE SDT = @sdt";
+        
+                cmd.Parameters.AddWithValue("@luotChoi", luotChoi);
+                cmd.Parameters.AddWithValue("@sdt", sdt);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

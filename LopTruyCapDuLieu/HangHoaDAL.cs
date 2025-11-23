@@ -189,7 +189,22 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
             return hangHoas;
         }
-
+        public void CapNhatTonKhoSauKhiBan(string maHang, int soLuongBan)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+                UPDATE HangHoa SET 
+                    TonKho = TonKho - @SoLuongBan
+                WHERE MaHang = @MaHang";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@SoLuongBan", soLuongBan);
+                cmd.Parameters.AddWithValue("@MaHang", maHang);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+            CapNhatTrangThaiHangHoa(maHang);
+        }
     }
 
 }

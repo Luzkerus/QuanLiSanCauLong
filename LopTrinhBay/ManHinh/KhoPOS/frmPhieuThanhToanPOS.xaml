@@ -200,7 +200,38 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <DataTemplate x:Key="CartRowTemplate">
+            <Grid Margin="0,6,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
+                <StackPanel>
+                    <StackPanel
+        Orientation="Horizontal"
+        Margin="0,0,0,4">
+
+                        <TextBlock Text="{Binding TenHang}"
+           FontWeight="SemiBold"
+           FontSize="14"
+           Foreground="{StaticResource ColText}"
+           Margin="0,0,6,0"/>
+
+                        <TextBlock Text="{Binding DVT}"
+           FontSize="14"
+           Foreground="{StaticResource ColSub}"/>
+                    </StackPanel>
+
+                   
+                        <TextBlock Text="{Binding SoLuong}" Width="28" TextAlignment="Center" VerticalAlignment="Center" Margin="6,0"/>
+                      
+
+                </StackPanel>
+
+
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
 
     <!-- Lớp mờ nền + card chính -->
@@ -262,19 +293,31 @@
                                            FontWeight="SemiBold"
                                            Foreground="{StaticResource ColText}"/>
 
-                                <TextBlock Text="Khách hàng" Style="{StaticResource LabelSmall}"/>
-                                <TextBox Text="{Binding TenKhach, UpdateSourceTrigger=PropertyChanged}"
-                                         Margin="0,2,0,6"
+                                <TextBlock Text="Số hóa đơn" Style="{StaticResource LabelSmall}"/>
+                                <TextBox x:Name="txtSoHDN"
+                                         Margin="0,2,0,6" 
                                          Height="26"
-                                         VerticalContentAlignment="Center"
+                                         VerticalContentAlignment="Center" IsReadOnly="True"
                                          Padding="4,0"/>
 
-                                <TextBlock Text="Số điện thoại" Style="{StaticResource LabelSmall}"/>
-                                <TextBox Text="{Binding SoDienThoai, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBlock Text="Ngày" Style="{StaticResource LabelSmall}"/>
+                                <TextBox 
+                                         x:Name="txtNgay" IsReadOnly="True"
                                          Margin="0,2,0,6"
                                          Height="26"
                                          VerticalContentAlignment="Center"
                                          Padding="4,0"/>
+                                <DataGrid x:Name="dgGioHang"  AutoGenerateColumns="False" CanUserAddRows="False"
+          CanUserDeleteRows="False"
+          IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Sản phẩm" Binding="{Binding TenHang}" Width="*"/>
+                                        <DataGridTextColumn Header="Đơn vị" Binding="{Binding DVT}" Width="Auto"/>
+                                        <DataGridTextColumn Header="Đơn giá" Binding="{Binding GiaBan, StringFormat={}{0:N0}đ}" Width="Auto"/>
+                                        <DataGridTextColumn Header="Số lượng" Binding="{Binding SoLuong}" Width="Auto"/>
+                                        <DataGridTextColumn Header="Thành tiền" Binding="{Binding ThanhTien, StringFormat={}{0:N0}đ}" Width="Auto"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </StackPanel>
                         </Border>
 
@@ -427,13 +470,13 @@
 
                                 <!-- Khách trả -->
                                 <TextBlock Grid.Row="0" Grid.Column="0"
-                                           Text="Khách trả"
+                                           Text="Tổng tiền"
                                            FontSize="13"
                                            Foreground="{StaticResource ColSub}"
                                            VerticalAlignment="Center"/>
 
-                                <TextBox Grid.Row="0" Grid.Column="1"
-                                         Text="{Binding KhachTra, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtTongTien"
+                                         IsReadOnly="True"
                                          Height="32"
                                          FontSize="15"
                                          HorizontalContentAlignment="Right"
@@ -441,22 +484,7 @@
                                          Padding="6,0"
                                          Margin="8,0,0,0"/>
 
-                                <!-- Tiền thối lại -->
-                                <TextBlock Grid.Row="1" Grid.Column="0"
-                                           Text="Tiền thối lại"
-                                           FontSize="13"
-                                           Margin="0,6,0,0"
-                                           Foreground="{StaticResource ColSub}"
-                                           VerticalAlignment="Center"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="1"
-                                           Text="{Binding TienThoiLai, StringFormat={}{0:N0}đ}"
-                                           FontSize="17"
-                                           FontWeight="Bold"
-                                           Margin="8,6,0,0"
-                                           Foreground="{StaticResource ColText}"
-                                           TextAlignment="Right"
-                                           VerticalAlignment="Center"/>
+                           
                             </Grid>
                         </StackPanel>
 
@@ -472,10 +500,10 @@
 
                     <Button Grid.Column="0"
                             Style="{StaticResource DangerButton}"
-                            Content="Hủy"
+                            Content="In hóa đơn và thanh toán"
                             Margin="0,0,4,0"
                             Height="40"
-                            Click="BtnCancel_Click"
+                            Click="btnIn_Click"
                             />
 
                     <Button Grid.Column="1"

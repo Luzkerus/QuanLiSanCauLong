@@ -156,9 +156,11 @@
     <Compile Include="LopDuLieu\ChiTietChuaThanhToan.cs" />
     <Compile Include="LopDuLieu\ChiTietDatSan.cs" />
     <Compile Include="LopDuLieu\ChiTietDatSanVM.cs" />
+    <Compile Include="LopDuLieu\ChiTietHoaDon.cs" />
     <Compile Include="LopDuLieu\DatSan.cs" />
     <Compile Include="LopDuLieu\ChiTietPhieuNhap.cs" />
     <Compile Include="LopDuLieu\HangHoa.cs" />
+    <Compile Include="LopDuLieu\HoaDon.cs" />
     <Compile Include="LopDuLieu\KhachHang.cs" />
     <Compile Include="LopDuLieu\PhieuNhap.cs" />
     <Compile Include="LopDuLieu\San.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="LopNghiepVu\ChiTietPhieuNhapBLL.cs" />
     <Compile Include="LopNghiepVu\DatSanBLL.cs" />
     <Compile Include="LopNghiepVu\HangHoaBLL.cs" />
+    <Compile Include="LopNghiepVu\HoaDonBLL.cs" />
     <Compile Include="LopNghiepVu\KhachHangBLL.cs" />
     <Compile Include="LopNghiepVu\PhieuNhapBLL.cs" />
     <Compile Include="LopNghiepVu\SanBLL.cs" />
@@ -246,10 +249,12 @@
     </Compile>
     <Compile Include="LopTruyCapDuLieu\BangGiaDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ChiTietDatSanDAL.cs" />
+    <Compile Include="LopTruyCapDuLieu\ChiTietHoaDonDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ChiTietPhieuNhapDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ConnectString.cs" />
     <Compile Include="LopTruyCapDuLieu\DatSanDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\HangHoaDAL.cs" />
+    <Compile Include="LopTruyCapDuLieu\HoaDonDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\KhachHangDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\PhieuNhapDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />

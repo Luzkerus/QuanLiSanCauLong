@@ -1,4 +1,7 @@
-﻿using System;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using QuanLiSanCauLong.LopNghiepVu;
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using QuanLiSanCauLong.LopNghiepVu;
-using QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
 {
@@ -21,73 +22,24 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
     /// </summary>
     public partial class UcKhoDashboard : UserControl
     {
+        private List<ChiTietHoaDon> gioHang = new List<ChiTietHoaDon>();
+
         public UcKhoDashboard()
         {
             InitializeComponent();
 
             // Gán dữ liệu mẫu khi load UserControl
-            this.Loaded += (s, e) =>
-            {
-                //if (DataContext == null)
-                //   DataContext = this;
-                LoadSampleData();
-
-            };
+    
             LoadData();
         }
       
-        /// <summary>
-        /// ===== DỮ LIỆU MẪU CHO UI =====
-        /// </summary>
-        private void LoadSampleData()
-        {
-            DataContext = new
-            {
-                // KPI mẫu
-                Dashboard = new
-                {
-                    TongGiaTriTon = 12500000,
-                    DoanhThuPOSHomNay = 850000,
-                    SoMatHang = 12
-                },
-
-                // Danh sách sản phẩm POS mẫu
-                //PosProducts = new List<dynamic>
-                //{
-                //    new { MaHH="NU01", TenHH="Nước suối Lavie 500ml", GiaBan=8000, SoLuongHienCo=120 },
-                //    new { MaHH="NG02", TenHH="Coca Cola 330ml", GiaBan=15000, SoLuongHienCo=65 },
-                //    new { MaHH="TS03", TenHH="Trà sữa đóng chai", GiaBan=22000, SoLuongHienCo=30 },
-                //    new { MaHH="SP04", TenHH="Nước tăng lực Sting", GiaBan=14000, SoLuongHienCo=44 },
-                //    new { MaHH="RA05", TenHH="Revive 500ml", GiaBan=12000, SoLuongHienCo=20 },
-                //},
-
-                // Quản lý kho mẫu
-                //KhoProducts = new List<dynamic>
-                //{
-                //    new { MaHH="NU01", TenHH="Nước suối Lavie 500ml", DonViTinh="Chai", GiaNhap=5000, GiaBan=8000, SoLuongHienCo=120, NgayNhapCuoi=DateTime.Today.AddDays(-2), TrangThai="Đang bán" },
-                //    new { MaHH="NG02", TenHH="Coca Cola 330ml", DonViTinh="Lon", GiaNhap=9000, GiaBan=15000, SoLuongHienCo=65, NgayNhapCuoi=DateTime.Today.AddDays(-5), TrangThai="Đang bán" },
-                //    new { MaHH="TS03", TenHH="Trà sữa đóng chai", DonViTinh="Chai", GiaNhap=15000, GiaBan=22000, SoLuongHienCo=30, NgayNhapCuoi=DateTime.Today.AddDays(-1), TrangThai="Sắp hết" },
-                //    new { MaHH="SP04", TenHH="Nước tăng lực Sting", DonViTinh="Chai", GiaNhap=8000, GiaBan=14000, SoLuongHienCo=44, NgayNhapCuoi=DateTime.Today.AddDays(-7), TrangThai="Đang bán" },
-                //    new { MaHH="RA05", TenHH="Revive 500ml", DonViTinh="Chai", GiaNhap=9000, GiaBan=12000, SoLuongHienCo=20, NgayNhapCuoi=DateTime.Today.AddDays(-3), TrangThai="Đang bán" },
-                //},
-
-                // Giỏ hàng mẫu
-                CartItems = new List<dynamic>
-                {
-                    new { TenHH="Coca Cola 330ml", SoLuong=2, DonGia=15000, ThanhTien=30000 },
-                    new { TenHH="Nước suối Lavie 500ml", SoLuong=1, DonGia=8000, ThanhTien=8000 }
-                },
-
-                // Tổng tiền mẫu
-                CartTotal = 38000
-            };
-        }
 
         private void LoadData()
         { 
             HangHoaBLL hangHoaBLL = new HangHoaBLL();
             dgKho.ItemsSource = hangHoaBLL.LayTatCaHangHoa();
             isSanPham.ItemsSource = hangHoaBLL.LayTatCaHangHoa();
+            txtTongTien .Text = "0";
         }
         private void txtTimKiemKho_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -139,11 +91,143 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             frm.ShowDialog();
         }
 
+
+        private void btnThemVaoGioHang_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
+
+            // DataContext của Button = sản phẩm
+            HangHoa sp = btn.DataContext as HangHoa;
+
+            if (sp == null)
+            {
+                MessageBox.Show("Không xác định được sản phẩm!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ThemVaoGio(sp);
+        }
+        private void ThemVaoGio(HangHoa sp)
+        {
+            if (sp == null) return;
+
+            // Kiểm tra tồn kho
+            if (sp.TonKho <= 0)
+            {
+                MessageBox.Show("Sản phẩm đã hết hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Kiểm tra sản phẩm đã tồn tại trong giỏ
+            var ct = gioHang.FirstOrDefault(x => x.MaHang == sp.MaHang);
+
+            if (ct != null)
+            {
+                MessageBox.Show("Sản phẩm đã có trong giỏ hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            else
+            {
+                gioHang.Add(new ChiTietHoaDon
+                {
+                    MaHang = sp.MaHang,
+                    TenHang = sp.TenHang,
+                    DVT = sp.DVT,
+                    GiaBan = sp.GiaBan,
+                    SoLuong = 1,
+                    ThanhTien = sp.GiaBan
+                });
+            }
+
+            CapNhatGioHang();
+        }
+        private void CapNhatGioHang()
+        {
+            dgGioHang.ItemsSource = null;
+            dgGioHang.ItemsSource = gioHang;
+
+            txtTongTien.Text = gioHang.Sum(x => x.ThanhTien).ToString("N0");
+        }
+        private void btnXoaKhoiGio_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
+            // DataContext của Button = sản phẩm trong giỏ
+            ChiTietHoaDon ct = btn.DataContext as ChiTietHoaDon;
+            if (ct == null)
+            {
+                MessageBox.Show("Không xác định được sản phẩm!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            gioHang.Remove(ct);
+            CapNhatGioHang();
+        }
+        private void btnTruSL_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
+
+            // Lấy item trong giỏ từ DataContext
+            ChiTietHoaDon ct = btn.DataContext as ChiTietHoaDon;
+            if (ct == null) return;
+
+            if (ct.SoLuong > 1)
+            {
+                ct.SoLuong--;
+                ct.ThanhTien = ct.GiaBan * ct.SoLuong;
+            }
+            else
+            {
+                // Hỏi có xoá không
+                if (MessageBox.Show("Xóa sản phẩm khỏi giỏ hàng?", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    gioHang.Remove(ct);
+                }
+            }
+
+            CapNhatGioHang();
+        }
+        private void btnTangSL_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
+
+            ChiTietHoaDon ct = btn.DataContext as ChiTietHoaDon;
+            if (ct == null) return;
+
+            // Lấy tồn kho của sản phẩm
+            HangHoaBLL hangHoaBLL = new HangHoaBLL();
+            var sp = hangHoaBLL.LayTatCaHangHoa().FirstOrDefault(x => x.MaHang == ct.MaHang);
+
+            if (sp == null) return;
+
+            if (ct.SoLuong < sp.TonKho)
+            {
+                ct.SoLuong++;
+                ct.ThanhTien = ct.GiaBan * ct.SoLuong;
+            }
+            else
+            {
+                MessageBox.Show("Không đủ tồn kho!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            CapNhatGioHang();
+        }
+        private void btnHuyDon(object sender, RoutedEventArgs e)
+        {
+            gioHang.Clear();
+            CapNhatGioHang();
+        }
         private void btnThanhToan(object sender, RoutedEventArgs e)
         {
             var parentWindow = Window.GetWindow(this);
-
-            var frm = new frmPhieuThanhToanPOS();
+            if (gioHang.Count == 0)
+            {
+                MessageBox.Show("Giỏ hàng trống!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            var frm = new frmPhieuThanhToanPOS(gioHang);
 
 
             if (parentWindow != null)
@@ -152,10 +236,14 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
                 frm.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             }
 
-            frm.ShowDialog();
+            bool? kq = frm.ShowDialog();
+            if (kq == true)
+            {
+                LoadData();
+                gioHang.Clear();
+                CapNhatGioHang();
+            }
         }
-
-
     }
 }
 

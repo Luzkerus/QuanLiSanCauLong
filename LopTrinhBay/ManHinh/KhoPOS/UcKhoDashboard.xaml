@@ -333,13 +333,21 @@
                             Margin="0,0,0,10"/>
 
                     <!-- Tên sản phẩm -->
-                    <TextBlock Grid.Row="1"
-                               Text="{Binding TenHang}"
-                               Margin="0,0,0,4"
-                               TextWrapping="Wrap"
-                               FontWeight="SemiBold"
-                               FontSize="14"
-                               Foreground="{StaticResource ColText}"/>
+                    <StackPanel Grid.Row="1"
+            Orientation="Horizontal"
+            Margin="0,0,0,4">
+
+                        <TextBlock Text="{Binding TenHang}"
+               FontWeight="SemiBold"
+               FontSize="14"
+               Foreground="{StaticResource ColText}"
+               Margin="0,0,6,0"/>
+
+                        <TextBlock Text="{Binding DVT}"
+               FontSize="14"
+               Foreground="{StaticResource ColSub}"/>
+                    </StackPanel>
+
 
                     <!-- Giá + tồn + nút -->
                     <StackPanel Grid.Row="2">
@@ -365,8 +373,8 @@
                                 Margin="0,0,0,0"
                                 Content="Thêm vào giỏ"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                CommandParameter="{Binding}"/>
+                                Click="btnThemVaoGioHang_Click"
+                                />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -381,23 +389,33 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="{Binding TenHH}" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
+                    <StackPanel
+            Orientation="Horizontal"
+            Margin="0,0,0,4">
+
+                        <TextBlock Text="{Binding TenHang}"
+               FontWeight="SemiBold"
+               FontSize="14"
+               Foreground="{StaticResource ColText}"
+               Margin="0,0,6,0"/>
+
+                        <TextBlock Text="{Binding DVT}"
+               FontSize="14"
+               Foreground="{StaticResource ColSub}"/>
+                    </StackPanel>
+
                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0" VerticalAlignment="Center">
-                        <Button Background="#E8F0EC" BorderBrush="#E8F0EC" Padding="6,2" Content="–"
-                                Command="{Binding DataContext.DecreaseQtyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                CommandParameter="{Binding}"/>
+                        <Button Background="#E8F0EC" BorderBrush="#E8F0EC" Padding="6,2" Content="–"    Click="btnTruSL_Click"                         />
                         <TextBlock Text="{Binding SoLuong}" Width="28" TextAlignment="Center" VerticalAlignment="Center" Margin="6,0"/>
-                        <Button Background="#E8F0EC" BorderBrush="#E8F0EC" Padding="6,2" Content="+"
-                                Command="{Binding DataContext.IncreaseQtyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                CommandParameter="{Binding}"/>
-                        <TextBlock Text="{Binding ThanhTien, StringFormat={}{0:N0}đ}" Margin="12,0,0,0"
+                        <Button Background="#E8F0EC" BorderBrush="#E8F0EC" Padding="6,2" Content="+" Click="btnTangSL_Click"
+                               />
+                        <TextBlock Text="{Binding GiaBan, StringFormat={}{0:N0}đ}" Margin="12,0,0,0"
                                    VerticalAlignment="Center" Foreground="{StaticResource ColText}"/>
                     </StackPanel>
                 </StackPanel>
 
                 <Button Grid.Column="1" Content="✕" Background="Transparent" BorderBrush="{x:Null}" Foreground="#6B7E74"
-                        Command="{Binding DataContext.RemoveCartItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                        CommandParameter="{Binding}"/>
+                       Click="btnXoaKhoiGio_Click"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -727,7 +745,7 @@
                             <TextBlock Text="Giỏ hàng" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource ColText}"/>
                         </StackPanel>
 
-                        <ItemsControl ItemsSource="{Binding CartItems}" ItemTemplate="{StaticResource CartRowTemplate}">
+                        <ItemsControl x:Name="dgGioHang" ItemsSource="{Binding CartItems}" ItemTemplate="{StaticResource CartRowTemplate}">
                             <ItemsControl.Template>
                                 <ControlTemplate TargetType="ItemsControl">
                                     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -757,7 +775,7 @@
                                    VerticalAlignment="Center"
                                    DockPanel.Dock="Left"/>
 
-                                <TextBlock Text="{Binding CartTotal, StringFormat={}{0:N0} đ}"
+                                <TextBlock x:Name="txtTongTien" Text="{Binding CartTotal, StringFormat={}{0:N0} đ}"
                                    FontSize="18"
                                    FontWeight="Bold"
                                    Foreground="#0DAA78"
@@ -789,7 +807,7 @@
                             <Button Grid.Column="1"
                                     Style="{StaticResource DangerButton}"
                                     Content="Hủy đơn"
-                                    
+                                    Click="btnHuyDon"
                                     Margin="4,0,0,0"
                                     Height="42"/>
                         </Grid>
