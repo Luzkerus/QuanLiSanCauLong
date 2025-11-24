@@ -211,6 +211,9 @@
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmLichsunhap.xaml.cs">
       <DependentUpon>frmLichsunhap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmLichSuPOS.xaml.cs">
+      <DependentUpon>frmLichSuPOS.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmNhapHang.xaml.cs">
       <DependentUpon>frmNhapHang.xaml</DependentUpon>
     </Compile>
@@ -332,6 +335,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\KhoPOS\frmLichsunhap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\KhoPOS\frmLichSuPOS.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -75,6 +75,23 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             }
         }
 
+        private void btnLichSuPOS_Click(object sender, RoutedEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this);
+
+            var frm = new frmLichSuPOS();
+
+
+            if (parentWindow != null)
+            {
+                frm.Owner = parentWindow;
+                frm.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+
+            frm.ShowDialog();
+        }
+
+
         private void btnLichSuNhap(object sender, RoutedEventArgs e)
         {
             var parentWindow = Window.GetWindow(this);
