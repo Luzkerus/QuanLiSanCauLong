@@ -161,7 +161,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
         {
             try
             {
-                // 1. Tạo phiếu
+                // 1. Kiểm tra dữ liệu
                 if (dpngayNhap.SelectedDate == null)
                 {
                     MessageBox.Show("Vui lòng chọn ngày nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -177,64 +177,96 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
                     MessageBox.Show("Phiếu nhập không có chi tiết nào!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+
+                // 2. Tạo phiếu để hiển thị preview
                 PhieuNhap phieu = new PhieuNhap
                 {
                     NgayNhap = dpngayNhap.SelectedDate ?? DateTime.Now,
                     GhiChu = txtGhiChu.Text,
                     NhaCungCap = txtNhaCungCap.Text,
-                    TongTien = decimal.Parse(txtTongThanhToan.Text.Replace(" đ",""))
+                    TongTien = decimal.Parse(txtTongThanhToan.Text.Replace(" đ", ""))
                 };
 
-                // Tạo số phiếu: PN + yyyyMMdd + 0001
                 PhieuNhapBLL phieuBLL = new PhieuNhapBLL();
                 phieu.SoPhieu = phieuBLL.TaoSoPhieu();
 
-                // 2. Lấy danh sách chi tiết từ DataGrid
-                List<ChiTietPhieuNhap> chiTiets = new List<ChiTietPhieuNhap>();
+                // 3. Lấy chi tiết từ DataGrid
+                List<ChiTietPhieuNhap> chiTiets = dgChiTiet.Items.Cast<ChiTietPhieuNhap>().ToList();
+
+                // 4. Tạo nội dung preview
+                string noiDung = TaoNoiDungXacNhan(phieu, chiTiets);
+
+                // 5. Hiển popup xác nhận
+                var confirm = MessageBox.Show(noiDung, "Xác nhận lưu phiếu", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (confirm != MessageBoxResult.Yes)
+                    return; // Hủy → không lưu
+
+                // 6. Gán mã chi tiết và lưu DB
                 int stt = 1;
-                foreach (ChiTietPhieuNhap row in dgChiTiet.Items)
+                foreach (var row in chiTiets)
                 {
-                    // Tạo Mã chi tiết theo số phiếu + thứ tự
                     row.MaChiTiet = $"{phieu.SoPhieu}-{stt:000}";
                     stt++;
-
-
-                    chiTiets.Add(row);
                 }
 
-                // 3. Lưu phiếu và chi tiết
                 phieuBLL.LuuPhieuNhap(phieu, chiTiets);
 
                 MessageBox.Show($"Lưu phiếu {phieu.SoPhieu} thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Xóa DataGrid và reset UI nếu muốn
+                // Reset UI
                 dgChiTiet.Items.Clear();
                 LoadPhieu();
                 DialogResult = true;
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi: " + ex.Message, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
+        private string TaoNoiDungXacNhan(PhieuNhap phieu, List<ChiTietPhieuNhap> chiTiets)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("XÁC NHẬN LƯU PHIẾU");
+            sb.AppendLine("--------------------------------------");
+            sb.AppendLine($"Số phiếu: {phieu.SoPhieu}");
+            sb.AppendLine($"Ngày nhập: {phieu.NgayNhap:dd/MM/yyyy}");
+            sb.AppendLine($"Nhà cung cấp: {phieu.NhaCungCap}");
+            sb.AppendLine($"Ghi chú: {phieu.GhiChu}");
+            sb.AppendLine($"Tổng tiền: {phieu.TongTien:N0} đ");
+            sb.AppendLine("--------------------------------------");
+            sb.AppendLine("CHI TIẾT PHIẾU:");
+
+            foreach (var ct in chiTiets)
+            {
+                sb.AppendLine($"- {ct.TenHang} | SL: {ct.SoLuong} | Giá: {ct.GiaNhap:N0} | CK: {ct.ChietKhau:N0} | Lô: {ct.SoLo} | HSD: {ct.HSD:dd/MM/yyyy}");
+            }
+
+            return sb.ToString();
+        }
+
         // Logic chính để tạo lại/cập nhật mã hàng
         private void CapNhatMaHang()
         {
-            // Lấy Đơn Vị Tính.
-            // Dùng .Text để lấy giá trị chính xác, dù là chọn từ danh sách hay tự gõ
             string donViTinh = cboDVT.Text.Trim();
-            string tenHang = txtTenHang.Text.Trim(); // Giả định bạn vẫn có txtTenHang
+            string tenHang = txtTenHang.Text.Trim();
 
             if (string.IsNullOrEmpty(tenHang))
-            {
-                // Không xử lý nếu tên hàng chưa có
                 return;
-            }
 
             HangHoaBLL hangHoaBLL = new HangHoaBLL();
 
-            // Logic kiểm tra và tạo/lấy mã hàng
+            // Lấy danh sách mã đã có trong DataGrid
+            List<string> maTrongGrid = dgChiTiet.Items
+                .Cast<ChiTietPhieuNhap>()
+                .Select(x => x.MaHang)
+                .Where(x => !string.IsNullOrEmpty(x))
+                .ToList();
+
+            // Kiểm tra DB trước
             string maHangDaCo = hangHoaBLL.LayMaHangByTenVaDVT(tenHang, donViTinh);
 
             if (maHangDaCo != null)
@@ -243,10 +275,10 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             }
             else
             {
-                // Tạo mã hàng mới (truyền DVT vào để tạo mã)
-                txtMaHang.Text = hangHoaBLL.TaoMaHang(donViTinh);
+                txtMaHang.Text = hangHoaBLL.TaoMaHang(donViTinh, maTrongGrid);
             }
         }
+
 
 
         private void cboDVT_LostFocus(object sender, RoutedEventArgs e)

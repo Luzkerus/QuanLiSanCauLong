@@ -36,5 +36,6 @@ namespace QuanLiSanCauLong.LopDuLieu
                 return tienTruocThue + tienVAT;
             }
         }
+        public string SoPhieu { get; set; }
     }
 }

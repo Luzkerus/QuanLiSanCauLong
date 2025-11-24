@@ -65,7 +65,109 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return result?.ToString();
             }
         }
+        public List<ChiTietPhieuNhap> LayTatCaChiTietPhieuNhap()
+        {
+            List<ChiTietPhieuNhap> chiTiets = new List<ChiTietPhieuNhap>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT * FROM ChiTietPhieuNhap";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ChiTietPhieuNhap ct = new ChiTietPhieuNhap
+                    {
+                        MaChiTiet = reader["MaChiTiet"].ToString(),
+                        MaHang = reader["MaHang"].ToString(),
+                        TenHang = reader["TenHang"].ToString(),
+                        DVT = reader["DVT"].ToString(),
+                        SoLuong = Convert.ToInt32(reader["SoLuong"]),
+                        GiaNhap = Convert.ToDecimal(reader["GiaNhap"]),
+                        ChietKhau = Convert.ToDecimal(reader["ChietKhau"]),
+                        //ChietKhauTien = Convert.ToDecimal(reader["ChietKhauTien"]),
+                        VAT = Convert.ToDecimal(reader["VAT"]),
+                        SoLo = reader["SoLo"].ToString(),
+                        HSD = Convert.ToDateTime(reader["HSD"]),
+                        //ThanhTien = Convert.ToDecimal(reader["ThanhTien"]),
+                        SoPhieu = reader["SoPhieu"].ToString()
+                    };
+                    chiTiets.Add(ct);
+                }
+            }
+            return chiTiets;
+        }
+        public List<ChiTietPhieuNhap> LayChiTietSoPhieuTheoNgay(DateTime fromDate, DateTime toDate) { 
+            List<ChiTietPhieuNhap> chiTiets = new List<ChiTietPhieuNhap>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+                SELECT ctpn.*
+                FROM ChiTietPhieuNhap ctpn
+                JOIN PhieuNhap pn ON ctpn.SoPhieu = pn.SoPhieu
+                WHERE pn.NgayNhap BETWEEN @FromDate AND @ToDate";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@FromDate", fromDate);
+                cmd.Parameters.AddWithValue("@ToDate", toDate);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ChiTietPhieuNhap ct = new ChiTietPhieuNhap
+                    {
+                        MaChiTiet = reader["MaChiTiet"].ToString(),
+                        MaHang = reader["MaHang"].ToString(),
+                        TenHang = reader["TenHang"].ToString(),
+                        DVT = reader["DVT"].ToString(),
+                        SoLuong = Convert.ToInt32(reader["SoLuong"]),
+                        GiaNhap = Convert.ToDecimal(reader["GiaNhap"]),
+                        ChietKhau = Convert.ToDecimal(reader["ChietKhau"]),
+                        //ChietKhauTien = Convert.ToDecimal(reader["ChietKhauTien"]),
+                        VAT = Convert.ToDecimal(reader["VAT"]),
+                        SoLo = reader["SoLo"].ToString(),
+                        HSD = Convert.ToDateTime(reader["HSD"]),
+                        //ThanhTien = Convert.ToDecimal(reader["ThanhTien"]),
+                        SoPhieu = reader["SoPhieu"].ToString()
+                    };
+                    chiTiets.Add(ct);
+                }
+            }
 
+            return chiTiets;
+        }
+        public List<ChiTietPhieuNhap> LayChiTietTheoSoPhieu(string soPhieu)
+        {
+            List<ChiTietPhieuNhap> chiTiets = new List<ChiTietPhieuNhap>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT * FROM ChiTietPhieuNhap WHERE SoPhieu = @SoPhieu";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@SoPhieu", soPhieu);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ChiTietPhieuNhap ct = new ChiTietPhieuNhap
+                    {
+                        MaChiTiet = reader["MaChiTiet"].ToString(),
+                        MaHang = reader["MaHang"].ToString(),
+                        TenHang = reader["TenHang"].ToString(),
+                        DVT = reader["DVT"].ToString(),
+                        SoLuong = Convert.ToInt32(reader["SoLuong"]),
+                        GiaNhap = Convert.ToDecimal(reader["GiaNhap"]),
+                        ChietKhau = Convert.ToDecimal(reader["ChietKhau"]),
+                        //ChietKhauTien = Convert.ToDecimal(reader["ChietKhauTien"]),
+                        VAT = Convert.ToDecimal(reader["VAT"]),
+                        SoLo = reader["SoLo"].ToString(),
+                        HSD = Convert.ToDateTime(reader["HSD"]),
+                        //ThanhTien = Convert.ToDecimal(reader["ThanhTien"]),
+                        SoPhieu = reader["SoPhieu"].ToString()
+                    };
+                    chiTiets.Add(ct);
+                }
+            }
+            return chiTiets;
+        }
 
     }
 }

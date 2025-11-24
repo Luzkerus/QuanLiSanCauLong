@@ -25,10 +25,7 @@ namespace QuanLiSanCauLong.LopNghiepVu
         public void ThemHangMoi(ChiTietPhieuNhap ct)
         {
             // Nếu chưa có MaHang → tạo tự động
-            if (string.IsNullOrEmpty(ct.MaHang))
-            {
-                ct.MaHang = TaoMaHang(ct.DVT);
-            }
+
 
             hangHoaDAL.ThemHangMoi(ct);
         }
@@ -38,35 +35,43 @@ namespace QuanLiSanCauLong.LopNghiepVu
             hangHoaDAL.CapNhatTonKho(ct);
         }
 
-        public string TaoMaHang(string dvt)
+        public string TaoMaHang(string dvt, List<string> maHangDaTonTai)
         {
-            // Lấy prefix theo ĐVT
             string prefix;
-            if (dvt == "Chai")
-                prefix = "CH";
-            else if (dvt == "Lon")
-                prefix = "LN";
-            else if (dvt == "Hộp")
-                prefix = "HP";
-            else
-                prefix = "HH";
 
-            // Lấy mã lớn nhất trong DB
-            string lastMa = hangHoaDAL.LayMaHangLonNhat(prefix);
-
-            int stt = 1;
-            if (!string.IsNullOrEmpty(lastMa))
+            switch (dvt)
             {
-                // lastMa dạng: CH-005
-                string[] parts = lastMa.Split('-');
+                case "Chai": prefix = "CH"; break;
+                case "Lon": prefix = "LN"; break;
+                case "Hộp": prefix = "HP"; break;
+                default: prefix = "HH"; break;
+            }
+
+            // 1. Lấy mã lớn nhất từ DB
+            string lastMaDB = hangHoaDAL.LayMaHangLonNhat(prefix);
+            int stt = 1;
+
+            if (!string.IsNullOrEmpty(lastMaDB))
+            {
+                var parts = lastMaDB.Split('-');
                 if (parts.Length > 1 && int.TryParse(parts[1], out int lastNum))
-                {
                     stt = lastNum + 1;
+            }
+
+            // 2. Kiểm tra mã trong DataGrid (chưa lưu DB)
+            foreach (string ma in maHangDaTonTai)
+            {
+                if (ma.StartsWith(prefix))
+                {
+                    var parts = ma.Split('-');
+                    if (parts.Length > 1 && int.TryParse(parts[1], out int num))
+                        if (num >= stt) stt = num + 1;
                 }
             }
 
             return $"{prefix}-{stt:000}";
         }
+
         public string LayMaHangByTenVaDVT(string tenHang, string dvt)
         {
             return hangHoaDAL.LayMaHangByTenVaDVT(tenHang, dvt);

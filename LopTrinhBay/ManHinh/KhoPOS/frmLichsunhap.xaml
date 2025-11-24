@@ -172,20 +172,9 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center">
                     <!-- Xuất Excel -->
-                    <Button Style="{StaticResource GhostButton}"
-                            Command="{Binding XuatExcelCommand}"
-                            Background="#0EA5E9"
-                            BorderBrush="#0EA5E9"
-                            Foreground="White">
-                        <TextBlock Text="Xuất Excel" FontSize="14" FontWeight="SemiBold"/>
-                    </Button>
 
                     <!-- Đóng form -->
-                    <Button Style="{StaticResource GhostButton}"
-                            Command="{Binding DongWindowCommand}"
-                            Margin="8,0,0,0">
-                        <TextBlock Text="Đóng" FontSize="14" FontWeight="SemiBold"/>
-                    </Button>
+                  
                 </StackPanel>
             </Grid>
 
@@ -197,7 +186,7 @@
                         <TextBlock Text="Tổng số phiếu"
                                    FontSize="13"
                                    Foreground="#6B7E74"/>
-                        <TextBlock Text="{Binding TongSoPhieu}"
+                        <TextBlock x:Name="txtTongSoPhieu"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Margin="0,2,0,0"/>
@@ -211,7 +200,7 @@
                         <TextBlock Text="Tổng tiền nhập"
                                    FontSize="13"
                                    Foreground="White"/>
-                        <TextBlock Text="{Binding TongTienNhap, StringFormat={}{0:N0} ₫}"
+                        <TextBlock x:Name="txtTongTienNhap"
                                    FontSize="20"
                                    FontWeight="Black"
                                    Foreground="White"
@@ -225,7 +214,7 @@
                         <TextBlock Text="Nhập hôm nay"
                                    FontSize="13"
                                    Foreground="#6B7E74"/>
-                        <TextBlock Text="{Binding TongTienHomNay, StringFormat={}{0:N0} ₫}"
+                        <TextBlock x:Name="txtNhapHomNay"
                                    FontSize="18"
                                    FontWeight="SemiBold"
                                    Margin="0,2,0,0"/>
@@ -251,13 +240,13 @@
                 <!-- Từ ngày -->
                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
                     <TextBlock Text="Từ ngày" Foreground="#6B7E74"/>
-                    <DatePicker SelectedDate="{Binding TuNgay}" Height="32" Width="160"/>
+                    <DatePicker x:Name="dptuNgay" Height="32" Width="160"/>
                 </StackPanel>
 
                 <!-- Đến ngày -->
                 <StackPanel Grid.Column="1" Margin="0,0,12,0">
                     <TextBlock Text="Đến ngày" Foreground="#6B7E74"/>
-                    <DatePicker SelectedDate="{Binding DenNgay}" Height="32" Width="160"/>
+                    <DatePicker x:Name="dpdenNgay" Height="32" Width="160"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Margin="0,0,12,0">
@@ -270,10 +259,10 @@
                             Padding="1">
                         <TextBox Style="{StaticResource WatermarkTextBox}"
                              Background="Transparent"
-                             BorderThickness="0"
-                             Tag="Nhập số phiếu / nhà cung cấp..."
-                             Text="{Binding TuKhoaTim}"
-                             TextChanged="TextBox_TextChanged"/>
+                             BorderThickness="0" 
+                             Tag="Nhập ghi chú/ nhà cung cấp..."
+                             x:Name="txtTimKiem"
+                             />
                     </Border>
                 </StackPanel>
 
@@ -282,12 +271,12 @@
                             Orientation="Horizontal"
                             VerticalAlignment="Bottom">
                     <Button Style="{StaticResource PrimaryButton}"
-                            Command="{Binding TimKiemCommand}">
+                            Click="btnLoc_Click">
                         <TextBlock Text="Lọc" FontWeight="SemiBold"/>
                     </Button>
 
                     <Button Style="{StaticResource GhostButton}"
-                            Command="{Binding XoaLocCommand}"
+                            Click="btnXoaLoc_Click"
                             Margin="8,0,0,0">
                         <TextBlock Text="Xóa lọc"/>
                     </Button>
@@ -325,25 +314,25 @@
 
                     <!-- DataGrid phiếu nhập -->
                     <DataGrid Grid.Row="1"
-                              ItemsSource="{Binding DanhSachPhieuNhap}"
-                              SelectedItem="{Binding PhieuNhapDangChon}"
+                              x:Name="dgPhieuNhap"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
                               IsReadOnly="True"
+                              SelectionChanged="dgPhieuNhap_SelectionChanged"
                               RowHeaderWidth="0"
                               ColumnHeaderHeight="34"
                               MinRowHeight="28">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Số phiếu"
-                                                Binding="{Binding SoPN}"
-                                                Width="80"/>
+                                                Binding="{Binding SoPhieu}"
+                                                Width="2*"/>
                             <DataGridTextColumn Header="Ngày nhập"
                                                 Binding="{Binding NgayNhap, StringFormat={}{0:dd/MM/yyyy}}"
-                                                Width="120"/>
+                                                Width="*"/>
                             <DataGridTextColumn Header="Nhà cung cấp"
-                                                Binding="{Binding TenNCC}"
+                                                Binding="{Binding NhaCungCap}"
                                                 Width="2*"/>
                             <DataGridTextColumn Header="Tổng tiền"
                                                 Binding="{Binding TongTien, StringFormat={}{0:N0}}"
@@ -375,29 +364,12 @@
                     </Grid.RowDefinitions>
 
                     <!-- Header -->
-                    <Grid Grid.Row="0" Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Chi tiết phiếu nhập"
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Chi tiết phiếu nhập"
                                        FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding PhieuNhapDangChon.SoPN, StringFormat=Số phiếu: {0}}"
-                                       Foreground="#6B7E74"/>
-                        </StackPanel>
 
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                            <TextBlock Text="{Binding PhieuNhapDangChon.NgayNhap, StringFormat={}{0:dd/MM/yyyy}}"
-                                       Foreground="#6B7E74"
-                                       Margin="0,0,8,0"/>
-                            <TextBlock Text="{Binding PhieuNhapDangChon.TenNCC}"
-                                       FontWeight="SemiBold"/>
-                        </StackPanel>
-                    </Grid>
+                    </StackPanel>
 
                     <!-- Thông tin phiếu (dạng 2 cột nhỏ) -->
                     <Grid Grid.Row="1" Margin="0,0,0,8">
@@ -408,6 +380,21 @@
 
                         <!-- Nhà cung cấp -->
                         <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Số phiếu"
+                                       Foreground="#6B7E74"
+                                       FontSize="13"
+                                       Margin="0,0,0,4"/>
+
+                            <Border Background="White"
+                                    BorderBrush="#D4E1DB"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="8">
+                                <TextBlock x:Name="txtSoPhieu"
+                                           FontWeight="SemiBold"
+                                           FontSize="16"
+                                           TextWrapping="Wrap"/>
+                            </Border>
                             <TextBlock Text="Nhà cung cấp"
                                        Foreground="#6B7E74"
                                        FontSize="13"
@@ -418,11 +405,12 @@
                                     BorderThickness="1"
                                     CornerRadius="8"
                                     Padding="8">
-                                <TextBlock Text="{Binding PhieuNhapDangChon.TenNCC}"
+                                <TextBlock x:Name="txtNCC"
                                            FontWeight="SemiBold"
                                            FontSize="16"
                                            TextWrapping="Wrap"/>
                             </Border>
+                            
                         </StackPanel>
 
                         <!-- Ghi chú -->
@@ -437,8 +425,23 @@
                                     BorderThickness="1"
                                     CornerRadius="8"
                                     Padding="8">
-                                <TextBlock Text="{Binding PhieuNhapDangChon.GhiChu}"
+                                <TextBlock x:Name="txtGhiChu"
                                            FontSize="15"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+                            <TextBlock Text="Tổng tiền"
+                                       Foreground="#6B7E74"
+                                       FontSize="13"
+                                       Margin="0,0,0,4"/>
+
+                            <Border Background="White"
+                                    BorderBrush="#D4E1DB"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Padding="8">
+                                <TextBlock x:Name="txtTongTien"
+                                           FontWeight="SemiBold"
+                                           FontSize="16"
                                            TextWrapping="Wrap"/>
                             </Border>
                         </StackPanel>
@@ -446,7 +449,7 @@
 
                     <!-- DataGrid chi tiết -->
                     <DataGrid Grid.Row="2" Margin="0,8,0,0"
-                              ItemsSource="{Binding ChiTietPhieuNhap}"
+                              x:Name="dgChiTiet"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column"
                               CanUserAddRows="False"
@@ -457,13 +460,13 @@
                               MinRowHeight="26">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Mã hàng"
-                                                Binding="{Binding MaHH}"
+                                                Binding="{Binding MaHang}"
                                                 Width="80"/>
                             <DataGridTextColumn Header="Tên hàng"
-                                                Binding="{Binding TenHH}"
+                                                Binding="{Binding TenHang}"
                                                 Width="2*"/>
                             <DataGridTextColumn Header="ĐVT"
-                                                Binding="{Binding DonVi}"
+                                                Binding="{Binding DVT}"
                                                 Width="*"/>
                             <DataGridTextColumn Header="Số lượng"
                                                 Binding="{Binding SoLuong, StringFormat={}{0:N0}}"
@@ -481,23 +484,7 @@
                     </DataGrid>
 
                     <!-- Tổng tiền phiếu đang chọn -->
-                    <StackPanel Grid.Row="3"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Margin="0,8,0,0">
-                        <Border Style="{StaticResource SumCard}">
-                            <StackPanel>
-                                <TextBlock Text="Tổng tiền phiếu"
-                                           FontSize="13"
-                                           Foreground="#6B7E74"/>
-                                <TextBlock Text="{Binding PhieuNhapDangChon.TongTien, StringFormat={}{0:N0} ₫}"
-                                           FontSize="18"
-                                           FontWeight="Bold"
-                                           HorizontalAlignment="Right"
-                                           Margin="0,2,0,0"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
+                 
                 </Grid>
             </Border>
         </Grid>

@@ -64,5 +64,50 @@ namespace QuanLiSanCauLong.LopNghiepVu
 
             return $"{prefix}{soMoi:0000}";
         }
+        public List<PhieuNhap> LayTatCaPhieuNhap()
+        {
+            return phieuNhapDAL.LayTatCaPhieuNhap();
+        }
+        public List<PhieuNhap> LayPhieuNhapTheoNgay(DateTime ngayBatDau, DateTime ngayKetThuc)
+        {
+            var tatCaPhieu = phieuNhapDAL.LayTatCaPhieuNhap();
+            var ketQua = new List<PhieuNhap>();
+            foreach (var phieu in tatCaPhieu)
+            {
+                if (phieu.NgayNhap.Date >= ngayBatDau.Date && phieu.NgayNhap.Date <= ngayKetThuc.Date)
+                {
+                    ketQua.Add(phieu);
+                }
+            }
+            return ketQua;
+        }
+        public int TatCaSoPhieuNhap()
+        {
+            var tatCaPhieu = phieuNhapDAL.LayTatCaPhieuNhap();
+            return tatCaPhieu.Count;
+        }
+        public decimal TongTienTatCaPhieuNhap()
+        {
+            var tatCaPhieu = phieuNhapDAL.LayTatCaPhieuNhap();
+            decimal tongTien = 0;
+            foreach (var phieu in tatCaPhieu)
+            {
+                tongTien += phieu.TongTien;
+            }
+            return tongTien;
+        }
+        public decimal TongTienPhieuNhapHomNay()
+        {
+            var tatCaPhieu = phieuNhapDAL.LayTatCaPhieuNhap();
+            decimal sum = 0;
+            foreach (var phieu in tatCaPhieu)
+            {
+                if (phieu.NgayNhap.Date == DateTime.Now.Date)
+                {
+                    sum+=phieu.TongTien;
+                }
+            }
+            return sum;
+        }
     }
 }

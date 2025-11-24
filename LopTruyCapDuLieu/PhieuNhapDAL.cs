@@ -56,6 +56,31 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return result?.ToString();
             }
         }
+        public List<PhieuNhap> LayTatCaPhieuNhap()
+        {
+            List<PhieuNhap> phieuNhaps = new List<PhieuNhap>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT SoPhieu, NhaCungCap, NgayNhap, GhiChu, TongTien FROM PhieuNhap";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PhieuNhap phieu = new PhieuNhap
+                    {
+                        SoPhieu = reader["SoPhieu"].ToString(),
+                        NhaCungCap = reader["NhaCungCap"].ToString(),
+                        NgayNhap = Convert.ToDateTime(reader["NgayNhap"]),
+                        GhiChu = reader["GhiChu"].ToString(),
+                        TongTien = Convert.ToDecimal(reader["TongTien"])
+                    };
+                    phieuNhaps.Add(phieu);
+                }
+            }
+            return phieuNhaps;
+        }
+
 
     }
 
