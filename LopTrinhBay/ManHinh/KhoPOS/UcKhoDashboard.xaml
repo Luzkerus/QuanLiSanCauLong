@@ -445,6 +445,18 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center">
 
+                <!-- Nút Lịch sử POS -->
+                <Button x:Name="btnLichSuPOS"
+                        Style="{StaticResource SecondaryButton}"
+                        Content="Lịch sử POS"
+                        Margin="0,0,8,0"
+                        Padding="32,14"
+                        MinWidth="120"
+                        Height="50"
+                        FontSize="16"
+                        Click="btnLichSuPOS_Click"/>
+
+
                 <!-- Nút Lịch sử nhập -->
                 <Button Click="btnLichSuNhap"
                         Style="{StaticResource SecondaryButton}"
