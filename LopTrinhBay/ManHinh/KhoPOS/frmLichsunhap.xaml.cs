@@ -38,7 +38,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             DateTime toDate = dpdenNgay.SelectedDate ?? DateTime.MaxValue;
 
             string timKiem = txtTimKiem.Text?.Trim().ToLower() ?? "";
-
+            if (fromDate > toDate)
+            {
+                MessageBox.Show("Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             // Lấy danh sách phiếu nhập
             var list = pnBLL.LayPhieuNhapTheoNgay(fromDate, toDate).AsEnumerable();
 

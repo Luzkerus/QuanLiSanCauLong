@@ -272,7 +272,7 @@
                                     <TextBlock Text="Từ ngày"
                                                Style="{StaticResource LabelSmall}"/>
                                     <Border Style="{StaticResource InputBorderStyle}" Width="160">
-                                        <DatePicker SelectedDate="{Binding TuNgay}"
+                                        <DatePicker x:Name="dpTuNgay"
                                                     BorderThickness="0"
                                                     Height="24"/>
                                     </Border>
@@ -283,7 +283,7 @@
                                     <TextBlock Text="Đến ngày"
                                                Style="{StaticResource LabelSmall}"/>
                                     <Border Style="{StaticResource InputBorderStyle}" Width="160">
-                                        <DatePicker SelectedDate="{Binding DenNgay}"
+                                        <DatePicker x:Name="dpDenNgay"
                                                     BorderThickness="0"
                                                     Height="24"/>
                                     </Border>
@@ -291,16 +291,21 @@
 
                                 <!-- Từ khóa -->
                                 <StackPanel Grid.Column="2" Margin="0,0,16,0">
-                                    <TextBlock Text="Từ khóa"
+                                    <TextBlock Text="PTTT"
                                                Style="{StaticResource LabelSmall}"/>
                                     <Border Style="{StaticResource InputBorderStyle}"
                                             Width="200">
-                                        <TextBox Background="Transparent"
+                                        <ComboBox Background="Transparent"
                                                  BorderThickness="0"
                                                  FontSize="13"
                                                  Height="24"
                                                  Tag="Mã HĐ / tên KH / SĐT"
-                                                 Text="{Binding TuKhoaTim, UpdateSourceTrigger=PropertyChanged}"/>
+                                                 x:Name="cbSearch">
+                                            <ComboBoxItem Content="Tất cả" IsSelected="True"/>
+                                            <ComboBoxItem Content="Tiền mặt"/>
+                                            <ComboBoxItem Content="MoMo"/>
+                                            <ComboBoxItem Content="Ngân hàng"/>
+                                        </ComboBox>
                                     </Border>
                                 </StackPanel>
 
@@ -311,12 +316,12 @@
                                             Margin="8,0,0,0">
                                     <Button Style="{StaticResource FilterButton}"
                                             Content="Lọc"
-                                            Margin="0,0,6,0"
-                                            Command="{Binding LocCommand}"/>
+                                            Margin="0,0,6,0" Name="btnLoc" Click="btnLoc_Click"
+                                           />
 
                                     <Button Style="{StaticResource ClearFilterButton}"
                                             Content="Xóa lọc"
-                                            Command="{Binding XoaLocCommand}"/>
+                                            Name="btnXoaLoc" Click="btnXoaLoc_Click"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -343,16 +348,15 @@
                                     </Border>
                                 </StackPanel>
 
-                                <DataGrid ItemsSource="{Binding DanhSachHoaDon}"
-                                          SelectedItem="{Binding HoaDonDangChon}"
+                                <DataGrid x:Name="dgHoaDon"
                                           AutoGenerateColumns="False"
                                           CanUserAddRows="False"
-                                          CanUserDeleteRows="False"
+                                          CanUserDeleteRows="False" SelectionChanged="dgHoaDon_SelectionChanged"
                                           IsReadOnly="True"
                                           RowHeaderWidth="0"
                                           ColumnHeaderHeight="30"
                                           MinRowHeight="26"
-                                          GridLinesVisibility="None">
+                                          GridLinesVisibility="None" Height="238">
                                     <DataGrid.Resources>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="Background" Value="#F1F5F9"/>
@@ -366,23 +370,17 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Mã HĐ"
-                                                            Binding="{Binding MaHoaDon}"
-                                                            Width="90"/>
-                                        <DataGridTextColumn Header="Thời gian"
-                                                            Binding="{Binding ThoiGian, StringFormat={}{0:dd/MM/yyyy HH:mm}}"
-                                                            Width="140"/>
-                                        <DataGridTextColumn Header="Khách hàng"
-                                                            Binding="{Binding TenKhach}"
+                                                            Binding="{Binding SoHDN}"
                                                             Width="*"/>
-                                        <DataGridTextColumn Header="SĐT"
-                                                            Binding="{Binding SoDienThoai}"
-                                                            Width="110"/>
+                                        <DataGridTextColumn Header="Thời gian"
+                                                            Binding="{Binding Ngay, StringFormat={}{0:dd/MM/yyyy HH:mm}}"
+                                                            Width="*"/>
                                         <DataGridTextColumn Header="PTTT"
-                                                            Binding="{Binding PhuongThucThanhToan}"
-                                                            Width="110"/>
+                                                            Binding="{Binding PhuongThuc}"
+                                                            Width="*"/>
                                         <DataGridTextColumn Header="Tổng tiền"
                                                             Binding="{Binding TongTien, StringFormat={}{0:N0}đ}"
-                                                            Width="120"/>
+                                                            Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
@@ -396,44 +394,17 @@
                                 Padding="10">
                             <StackPanel>
 
-                                <TextBlock Text="Chi tiết hóa đơn"
-                                           FontWeight="SemiBold"
-                                           FontSize="14"
-                                           Margin="0,0,0,6"/>
+                                <TextBlock x:Name="HoaDonTextBlock"
+                                   Text="Chi tiết hóa đơn"
+                                   FontWeight="SemiBold"
+                                   FontSize="14"
+                                   Margin="0,0,0,6"/>
 
                                 <!-- Thông tin KH + Ghi chú -->
-                                <Grid Margin="0,0,0,8">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <!-- Khách hàng -->
-                                    <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                                        <TextBlock Text="Khách hàng"
-                                                   Style="{StaticResource LabelSmall}"/>
-                                        <Border Style="{StaticResource InputBorderStyle}">
-                                            <TextBlock Text="{Binding HoaDonDangChon.TenKhach}"
-                                                       FontSize="14"
-                                                       FontWeight="SemiBold"
-                                                       TextWrapping="Wrap"/>
-                                        </Border>
-                                    </StackPanel>
-
-                                    <!-- Ghi chú -->
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Ghi chú"
-                                                   Style="{StaticResource LabelSmall}"/>
-                                        <Border Style="{StaticResource InputBorderStyle}">
-                                            <TextBlock Text="{Binding HoaDonDangChon.GhiChu}"
-                                                       FontSize="13"
-                                                       TextWrapping="Wrap"/>
-                                        </Border>
-                                    </StackPanel>
-                                </Grid>
+                           
 
                                 <!-- Lưới chi tiết -->
-                                <DataGrid ItemsSource="{Binding ChiTietHoaDon}"
+                                <DataGrid x:Name="dgChiTietHoaDon"
                                           AutoGenerateColumns="False"
                                           CanUserAddRows="False"
                                           CanUserDeleteRows="False"
@@ -442,7 +413,7 @@
                                           ColumnHeaderHeight="28"
                                           MinRowHeight="26"
                                           GridLinesVisibility="None"
-                                          Margin="0,0,0,6">
+                                          Margin="0,0,0,6" Height="241">
                                     <DataGrid.Resources>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="Background" Value="#F1F5F9"/>
@@ -456,14 +427,15 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Sản phẩm" Binding="{Binding TenHang}" Width="*"/>
-                                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DVT}" Width="80"/>
-                                        <DataGridTextColumn Header="SL" Binding="{Binding SoLuong}" Width="60"/>
+                                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DVT}" Width="*"/>
+                                        <DataGridTextColumn Header="SL" Binding="{Binding SoLuong}" Width=".8*"/>
+                                        
                                         <DataGridTextColumn Header="Đơn giá"
-                                                            Binding="{Binding DonGia, StringFormat={}{0:N0}đ}"
-                                                            Width="110"/>
+                                                            Binding="{Binding GiaBan, StringFormat={}{0:N0}đ}"
+                                                            Width="*"/>
                                         <DataGridTextColumn Header="Thành tiền"
                                                             Binding="{Binding ThanhTien, StringFormat={}{0:N0}đ}"
-                                                            Width="120"/>
+                                                            Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
 
@@ -474,7 +446,7 @@
                                                FontSize="13"
                                                DockPanel.Dock="Left"
                                                VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding HoaDonDangChon.TongTien, StringFormat={}{0:N0}đ}"
+                                    <TextBlock x:Name="txtTongTien"
                                                FontSize="18"
                                                FontWeight="Bold"
                                                Foreground="{StaticResource ColAccent}"
@@ -499,7 +471,7 @@
                             Content="In lại hóa đơn"
                             Margin="0,0,4,0"
                             Height="40"
-                            Command="{Binding InLaiHoaDonCommand}"/>
+                            Click="BtnInLaiHoaDon_Click"/>
 
                     <Button Grid.Column="1"
                             Style="{StaticResource PrimaryButton}"

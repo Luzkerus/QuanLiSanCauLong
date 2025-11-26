@@ -66,5 +66,28 @@ namespace QuanLiSanCauLong.LopNghiepVu
                 hangHoaDAL.CapNhatTonKhoSauKhiBan(cthd.MaHang, cthd.SoLuong);
             }
         }
+        public List<HoaDon> LayTatCaHoaDon()
+        {
+            return hoaDonDAL.LayTatCaHoaDon();
+        }
+        public List<ChiTietHoaDon> LayChiTietHoaDonTheoSoHDN(string soHDN)
+        {
+            return chiTietHoaDonDAL.LayChiTietHoaDonTheoSoHDN(soHDN);
+        }
+        public List<ChiTietHoaDon> LayChiTietHoaDonTheoSoHDN(List<string> soHDNlist)
+        {
+            // Ví dụ: lọc từ database
+            return chiTietHoaDonDAL.LayTatCaChiTietHoaDon()
+                     .Where(ct => soHDNlist.Contains(ct.SoHDN))
+                     .ToList();
+        }
+
+        public List<HoaDon> LayHoaDonTheoNgay(DateTime fromDate, DateTime toDate)
+        {
+            var allHoaDons = hoaDonDAL.LayTatCaHoaDon();
+            return allHoaDons
+                    .Where(hd => hd.Ngay.Date >= fromDate.Date && hd.Ngay.Date <= toDate.Date)
+                    .ToList();
+        }
     }
 }

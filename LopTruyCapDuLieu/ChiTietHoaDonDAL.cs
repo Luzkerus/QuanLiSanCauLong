@@ -36,5 +36,59 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 cmd.ExecuteNonQuery();
             }
         }
+        public List<ChiTietHoaDon> LayChiTietHoaDonTheoSoHDN(string soHDN)
+        {
+            List<ChiTietHoaDon> chiTietHoaDons = new List<ChiTietHoaDon>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT MaChiTiet, MaHang, TenHang, SoLuong, DVT, GiaBan, ThanhTien, SoHDN FROM ChiTietHoaDon WHERE SoHDN = @SoHDN";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@SoHDN", soHDN);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ChiTietHoaDon cthd = new ChiTietHoaDon
+                    {
+                        MaChiTiet = reader.GetString(0),
+                        MaHang = reader.GetString(1),
+                        TenHang = reader.GetString(2),
+                        SoLuong = reader.GetInt32(3),
+                        DVT = reader.GetString(4),
+                        GiaBan = reader.GetDecimal(5),
+                        ThanhTien = reader.GetDecimal(6),
+                        SoHDN = reader.GetString(7)
+                    };
+                    chiTietHoaDons.Add(cthd);
+                }
+            }
+            return chiTietHoaDons;
+        }
+        public List<ChiTietHoaDon> LayTatCaChiTietHoaDon() { 
+            List<ChiTietHoaDon> chiTietHoaDons = new List<ChiTietHoaDon>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT MaChiTiet, MaHang, TenHang, SoLuong, DVT, GiaBan, ThanhTien, SoHDN FROM ChiTietHoaDon";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ChiTietHoaDon cthd = new ChiTietHoaDon
+                    {
+                        MaChiTiet = reader.GetString(0),
+                        MaHang = reader.GetString(1),
+                        TenHang = reader.GetString(2),
+                        SoLuong = reader.GetInt32(3),
+                        DVT = reader.GetString(4),
+                        GiaBan = reader.GetDecimal(5),
+                        ThanhTien = reader.GetDecimal(6),
+                        SoHDN = reader.GetString(7)
+                    };
+                    chiTietHoaDons.Add(cthd);
+                }
+            }
+            return chiTietHoaDons;
+        }
     }
 }
