@@ -139,6 +139,49 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
 
             return danhSach;
         }
+        public List<ChiTietDatSanVM> LayTop15DatSan()
+        {
+            var danhSach = new List<ChiTietDatSanVM>();
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"
+            SELECT TOP 15 c.*, k.Ten AS TenKH, k.Email, d.SDT
+            FROM ChiTietDatSan c
+            INNER JOIN DatSan d ON c.MaPhieu = d.MaPhieu
+            INNER JOIN KhachHang k ON d.SDT = k.SDT
+            ORDER BY c.NgayDat ASC, c.GioBatDau ASC";
+
+                using (var cmd = new SqlCommand(sql, conn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        danhSach.Add(new ChiTietDatSanVM
+                        {
+                            MaChiTiet = reader["MaChiTiet"].ToString(),
+                            MaPhieu = reader["MaPhieu"].ToString(),
+                            MaSan = Convert.ToInt32(reader["MaSan"]),
+                            TenSanCached = reader["TenSanCached"].ToString(),
+                            NgayDat = Convert.ToDateTime(reader["NgayDat"]),
+                            GioBatDau = (TimeSpan)reader["GioBatDau"],
+                            GioKetThuc = (TimeSpan)reader["GioKetThuc"],
+                            DonGia = Convert.ToDecimal(reader["DonGia"]),
+                            PhuThuLe = Convert.ToDecimal(reader["PhuThuLe"]),
+                            ThanhTien = Convert.ToDecimal(reader["ThanhTien"]),
+                            TenKH = reader["TenKH"].ToString(),
+                            SDT = reader["SDT"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            TrangThai = reader["TrangThai"].ToString(),
+                            TrangThaiThanhToan = reader["TrangThaiThanhToan"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return danhSach;
+        }
 
     }
 }

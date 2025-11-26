@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using QuanLiSanCauLong.LopDuLieu;
+﻿using QuanLiSanCauLong.LopDuLieu;
 using QuanLiSanCauLong.LopTruyCapDuLieu;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace QuanLiSanCauLong.LopNghiepVu
 {
@@ -65,6 +66,32 @@ namespace QuanLiSanCauLong.LopNghiepVu
         {
             return dal.LayTatCaDatSan();
         }
-
+        public List<ChiTietDatSanVM> LayDatSanGanDay()
+        {
+            return dal.LayTop15DatSan();
+        }
+        public int DemTongSoDatSanHomNay()
+        {
+            DateTime today = DateTime.Today;
+            return LayTatCaDatSan()
+                   .Count(x => x.NgayDat.Date == today);
+        }
+        public double TinhTyLeLapDay()
+        {
+            DateTime today = DateTime.Today;
+            var datSansHomNay = LayTatCaDatSan()
+                                .Where(x => x.NgayDat.Date == today)
+                                .ToList();
+            if (datSansHomNay.Count == 0)
+                return 0.0;
+            int soGioDat = 0;
+            foreach (var ds in datSansHomNay)
+            {
+                soGioDat += (int)(ds.GioKetThuc - ds.GioBatDau).TotalHours;
+            }
+            // Giả sử mỗi sân có thể được đặt tối đa 10 giờ mỗi ngày
+            int tongSoGioCoTheDat = 18 * datSansHomNay.Select(x => x.MaSan).Distinct().Count();
+            return (double)soGioDat / tongSoGioCoTheDat * 100.0;
+        }
     }
 }

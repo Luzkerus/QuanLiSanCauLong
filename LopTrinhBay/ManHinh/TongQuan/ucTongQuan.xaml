@@ -186,13 +186,6 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
-                <TextBlock Text="Xuất báo cáo"
-                           FontSize="14"
-                           Foreground="Black"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Padding="14,8"/>
             </Border>
 
             <!-- Đặt sân mới -->
@@ -248,7 +241,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel>
                                 <TextBlock Text="Doanh thu hôm nay" Style="{StaticResource KpiTitle}"/>
-                                <TextBlock Text="{Binding DoanhThuHomNay, StringFormat={}{0:N0}đ}" Style="{StaticResource KpiValue}"/>
+                                <TextBlock x:Name="txtDanhThuHomNay" Text="{Binding DoanhThuHomNay, StringFormat={}{0:N0}đ}" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongDoanhThu}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
@@ -266,7 +259,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel>
                                 <TextBlock Text="Số lượt đặt sân" Style="{StaticResource KpiTitle}"/>
-                                <TextBlock Text="{Binding SoLuotDatSan}" Style="{StaticResource KpiValue}"/>
+                                <TextBlock x:Name="txtSoLuot" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongLuotDat}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,28">
@@ -284,7 +277,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel>
                                 <TextBlock Text="Hội viên mới" Style="{StaticResource KpiTitle}"/>
-                                <TextBlock Text="{Binding HoiVienMoi}" Style="{StaticResource KpiValue}"/>
+                                <TextBlock x:Name="txtHoiVienMoi" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongHoiVien}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
@@ -302,7 +295,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel>
                                 <TextBlock Text="Tỉ lệ lấp đầy" Style="{StaticResource KpiTitle}"/>
-                                <TextBlock Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}" Style="{StaticResource KpiValue}"/>
+                                <TextBlock x:Name="txtTyLeLapDay" Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}" Style="{StaticResource KpiValue}"/>
                                 <TextBlock Text="{Binding BienDongLapDay}" Foreground="#DC2626" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
@@ -326,7 +319,7 @@
                                 <TextBlock Text="Tình trạng sân" FontWeight="SemiBold"/>
                             </DockPanel>
 
-                            <ItemsControl ItemsSource="{Binding TinhTrangSan}">
+                            <ItemsControl x:Name="dgTinhTrangSan">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <UniformGrid Columns="3"/>
@@ -341,7 +334,10 @@
                                                         Style="{StaticResource TrangThaiBorderStyle}">
                                                     <TextBlock Text="{Binding TrangThai}" FontSize="12" FontWeight="SemiBold"/>
                                                 </Border>
-                                                <TextBlock Text="{Binding Den}" Foreground="#6B7E74" Margin="0,6,0,0" FontSize="12"/>
+                                                <TextBlock Text="{Binding NgayBaoTri, StringFormat={}{0:dd/MM/yyyy}}" 
+           Foreground="#6B7E74" 
+           Margin="0,6,0,0" 
+           FontSize="12"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>
@@ -358,7 +354,7 @@
                                 <TextBlock Text="Top hội viên" FontWeight="SemiBold"/>
                             </DockPanel>
 
-                            <ItemsControl ItemsSource="{Binding TopHoiVien}">
+                            <ItemsControl x:Name="dgTopHoiVien">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel Margin="0,6,0,6">
@@ -366,10 +362,10 @@
                                                 <TextBlock Text="{Binding TenVietTat}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="SemiBold"/>
                                             </Border>
                                             <StackPanel Margin="10,0,0,0">
-                                                <TextBlock Text="{Binding HoTen}"/>
+                                                <TextBlock Text="{Binding Ten}"/>
                                                 <TextBlock Text="{Binding LuotChoi, StringFormat={}{0} lượt chơi}" Foreground="#6B7E74" FontSize="12"/>
                                             </StackPanel>
-                                            <TextBlock Text="{Binding Diem, StringFormat={}{0} điểm}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            <TextBlock Text="{Binding DiemTichLuy, StringFormat={}{0} điểm}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -386,13 +382,15 @@
                             <TextBlock Text="Lịch đặt sân gần đây" FontWeight="SemiBold"/>
                         </DockPanel>
 
-                        <ListView ItemsSource="{Binding LichDatGanDay}" BorderThickness="0">
+                        <ListView x:Name="dgLichDatGanDay" BorderThickness="0">
                             <ListView.View>
                                 <GridView AllowsColumnReorder="False">
-                                    <GridViewColumn Header="Sân" DisplayMemberBinding="{Binding TenSan}" Width="auto"/>
-                                    <GridViewColumn Header="Khách hàng" DisplayMemberBinding="{Binding KhachHang}" Width="auto"/>
-                                    <GridViewColumn Header="Thời gian" DisplayMemberBinding="{Binding KhoangGio}" Width="auto"/>
-                                    <GridViewColumn Header="Trạng thái" Width="auto">
+                                    <GridViewColumn Header="Sân" DisplayMemberBinding="{Binding TenSanCached}" Width="auto"/>
+                                    <GridViewColumn Header="Khách hàng" DisplayMemberBinding="{Binding TenKH}" Width="auto"/>
+                                    <GridViewColumn Header="Ngày đặt" DisplayMemberBinding="{Binding NgayDat}" Width="auto"/>
+                                    <GridViewColumn Header="Giờ bắt đầu" DisplayMemberBinding="{Binding GioBatDau}" Width="auto"/>
+                                    <GridViewColumn Header="Giờ bắt kết thúc" DisplayMemberBinding="{Binding GioBatDau}" Width="auto"/>
+                                    <GridViewColumn Header="Trạng thái" DisplayMemberBinding="{Binding TrangThai}" Width="auto">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Border CornerRadius="10" Padding="8,2" Style="{StaticResource TrangThaiBorderStyle}">

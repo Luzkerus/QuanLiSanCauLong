@@ -283,5 +283,6 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 cmd.ExecuteNonQuery();
             }
         }
+
     }
 }

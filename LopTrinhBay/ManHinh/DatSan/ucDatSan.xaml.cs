@@ -45,7 +45,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         {
             var ds = bll.LayTatCaDatSan();
 
-            txtTongDonHomNay.Text = ds.Count.ToString();
+            txtTongDonHomNay.Text = bll.DemTongSoDatSanHomNay().ToString();
             txtSoDangChoi.Text = ds.Count(x => x.TrangThai == "Đang chơi").ToString();
             txtSoDaDat.Text = ds.Count(x => x.TrangThai == "Đã đặt" || x.TrangThai == "Chưa bắt đầu").ToString();
             txtSoHoanThanh.Text = ds.Count(x => x.TrangThai == "Hoàn thành").ToString();

@@ -79,5 +79,10 @@ namespace QuanLiSanCauLong.LopNghiepVu
         {
             return khachHangDAL.ThemKhachHang(kh);
         }
+        public List<KhachHang> LayTopHoiVien(int n)
+        {
+            var danhSach = LayTatCaKhachHang();
+            return danhSach.OrderByDescending(kh => kh.TongChiTieu).Take(n).ToList();
+        }
     }
 }
