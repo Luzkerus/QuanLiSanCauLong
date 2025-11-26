@@ -93,5 +93,49 @@ namespace QuanLiSanCauLong.LopNghiepVu
             int tongSoGioCoTheDat = 18 * datSansHomNay.Select(x => x.MaSan).Distinct().Count();
             return (double)soGioDat / tongSoGioCoTheDat * 100.0;
         }
+        public double TinhBienDongSoLuotDatSan()
+        {
+            DateTime today = DateTime.Today;
+            DateTime yesterday = today.AddDays(-1);
+            int soLuotDatHomNay = LayTatCaDatSan()
+                                 .Count(x => x.NgayDat.Date == today);
+            int soLuotDatHomQua = LayTatCaDatSan()
+                                  .Count(x => x.NgayDat.Date == yesterday);
+            if (soLuotDatHomQua == 0)
+                return soLuotDatHomNay > 0 ? 100.0 : 0.0;
+            return ((double)(soLuotDatHomNay - soLuotDatHomQua) / soLuotDatHomQua) * 100.0;
+        }
+        public double TinhBienDongTyLeLapDay()
+        {
+            DateTime today = DateTime.Today;
+            DateTime yesterday = today.AddDays(-1);
+
+            // Tỷ lệ lấp đầy hôm nay
+            double tyLeHomNay = TinhTyLeLapDay();
+
+            // Tỷ lệ lấp đầy hôm qua
+            var datSansHomQua = LayTatCaDatSan()
+                                .Where(x => x.NgayDat.Date == yesterday)
+                                .ToList();
+            double tyLeHomQua = 0.0;
+            if (datSansHomQua.Count > 0)
+            {
+                int soGioDat = 0;
+                foreach (var ds in datSansHomQua)
+                {
+                    soGioDat += (int)(ds.GioKetThuc - ds.GioBatDau).TotalHours;
+                }
+                int tongSoGioCoTheDat = 18 * datSansHomQua.Select(x => x.MaSan).Distinct().Count();
+                tyLeHomQua = (double)soGioDat / tongSoGioCoTheDat * 100.0;
+            }
+
+            // Nếu hôm qua không có dữ liệu
+            if (tyLeHomQua == 0)
+                return tyLeHomNay > 0 ? 100.0 : 0.0;
+
+            // Tính biến động %
+            return ((tyLeHomNay - tyLeHomQua) / tyLeHomQua) * 100.0;
+        }
+
     }
 }

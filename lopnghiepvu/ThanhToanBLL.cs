@@ -70,6 +70,29 @@ namespace QuanLiSanCauLong.LopNghiepVu
             return LayTatCaHoaDon()
                 .Count(tt => tt.NgayLap.Year == now.Year && tt.NgayLap.Month == now.Month);
         }
+        public decimal TinhBienDongDoanhThuNgay()
+        {
+            DateTime today = DateTime.Today;
+            DateTime yesterday = today.AddDays(-1);
+
+            // Doanh thu hôm nay
+            decimal doanhThuHomNay = LayTatCaHoaDon()
+                .Where(tt => tt.NgayLap.Date == today)
+                .Sum(tt => tt.TongTien);
+
+            // Doanh thu hôm qua
+            decimal doanhThuHomQua = LayTatCaHoaDon()
+                .Where(tt => tt.NgayLap.Date == yesterday)
+                .Sum(tt => tt.TongTien);
+
+            if (doanhThuHomQua == 0)
+                return 0; // tránh chia cho 0
+
+            // Tính biến động phần trăm
+            decimal bienDong = ((doanhThuHomNay - doanhThuHomQua) / doanhThuHomQua) * 100;
+            return bienDong;
+        }
+
     }
 }
    

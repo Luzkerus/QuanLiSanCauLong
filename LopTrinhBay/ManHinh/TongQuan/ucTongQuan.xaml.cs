@@ -38,6 +38,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.TongQuan
             txtSoLuot.Text = datSanBLL.DemTongSoDatSanHomNay().ToString();
             txtHoiVienMoi.Text = khachHangBLL.LayTongKhachHangMoiTrongThang().ToString();
             txtTyLeLapDay.Text = datSanBLL.TinhTyLeLapDay().ToString("P1");
+
+            txtBienDongDoanhThu.Text = thanhToanBLL.TinhBienDongDoanhThuNgay().ToString("P1");
+            txtBienDongSoLuot.Text = datSanBLL.TinhBienDongSoLuotDatSan().ToString("P1");
+            txtBienDongHoiVien.Text = khachHangBLL.TinhBienDongHoiVienMoi().ToString("P1");
+            txtBienDongLayDay.Text = datSanBLL.TinhBienDongTyLeLapDay().ToString("P1");
         }
 
         private void btnMoDatSan_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

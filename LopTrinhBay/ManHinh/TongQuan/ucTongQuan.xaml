@@ -242,7 +242,7 @@
                             <StackPanel>
                                 <TextBlock Text="Doanh thu hôm nay" Style="{StaticResource KpiTitle}"/>
                                 <TextBlock x:Name="txtDanhThuHomNay" Text="{Binding DoanhThuHomNay, StringFormat={}{0:N0}đ}" Style="{StaticResource KpiValue}"/>
-                                <TextBlock Text="{Binding BienDongDoanhThu}" Foreground="#16A34A" Margin="0,6,0,0"/>
+                                <TextBlock x:Name="txtBienDongDoanhThu" Text="{Binding BienDongDoanhThu}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                                 <TextBlock Text="💵" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -260,7 +260,7 @@
                             <StackPanel>
                                 <TextBlock Text="Số lượt đặt sân" Style="{StaticResource KpiTitle}"/>
                                 <TextBlock x:Name="txtSoLuot" Style="{StaticResource KpiValue}"/>
-                                <TextBlock Text="{Binding BienDongLuotDat}" Foreground="#16A34A" Margin="0,6,0,0"/>
+                                <TextBlock x:Name="txtBienDongSoLuot" Text="{Binding BienDongLuotDat}" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                                 <TextBlock Text="🗓️" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -278,7 +278,7 @@
                             <StackPanel>
                                 <TextBlock Text="Hội viên mới" Style="{StaticResource KpiTitle}"/>
                                 <TextBlock x:Name="txtHoiVienMoi" Style="{StaticResource KpiValue}"/>
-                                <TextBlock Text="{Binding BienDongHoiVien}" Foreground="#16A34A" Margin="0,6,0,0"/>
+                                <TextBlock x:Name="txtBienDongHoiVien" Foreground="#16A34A" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                                 <TextBlock Text="👥" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -296,7 +296,7 @@
                             <StackPanel>
                                 <TextBlock Text="Tỉ lệ lấp đầy" Style="{StaticResource KpiTitle}"/>
                                 <TextBlock x:Name="txtTyLeLapDay" Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}" Style="{StaticResource KpiValue}"/>
-                                <TextBlock Text="{Binding BienDongLapDay}" Foreground="#DC2626" Margin="0,6,0,0"/>
+                                <TextBlock x:Name="txtBienDongLayDay" Text="{Binding BienDongLapDay}" Foreground="#DC2626" Margin="0,6,0,0"/>
                             </StackPanel>
                             <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                                 <TextBlock Text="📈" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>

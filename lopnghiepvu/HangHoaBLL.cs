@@ -81,7 +81,20 @@ namespace QuanLiSanCauLong.LopNghiepVu
             return hangHoaDAL.LayTatCaHangHoa();
         }
 
-
+        public int TinhTongSoHangHoa()
+        {
+            return LayTatCaHangHoa().Count;
+        }
+        public decimal TinhGiaTriTonKho()
+        {
+            var allHangHoa = LayTatCaHangHoa();
+            decimal tongGiaTri = 0;
+            foreach (var hh in allHangHoa)
+            {
+                tongGiaTri += hh.GiaNhap * hh.TonKho;
+            }
+            return tongGiaTri;
+        }
     }
 
 }

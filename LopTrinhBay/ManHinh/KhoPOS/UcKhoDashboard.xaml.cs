@@ -37,9 +37,13 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
         private void LoadData()
         { 
             HangHoaBLL hangHoaBLL = new HangHoaBLL();
+            HoaDonBLL hoaDonBLL = new HoaDonBLL();
             dgKho.ItemsSource = hangHoaBLL.LayTatCaHangHoa();
             isSanPham.ItemsSource = hangHoaBLL.LayTatCaHangHoa();
             txtTongTien .Text = "0";
+            txtSoMatHang.Text = hangHoaBLL.TinhTongSoHangHoa().ToString();
+            txtDoanhThuHomNay.Text = hoaDonBLL.TinhTongDoanhThu(DateTime.Now,DateTime.Now).ToString("N0") + " đ";
+            txtGiaTriTonKho.Text = hangHoaBLL.TinhGiaTriTonKho().ToString("N0") + " đ";
         }
         private void txtTimKiemKho_TextChanged(object sender, TextChangedEventArgs e)
         {

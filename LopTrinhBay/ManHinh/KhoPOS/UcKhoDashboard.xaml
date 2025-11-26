@@ -492,7 +492,7 @@
 
                     <StackPanel>
                         <TextBlock Text="Tổng giá trị tồn" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding Dashboard.TongGiaTriTon, StringFormat={}{0:N0}₫}"
+                        <TextBlock x:Name="txtGiaTriTonKho" Text="{Binding Dashboard.TongGiaTriTon, StringFormat={}{0:N0}₫}"
                                    Style="{StaticResource KpiValue}"/>
                     </StackPanel>
 
@@ -513,7 +513,7 @@
 
                     <StackPanel>
                         <TextBlock Text="Doanh thu POS hôm nay" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding Dashboard.DoanhThuPOSHomNay, StringFormat={}{0:N0}₫}"
+                        <TextBlock x:Name="txtDoanhThuHomNay" Text="{Binding Dashboard.DoanhThuPOSHomNay, StringFormat={}{0:N0}₫}"
                                    Style="{StaticResource KpiValue}"/>
                     </StackPanel>
 
@@ -533,7 +533,7 @@
 
                     <StackPanel>
                         <TextBlock Text="Số mặt hàng" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding Dashboard.SoMatHang}"
+                        <TextBlock x:Name="txtSoMatHang" Text="{Binding Dashboard.SoMatHang}"
                                    Style="{StaticResource KpiValue}"/>
                     </StackPanel>
 

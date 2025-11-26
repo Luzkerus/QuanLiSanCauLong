@@ -89,5 +89,11 @@ namespace QuanLiSanCauLong.LopNghiepVu
                     .Where(hd => hd.Ngay.Date >= fromDate.Date && hd.Ngay.Date <= toDate.Date)
                     .ToList();
         }
+        public decimal TinhTongDoanhThu(DateTime fromDate, DateTime toDate)
+        {
+            var hoaDons = LayHoaDonTheoNgay(fromDate, toDate);
+            return hoaDons.Sum(hd => hd.TongTien);
+        }
+
     }
 }

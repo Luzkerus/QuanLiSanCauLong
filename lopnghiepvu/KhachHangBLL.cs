@@ -84,5 +84,26 @@ namespace QuanLiSanCauLong.LopNghiepVu
             var danhSach = LayTatCaKhachHang();
             return danhSach.OrderByDescending(kh => kh.TongChiTieu).Take(n).ToList();
         }
+        public double TinhBienDongHoiVienMoi()
+        {
+            DateTime now = DateTime.Now;
+            DateTime thangTruoc = now.AddMonths(-1);
+
+            // Hội viên mới tháng này
+            int hoiVienMoiThangNay = LayTatCaKhachHang()
+                .Count(kh => kh.TuNgay.Month == now.Month && kh.TuNgay.Year == now.Year);
+
+            // Hội viên mới tháng trước
+            int hoiVienMoiThangTruoc = LayTatCaKhachHang()
+                .Count(kh => kh.TuNgay.Month == thangTruoc.Month && kh.TuNgay.Year == thangTruoc.Year);
+
+            if (hoiVienMoiThangTruoc == 0)
+                return 0; // tránh chia cho 0
+
+            // Tính biến động %
+            double bienDong = ((double)(hoiVienMoiThangNay - hoiVienMoiThangTruoc) / hoiVienMoiThangTruoc) * 100;
+            return bienDong;
+        }
+
     }
 }
