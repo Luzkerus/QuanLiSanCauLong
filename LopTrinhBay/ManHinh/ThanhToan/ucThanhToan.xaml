@@ -277,14 +277,6 @@
                                    Margin="0,0,0,10"
                                    Foreground="{StaticResource ColText}"/>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <!-- Cột trái: SĐT + Tên + Email -->
-                                <ColumnDefinition Width="2*"/>
-                                <!-- Cột phải: Số hóa đơn -->
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
                             <!-- Khối thông tin chính: SĐT, Tên, Email -->
                             <StackPanel Grid.Column="0" Margin="0,0,18,0">
                                 <!-- Số điện thoại (trên cùng) -->
@@ -307,27 +299,7 @@
 
                             </StackPanel>
 
-                            <!-- Cột phải: Số hóa đơn từ Đặt sân -->
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="Số hóa đơn (từ Đặt sân)"
-                                           Foreground="{StaticResource ColSub}"/>
-                                <TextBox x:Name="txtSoHoaDon"
-                                         Style="{StaticResource RoundedInput}"
-                                         Text="{Binding SoHoaDon}"
-                                         Margin="0,2,0,8"
-                                         ToolTip="Số hóa đơn được lấy từ thông tin Đặt sân"/>
 
-                                <!-- Email khách -->
-                                <TextBlock Text="Email"
-                                           Foreground="{StaticResource ColSub}"/>
-                                <TextBox x:Name="txtEmailKH"
-                                         Style="{StaticResource RoundedInput}"
-                                         Text="{Binding EmailKH}"
-                                         Margin="0,2,0,8"
-                                         ToolTip="Email khách hàng (nếu có)"/>
-
-                            </StackPanel>
-                        </Grid>
                     </StackPanel>
                 </Border>
 

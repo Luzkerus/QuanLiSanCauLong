@@ -94,6 +94,52 @@ namespace QuanLiSanCauLong.LopNghiepVu
             var hoaDons = LayHoaDonTheoNgay(fromDate, toDate);
             return hoaDons.Sum(hd => hd.TongTien);
         }
+        public decimal TinhDoanhThuTuNgayDenNgay(DateTime fromDate, DateTime toDate)
+        {
+            var hoaDons = LayHoaDonTheoNgay(fromDate, toDate);
+            return hoaDons.Sum(hd => hd.TongTien);
+        }
+        public List<ChiTietHoaDon> LayChiTietHoaDonTheoNgay(DateTime fromDate, DateTime toDate)
+        {
+            var hoaDons = LayHoaDonTheoNgay(fromDate, toDate);
+            var soHDNList = hoaDons.Select(hd => hd.SoHDN).ToList();
+            return LayChiTietHoaDonTheoSoHDN(soHDNList);
+        }
+        public int TongSoLuongBanRa(DateTime fromDate, DateTime toDate)
+        {
+            var chiTiets = LayChiTietHoaDonTheoNgay(fromDate, toDate);
+            return chiTiets.Sum(ct => ct.SoLuong);
+        }
+        public decimal GiaTriTrungBinhBanRa(DateTime fromDate, DateTime toDate)
+        {
+            var chiTiets = LayChiTietHoaDonTheoNgay(fromDate, toDate);
+            int tongSoLuong = chiTiets.Sum(ct => ct.SoLuong);
+            if (tongSoLuong == 0)
+                return 0;
+            decimal tongGiaTri = chiTiets.Sum(ct => ct.ThanhTien);
+            return tongGiaTri / tongSoLuong;
+        }
+        public string LayMatHangBanChayNhat(DateTime fromDate, DateTime toDate)
+        {
+            var chiTiets = LayChiTietHoaDonTheoNgay(fromDate, toDate);
+            var nhomHangBanChay = chiTiets
+                .GroupBy(ct => ct.MaHang)
+                .Select(g => new
+                {
+                    MaHang = g.Key,
+                    TongSoLuong = g.Sum(ct => ct.SoLuong)
+                })
+                .OrderByDescending(x => x.TongSoLuong)
+                .FirstOrDefault();
+            if (nhomHangBanChay != null)
+            {
+                var hangHoaDAL = new HangHoaDAL();
+                var hangHoas = hangHoaDAL.LayHangHoaTheoMa(nhomHangBanChay.MaHang);
+                var hangHoa = hangHoas.FirstOrDefault(); // lấy phần tử đầu tiên
 
+                return hangHoa != null ? hangHoa.TenHang : "Không xác định";
+            }
+            return "Không có dữ liệu";
+        }
     }
 }

@@ -165,6 +165,7 @@
     <Compile Include="LopDuLieu\PhieuNhap.cs" />
     <Compile Include="LopDuLieu\San.cs" />
     <Compile Include="LopDuLieu\ThanhToan.cs" />
+    <Compile Include="LopDuLieu\TimeSlotVM.cs" />
     <Compile Include="LopNghiepVu\BangGiaBLL.cs" />
     <Compile Include="LopNghiepVu\ChiTietDatSanBLL.cs" />
     <Compile Include="LopNghiepVu\ChiTietPhieuNhapBLL.cs" />

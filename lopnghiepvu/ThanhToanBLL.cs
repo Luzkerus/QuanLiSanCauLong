@@ -92,7 +92,12 @@ namespace QuanLiSanCauLong.LopNghiepVu
             decimal bienDong = ((doanhThuHomNay - doanhThuHomQua) / doanhThuHomQua) * 100;
             return bienDong;
         }
-
+        public decimal TinhDoanhThuTuNgayDenNgay(DateTime fromDate, DateTime toDate)
+        {
+            return LayTatCaHoaDon()
+                .Where(tt => tt.NgayLap.Date >= fromDate.Date && tt.NgayLap.Date <= toDate.Date)
+                .Sum(tt => tt.TongTien);
+        }
     }
 }
    

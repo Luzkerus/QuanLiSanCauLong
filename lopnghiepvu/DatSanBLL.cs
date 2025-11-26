@@ -2,6 +2,7 @@
 using QuanLiSanCauLong.LopTruyCapDuLieu;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace QuanLiSanCauLong.LopNghiepVu
@@ -135,6 +136,79 @@ namespace QuanLiSanCauLong.LopNghiepVu
 
             // Tính biến động %
             return ((tyLeHomNay - tyLeHomQua) / tyLeHomQua) * 100.0;
+        }
+        public int TinhSoLuotDatSanTuNgayDenNgay(DateTime fromDate, DateTime toDate)
+        {
+            return LayTatCaDatSan()
+                   .Count(x => x.NgayDat.Date >= fromDate.Date && x.NgayDat.Date <= toDate.Date);
+        }
+        public List<TimeSlotVM> LayBaoCaoTheoKhungGio(DateTime fromDate, DateTime toDate)
+        {
+            var datSans = LayTatCaDatSan()
+                          .Where(x => x.NgayDat.Date >= fromDate.Date && x.NgayDat.Date <= toDate.Date)
+                          .ToList();
+
+            // Lấy khung giờ từ bảng giá
+            var bangGiaBLL = new BangGiaBLL();
+            var bangGia = bangGiaBLL.LayBangGiaChung();
+
+            var result = new List<TimeSlotVM>();
+
+            foreach (DataRow row in bangGia.Rows)
+            {
+                var bd = (TimeSpan)row["GioBatDau"];
+                var kt = (TimeSpan)row["GioKetThuc"];
+
+                // Gom nhóm theo khung giờ
+                var bookings = datSans.Count(ds => ds.GioBatDau >= bd && ds.GioKetThuc <= kt);
+                var doanhThu = datSans.Where(ds => ds.GioBatDau >= bd && ds.GioKetThuc <= kt)
+                                      .Sum(ds => ds.ThanhTien);
+
+                // Giả sử công suất tối đa mỗi ca là 30 lượt
+                int utilPercent = (int)((double)bookings / 30 * 100);
+
+                result.Add(new TimeSlotVM
+                {
+                    TimeRange = $"Ca {bd:hh\\:mm} - {kt:hh\\:mm}",
+                    BookingsDisplay = $"Lượt đặt: {bookings}",
+                    UtilPercent = utilPercent,
+                    StatusText = utilPercent >= 50 ? "Ca đông" : "Ca vắng",
+                    IsPeak = utilPercent >= 50
+                });
+            }
+
+            // Sắp xếp: ca đông trước, ca vắng sau
+            return result.OrderByDescending(x => x.IsPeak)
+                         .ThenByDescending(x => x.UtilPercent)
+                         .ToList();
+        }
+        public double TinhSoGioTuNgayDenNgay(DateTime fromDate, DateTime toDate)
+        {
+            var datSans = LayTatCaDatSan()
+                          .Where(x => x.NgayDat.Date >= fromDate.Date && x.NgayDat.Date <= toDate.Date)
+                          .ToList();
+            double tongGio = 0;
+            foreach (var ds in datSans)
+            {
+                tongGio += (double)(ds.GioKetThuc - ds.GioBatDau).TotalHours;
+            }
+            return tongGio;
+        }
+        public decimal TinhGiaTrungBinhMotGio(DateTime fromDate, DateTime toDate)
+        {
+            var datSans = LayTatCaDatSan()
+                          .Where(x => x.NgayDat.Date >= fromDate.Date && x.NgayDat.Date <= toDate.Date)
+                          .ToList();
+            decimal tongTien = 0;
+            double tongGio = 0;
+            foreach (var ds in datSans)
+            {
+                tongTien += ds.ThanhTien;
+                tongGio += (double)(ds.GioKetThuc - ds.GioBatDau).TotalHours;
+            }
+            if (tongGio == 0)
+                return 0;
+            return tongTien / (decimal)tongGio;
         }
 
     }

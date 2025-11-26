@@ -104,6 +104,16 @@ namespace QuanLiSanCauLong.LopNghiepVu
             double bienDong = ((double)(hoiVienMoiThangNay - hoiVienMoiThangTruoc) / hoiVienMoiThangTruoc) * 100;
             return bienDong;
         }
-
+        public int TinhHoiVienMoiTuNgayDenNgay(DateTime fromDate, DateTime toDate)
+        {
+            return LayTatCaKhachHang()
+                .Count(kh => kh.TuNgay.Date >= fromDate.Date && kh.TuNgay.Date <= toDate.Date);
+        }
+        public int TinhDiemTichLuyTuNgayDenNgay(DateTime fromDate, DateTime toDate)
+        {
+            return LayTatCaKhachHang()
+                .Where(kh => kh.TuNgay.Date >= fromDate.Date && kh.TuNgay.Date <= toDate.Date)
+                .Sum(kh => kh.DiemTichLuy);
+        }
     }
 }

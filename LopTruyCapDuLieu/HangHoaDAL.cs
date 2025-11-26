@@ -205,6 +205,34 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
             CapNhatTrangThaiHangHoa(maHang);
         }
+        public List<HangHoa> LayHangHoaTheoMa(string maHang)
+        {
+            List<HangHoa> hangHoas = new List<HangHoa>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT MaHang, TenHang, DVT, TonKho, GiaNhap, GiaBan, LanCuoiNhap, TrangThai FROM HangHoa WHERE MaHang = @MaHang";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@MaHang", maHang);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    HangHoa hh = new HangHoa
+                    {
+                        MaHang = reader["MaHang"].ToString(),
+                        TenHang = reader["TenHang"].ToString(),
+                        DVT = reader["DVT"].ToString(),
+                        TonKho = Convert.ToInt32(reader["TonKho"]),
+                        GiaNhap = Convert.ToDecimal(reader["GiaNhap"]),
+                        GiaBan = Convert.ToDecimal(reader["GiaBan"]),
+                        LanCuoiNhap = Convert.ToDateTime(reader["LanCuoiNhap"]),
+                        TrangThai = reader["TrangThai"].ToString()
+                    };
+                    hangHoas.Add(hh);
+                }
+            }
+            return hangHoas;
+        }
     }
 
 }

@@ -4,8 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignWidth="1080" d:DesignHeight="700"
-             Background="#F6FDF9">
+             d:DesignWidth="1080"
+             Background="#F6FDF9" Height="800">
 
     <!-- ============ RESOURCES (bắt buộc) ============ -->
     <UserControl.Resources>
@@ -159,7 +159,7 @@
                                FontSize="11"
                                Foreground="{StaticResource ColSub}"
                                Margin="0,0,0,2"/>
-                    <DatePicker SelectedDate="{Binding FromDate}"
+                    <DatePicker x:Name="dpTuNgay"
                                 Width="150"
                                 Height="25"/>
                 </StackPanel>
@@ -170,11 +170,13 @@
                                FontSize="11"
                                Foreground="{StaticResource ColSub}"
                                Margin="0,0,0,2"/>
-                    <DatePicker SelectedDate="{Binding ToDate}"
+                    <DatePicker x:Name="dpDenNgay"
                                 Width="150"
                                 Height="25"/>
                 </StackPanel>
-
+                <Button Margin="0,0,12,0" Style="{StaticResource HeaderPrimaryButton}" Background="#FFE0B2" Click="Loc_Click">
+                    <TextBlock Text="Lọc" Foreground="Black"/>
+                </Button>
                 <!-- Nút Xuất Excel -->
                 <Button Style="{StaticResource HeaderPrimaryButton}"
                         Command="{Binding ExportExcelCommand}">
@@ -201,7 +203,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Tổng doanh thu" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding TotalRevenueDisplay}"
+                        <TextBlock Text="{Binding TotalRevenueDisplay}" x:Name="txtTongDonhThu"
                                    Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding TotalRevenueDelta}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
@@ -221,7 +223,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Doanh thu sân" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding CourtRevenueDisplay}"
+                        <TextBlock x:Name ="txtDoanhThuSan" Text="{Binding CourtRevenueDisplay}"
                                    Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding CourtRevenuePercent}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
@@ -241,7 +243,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Doanh thu POS" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding POSRevenueDisplay}"
+                        <TextBlock Text="{Binding POSRevenueDisplay}" x:Name="txtDoanhThuPOS"
                                    Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding POSPercentOfTotal}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
@@ -261,7 +263,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Lượt khách" Style="{StaticResource KpiLabel}"/>
-                        <TextBlock Text="{Binding CustomerCountDisplay}"
+                        <TextBlock x:Name="txtLuotKhach" Text="{Binding CustomerCountDisplay}"
                                    Style="{StaticResource KpiValue}" Margin="0,2,0,4"/>
                         <TextBlock Text="{Binding CustomerAvgPerDay}" Foreground="#6B7E74" FontSize="11"/>
                     </StackPanel>
@@ -292,7 +294,7 @@
                     <Canvas x:Name="ChartCanvas" Background="Transparent"/>
                 </Grid>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <StackPanel Grid.Row="2" Margin="0,0,0,-2"  Orientation="Horizontal">
                     <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
                         <Ellipse Width="10" Height="10" Fill="#FFB74D" Margin="0,0,6,0"/>
                         <TextBlock Text="Doanh thu POS" FontSize="11" Foreground="#6B7E74"/>
@@ -436,20 +438,20 @@
                                     <TextBlock Grid.Row="0" Grid.Column="0"
                                            Text="Tổng số đơn đặt sân"/>
                                     <TextBlock Grid.Row="0" Grid.Column="1"
-                                           Text="{Binding TongSoDonDatSan}"
+                                           x:Name="txtTongSoDonDat"
                                            Foreground="#15803D"
                                            FontWeight="SemiBold"/>
 
                                     <TextBlock Grid.Row="1" Grid.Column="0"
                                            Text="Tổng giờ chơi"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1"
-                                           Text="{Binding TongGioChoiDisplay}"
+                                           Name="txtTongGioChoi"
                                            Foreground="#15803D"
                                            FontWeight="SemiBold"/>
 
-                                    <TextBlock Grid.Row="2" Grid.Column="0"
+                                    <TextBlock Grid.Row="2" Grid.Column="0" 
                                            Text="Giá trung bình/giờ"/>
-                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Name="txtGiaTrungBinhGio"
                                            Text="{Binding GiaTrungBinhGioDisplay}"
                                            Foreground="#15803D"
                                            FontWeight="SemiBold"/>
@@ -476,7 +478,7 @@
 
                                     <TextBlock Grid.Row="0" Grid.Column="0"
                                            Text="Số lượng POS"/>
-                                    <TextBlock Grid.Row="0" Grid.Column="1"
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Name="txtSoLuongPOS"
                                            Text="{Binding SoLuongPOS}"
                                            Foreground="#B45309"
                                            FontWeight="SemiBold"/>
@@ -484,13 +486,13 @@
                                     <TextBlock Grid.Row="1" Grid.Column="0"
                                            Text="Giá trị trung bình"/>
                                     <TextBlock Grid.Row="1" Grid.Column="1"
-                                           Text="{Binding GiaTriPOSTrungBinhDisplay}"
+                                           Text="{Binding GiaTriPOSTrungBinhDisplay}" Name="txtGiaTriTrungBinhPOS"
                                            Foreground="#B45309"
                                            FontWeight="SemiBold"/>
 
                                     <TextBlock Grid.Row="2" Grid.Column="0"
                                            Text="Mặt hàng bán chạy"/>
-                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Name="txtMatHangBanChay"
                                            Text="{Binding MatHangBanChay}"
                                            Foreground="#2563EB"
                                            FontWeight="SemiBold"/>
@@ -518,19 +520,15 @@
                                            Text="Hội viên mới"/>
                                     <TextBlock Grid.Row="0" Grid.Column="1"
                                            Text="{Binding HoiVienMoi}"
-                                           Foreground="#1D4ED8"
+                                           Foreground="#1D4ED8" x:Name="txtHoiVienMoi"
                                            FontWeight="SemiBold"/>
 
-                                    <TextBlock Grid.Row="1" Grid.Column="0"
-                                           Text="Tỉ lệ quay lại"/>
-                                    <TextBlock Grid.Row="1" Grid.Column="1"
-                                           Text="{Binding TiLeQuayLaiDisplay}"
-                                           Foreground="#1D4ED8"
-                                           FontWeight="SemiBold"/>
+
+                                   
 
                                     <TextBlock Grid.Row="2" Grid.Column="0"
                                            Text="Điểm tích lũy phát hành"/>
-                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Name="txtDiemTichLuyPhatHanh"
                                            Text="{Binding DiemTichLuyPhatHanh}"
                                            Foreground="#1D4ED8"
                                            FontWeight="SemiBold"/>
