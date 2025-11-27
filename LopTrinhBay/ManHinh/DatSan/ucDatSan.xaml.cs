@@ -13,7 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.ComponentModel; // cho ICollectionView
-
+using ClosedXML.Excel;
+using Microsoft.Win32;
 using System.Windows.Shapes;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
@@ -81,7 +82,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             }
             DateTime now = DateTime.Now;
             DateTime gioBatDauThucTe = chiTiet.NgayDat.Date + chiTiet.GioBatDau;
-            if (now > gioBatDauThucTe.AddMinutes(15))
+            if (now > gioBatDauThucTe.AddMinutes(15)&&chiTiet.TrangThaiThanhToan!="Đã thanh toán")
             {
                 ChiTietDatSanDAL ctdal = new ChiTietDatSanDAL();
                 bool kq = ctdal.CapNhatTrangThai(chiTiet.MaChiTiet, "Đã hủy");
@@ -139,6 +140,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
 
         private void KetThuc_Click(object sender, RoutedEventArgs e)
         {
+            
+            
             var btn = sender as Button;
             var chiTiet = btn?.DataContext as ChiTietDatSanVM;
             if (chiTiet == null) return;
@@ -181,7 +184,16 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                                 "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
+            var result = MessageBox.Show(
+               $"Bạn có chắc chắn muốn hủy chi tiết {chiTiet.MaChiTiet}?",
+               "Xác nhận hủy",
+               MessageBoxButton.YesNo,
+               MessageBoxImage.Question);
 
+            if (result == MessageBoxResult.No)
+            {
+                return; // Người dùng chọn Không thì dừng lại
+            }
             ChiTietDatSanDAL dal = new ChiTietDatSanDAL();
             bool ok = dal.CapNhatTrangThai(chiTiet.MaChiTiet, "Đã hủy");
 

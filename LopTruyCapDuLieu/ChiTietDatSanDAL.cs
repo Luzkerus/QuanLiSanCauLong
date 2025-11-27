@@ -21,7 +21,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             const string sql = @"
         SELECT COUNT(*) FROM ChiTietDatSan
         WHERE MaSan = @MaSan
-          AND NgayDat = @NgayDat
+          AND NgayDat = @NgayDat AND TrangThai <> N'Đã hủy'
           AND (
                 (@GioBD >= GioBatDau AND @GioBD < GioKetThuc) OR
                 (@GioKT > GioBatDau AND @GioKT <= GioKetThuc) OR

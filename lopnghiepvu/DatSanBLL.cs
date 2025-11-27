@@ -172,8 +172,8 @@ namespace QuanLiSanCauLong.LopNghiepVu
                     TimeRange = $"Ca {bd:hh\\:mm} - {kt:hh\\:mm}",
                     BookingsDisplay = $"Lượt đặt: {bookings}",
                     UtilPercent = utilPercent,
-                    StatusText = utilPercent >= 50 ? "Ca đông" : "Ca vắng",
-                    IsPeak = utilPercent >= 50
+                    StatusText = utilPercent >= 25 ? "Ca đông" : "Ca vắng",
+                    IsPeak = utilPercent >= 25
                 });
             }
 

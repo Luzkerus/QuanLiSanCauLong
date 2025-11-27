@@ -137,8 +137,20 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 return;
 }
 
-            // Tạo chi tiết đặt sân
-            var chiTiet = new ChiTietDatSan
+            if (GioDat.Count >= 10)
+            {
+                MessageBox.Show("Bạn chỉ được đặt tối đa 10 slot trong giỏ.", "Giới hạn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var distinctSan = GioDat.Select(g => g.MaSan).Distinct().ToList();
+            if (distinctSan.Count >= 5 && !distinctSan.Contains(san.MaSan))
+            {
+                MessageBox.Show("Bạn chỉ được đặt tối đa 5 sân khác nhau trong giỏ.", "Giới hạn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+                // Tạo chi tiết đặt sân
+                var chiTiet = new ChiTietDatSan
             {
                 MaSan = san.MaSan,
                 TenSanCached = san.TenSan,

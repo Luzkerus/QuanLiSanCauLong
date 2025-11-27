@@ -100,7 +100,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             txtGiaNhap.Text = "";
             txtSoLo.Text = "";
             txtSoLuong.Text = "";
-            dpHSD.Text = "";
+            //dpHSD.Text = "";
 
 
         }

@@ -179,7 +179,7 @@
                 </Button>
                 <!-- Nút Xuất Excel -->
                 <Button Style="{StaticResource HeaderPrimaryButton}"
-                        Command="{Binding ExportExcelCommand}">
+                        Click="XuatExcel_Click">
                     <TextBlock Text="Xuất Excel"/>
                 </Button>
             </StackPanel>

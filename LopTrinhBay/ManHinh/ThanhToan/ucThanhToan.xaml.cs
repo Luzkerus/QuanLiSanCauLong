@@ -382,9 +382,9 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan
             page.Size = PdfSharpCore.PageSize.A6;
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            XFont fontTitle = new XFont("Helvetica", 16, XFontStyle.Bold);
-            XFont fontNormal = new XFont("Helvetica", 10);
-            XFont fontSmall = new XFont("Helvetica", 8);
+            XFont fontTitle = new XFont("Arial", 16, XFontStyle.Bold);
+            XFont fontNormal = new XFont("Arial", 10);
+            XFont fontSmall = new XFont("Arial", 8);
 
             double pageWidth = page.Width;
 
