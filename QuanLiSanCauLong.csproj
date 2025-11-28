@@ -398,5 +398,29 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\sancaulongcuchi-logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\C2.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\C2_dau.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\coca_chai.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\coca_lon.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\milo.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\nuocsuoi_aqua_500ml.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\oolong.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\oolongchanh.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\pepsi_chai.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\pepsi_lon.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\PocariSweat_500ml.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\PocariSweat_900ml.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\revive_bukhoang.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\revive_chanhmuoi.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sting_do_chai.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sting_do_lon.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sting_vang_chai.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sting_vang_lon.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sua_vinamilk_itduong.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

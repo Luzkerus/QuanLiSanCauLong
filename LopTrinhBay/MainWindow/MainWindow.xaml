@@ -4,39 +4,41 @@
         xmlns:nav="clr-namespace:QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls"
         xmlns:kh="clr-namespace:QuanLiSanCauLong.LopTrinhBay.ManHinh.KhachHoiVien"
         MinHeight="640" MinWidth="1000"
-        Title="Quản Lý Sân Cầu Lông" WindowState="Maximized" Background="#F6FDF9">
-    <Grid>
+        Title="Quản Lý Sân Cầu Lông"
+        WindowState="Maximized"
+        Background="#F6FDF9">
 
+    <Grid>
         <!-- Thân dưới: Sidebar + Content -->
-        <Grid Grid.Row="1">
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
-                <!-- Sidebar cố định -->
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <!-- Content động -->
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar (UserControl tách riêng) -->
             <nav:ucSidebar Grid.Column="0"
-                       SelectedKey="overview"
-                       AdminName="{Binding CurrentUser.Name}"
-                       AdminRole="{Binding CurrentUser.Role}"
-                       NavigateRequested="Sidebar_NavigateRequested"/>
+                           Panel.ZIndex="10"
+                           SelectedKey="overview"
+                           AdminName="{Binding CurrentUser.Name}"
+                           AdminRole="{Binding CurrentUser.Role}"
+                           NavigateRequested="Sidebar_NavigateRequested"/>
+
+            <!-- Content -->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="56"/>
                     <RowDefinition Height="*"/>
-                   
                 </Grid.RowDefinitions>
+
                 <nav:ucHeader Grid.Row="0"/>
+
                 <Frame x:Name="MainFrame"
-        Grid.Row="1"
-        Margin="12"
-        NavigationUIVisibility="Hidden"
-        Background="#F6FDF9"/>
-            </Grid> 
-            <!-- Content region (ô trắng bên trong) -->
-           
+                       Grid.Row="1"
+                       Margin="12"
+                       NavigationUIVisibility="Hidden"
+                       Background="#F6FDF9"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

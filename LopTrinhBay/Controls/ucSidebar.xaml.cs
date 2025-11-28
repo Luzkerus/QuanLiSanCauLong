@@ -9,10 +9,60 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
 {
     public partial class ucSidebar : UserControl
     {
+        private const double ExpandedWidth = 220;   // sidebar lớn
+        private const double CollapsedWidth = 72;   // sidebar nhỏ (chỉ icon)
+
         public ucSidebar()
         {
             InitializeComponent();
-            Loaded += (s, e) => ApplyActive(SelectedKey); // set active theo SelectedKey khi load
+
+            Loaded += (s, e) =>
+            {
+                // Set lại width theo trạng thái hiện tại
+                UpdateWidth();
+                ApplyActive(SelectedKey); // set active theo SelectedKey khi load
+            };
+        }
+
+        // ================= TRẠNG THÁI THU GỌN/MỞ RỘNG =================
+
+        /// <summary>
+        /// true  = sidebar lớn (icon + chữ)
+        /// false = sidebar nhỏ (chỉ icon)
+        /// </summary>
+        public bool IsExpanded
+        {
+            get => (bool)GetValue(IsExpandedProperty);
+            set => SetValue(IsExpandedProperty, value);
+        }
+
+        public static readonly DependencyProperty IsExpandedProperty =
+            DependencyProperty.Register(
+                nameof(IsExpanded),
+                typeof(bool),
+                typeof(ucSidebar),
+                new PropertyMetadata(true, OnIsExpandedChanged));
+
+        private static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var uc = (ucSidebar)d;
+            uc.UpdateWidth();
+        }
+
+        /// <summary>
+        /// Cập nhật Width của UserControl theo IsExpanded
+        /// </summary>
+        private void UpdateWidth()
+        {
+            this.Width = IsExpanded ? ExpandedWidth : CollapsedWidth;
+        }
+
+        /// <summary>
+        /// Sự kiện click nút thu gọn / mở rộng (gắn trong XAML: Click="BtnToggle_Click")
+        /// </summary>
+        private void BtnToggle_Click(object sender, RoutedEventArgs e)
+        {
+            IsExpanded = !IsExpanded;
         }
 
         // ====== DP: SelectedKey (overview / courts / booking / customers / payment / pos / staff / reports / settings) ======
@@ -38,7 +88,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
             set => SetValue(AdminNameProperty, value);
         }
         public static readonly DependencyProperty AdminNameProperty =
-            DependencyProperty.Register(nameof(AdminName), typeof(string), typeof(ucSidebar), new PropertyMetadata("Admin User"));
+            DependencyProperty.Register(nameof(AdminName), typeof(string), typeof(ucSidebar),
+                new PropertyMetadata("Admin User"));
 
         public string AdminRole
         {
@@ -46,7 +97,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
             set => SetValue(AdminRoleProperty, value);
         }
         public static readonly DependencyProperty AdminRoleProperty =
-            DependencyProperty.Register(nameof(AdminRole), typeof(string), typeof(ucSidebar), new PropertyMetadata("Quản lý"));
+            DependencyProperty.Register(nameof(AdminRole), typeof(string), typeof(ucSidebar),
+                new PropertyMetadata("Quản lý"));
 
         // ====== Event điều hướng ======
         public event EventHandler<string> NavigateRequested;
@@ -95,7 +147,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
                             if (isActive)
                             {
                                 if (icon != null) icon.Foreground = new SolidColorBrush(Colors.White);
-                                if (label != null) { label.Foreground = new SolidColorBrush(Colors.White); label.FontWeight = FontWeights.SemiBold; }
+                                if (label != null)
+                                {
+                                    label.Foreground = new SolidColorBrush(Colors.White);
+                                    label.FontWeight = FontWeights.SemiBold;
+                                }
                             }
                             else
                             {

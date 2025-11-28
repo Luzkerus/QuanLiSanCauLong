@@ -6,17 +6,16 @@
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="220"
              x:Name="Root"
-             Width="220" Background="White">
+             Width="220"
+             Background="White">
 
-    <!-- ============= Resources (giữ màu & style giống mẫu) ============= -->
+    <!-- ================= Resources ================= -->
     <UserControl.Resources>
-        <!-- Nếu app đã có các brush này, có thể bỏ 4 dòng dưới để dùng chung -->
         <SolidColorBrush x:Key="ColText"   Color="#21382D"/>
         <SolidColorBrush x:Key="ColBorder" Color="#E6EFEA"/>
         <SolidColorBrush x:Key="ColActiveBg" Color="#0FBF84"/>
-        <SolidColorBrush x:Key="ColActiveFg" Color="White"/>
 
-        <!-- Style: Item đang active -->
+        <!-- Item đang chọn -->
         <Style x:Key="MenuItemActive" TargetType="Border">
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Background" Value="{StaticResource ColActiveBg}"/>
@@ -24,9 +23,10 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Margin" Value="6,4,6,0"/>
             <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
-        <!-- Style: Item bình thường -->
+        <!-- Item bình thường -->
         <Style x:Key="MenuItemNormal" TargetType="Border">
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -41,119 +41,304 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Label menu: ẩn khi thu nhỏ -->
+        <Style x:Key="MenuLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsExpanded, ElementName=Root}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Text logo / admin ẩn khi thu nhỏ -->
+        <Style x:Key="CollapseWithSidebar" TargetType="TextBlock">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsExpanded, ElementName=Root}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Border phụ ẩn khi thu nhỏ -->
+        <Style x:Key="CollapseBorderWithSidebar" TargetType="Border">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsExpanded, ElementName=Root}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
-    <!-- ===== Sidebar (fixed / negative) ===== -->
-    <Border Background="White" BorderBrush="{StaticResource ColBorder}" BorderThickness="0,0,1,0">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <!-- ================= Layout chính ================= -->
+    <Grid>
+        <!-- Thân sidebar -->
+        <Border Background="White"
+                BorderBrush="{StaticResource ColBorder}"
+                BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <!-- Logo -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="16" VerticalAlignment="Top">
-                <Ellipse Width="28" Height="28" Fill="#2BB673"/>
-                <StackPanel Margin="8,0,0,0">
-                    <TextBlock Text="Sân Cầu Lông" FontSize="16" FontWeight="SemiBold"/>
-                    <TextBlock Text="Củ Chi" Foreground="#888" FontSize="14"/>
+                <!-- ===== Row 0: Logo ===== -->
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal"
+                            Margin="10,10,10,6"
+                            VerticalAlignment="Center">
+                    <!-- Logo tròn -->
+                    <Ellipse Width="42" Height="42">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="/LopTrinhBay/TaiNguyen/Logo/sancaulongcuchi-logo.png"
+                        Stretch="UniformToFill"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <StackPanel Margin="8,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Sân Cầu Lông"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Style="{StaticResource CollapseWithSidebar}"/>
+                        <TextBlock Text="Củ Chi"
+                                   Foreground="#888"
+                                   FontSize="16"
+                                   Style="{StaticResource CollapseWithSidebar}"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
 
-            <!-- Menu -->
-            <StackPanel Grid.Row="1" Margin="4,0,4,0">
-                <!-- Active: Tổng quan -->
+                <!-- ===== Row 1: Menu ===== -->
+                <StackPanel Grid.Row="1" Margin="4,4,4,0">
 
-                <Border x:Name="Item_Overview" Style="{StaticResource MenuItemNormal}" Tag="overview"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📊" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Tổng quan" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_Courts" Style="{StaticResource MenuItemNormal}" Tag="courts"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🏆" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Quản lý sân" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_Booking" Style="{StaticResource MenuItemNormal}" Tag="booking"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📅" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Đặt sân" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_Customers" Style="{StaticResource MenuItemNormal}" Tag="customers"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="👤" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Khách hàng" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_Payment" Style="{StaticResource MenuItemNormal}" Tag="payment"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="💳" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Thanh toán" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_POS" Style="{StaticResource MenuItemNormal}" Tag="pos"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🧾" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Kho &amp; POS" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_Staff" Style="{StaticResource MenuItemNormal}" Tag="staff"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🧑‍" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Nhân viên" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_Reports" Style="{StaticResource MenuItemNormal}" Tag="reports"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📈" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Báo cáo" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <Border x:Name="Item_Settings" Style="{StaticResource MenuItemNormal}" Tag="settings"
-                        MouseLeftButtonDown="MenuItem_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="⚙" Margin="4,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Cài đặt" FontSize="14" Foreground="{StaticResource ColText}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-
-            <!-- Admin -->
-            <Border Grid.Row="2" Margin="10,8,10,12" Padding="12"
-                    BorderBrush="{StaticResource ColBorder}" BorderThickness="1" CornerRadius="12">
-                <DockPanel>
-                    <Ellipse Width="32" Height="32" Fill="#2BB673" DockPanel.Dock="Left"/>
-                    <StackPanel Margin="10,0,0,0">
-                        <TextBlock Text="{Binding AdminName, ElementName=Root, FallbackValue=Admin User}" FontWeight="SemiBold" />
-                        <TextBlock Text="{Binding AdminRole, ElementName=Root, FallbackValue=Quản lý}" Foreground="#889" FontSize="12"/>
-                    </StackPanel>
-                    <Border HorizontalAlignment="Right" VerticalAlignment="Center"
-                            CornerRadius="12" BorderThickness="1" BorderBrush="{StaticResource ColBorder}"
-                            Padding="6,4" Margin="8,0,0,0">
-                        <TextBlock Text="↦" />
+                    <!-- Tổng quan -->
+                    <Border x:Name="Item_Overview"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="overview"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Tổng quan"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
                     </Border>
-                </DockPanel>
-            </Border>
-        </Grid>
-    </Border>
+
+                    <!-- Quản lý sân -->
+                    <Border x:Name="Item_Courts"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="courts"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🏆"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Quản lý sân"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Đặt sân -->
+                    <Border x:Name="Item_Booking"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="booking"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📅"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Đặt sân"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Khách hàng -->
+                    <Border x:Name="Item_Customers"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="customers"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👤"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Khách hàng"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Thanh toán -->
+                    <Border x:Name="Item_Payment"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="payment"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="💳"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Thanh toán"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Kho & POS -->
+                    <Border x:Name="Item_POS"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="pos"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🧾"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Kho &amp; POS"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Nhân viên -->
+                    <Border x:Name="Item_Staff"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="staff"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🧑‍💼"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Nhân viên"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Báo cáo -->
+                    <Border x:Name="Item_Reports"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="reports"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📈"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Báo cáo"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Cài đặt -->
+                    <Border x:Name="Item_Settings"
+                            Style="{StaticResource MenuItemNormal}"
+                            Tag="settings"
+                            MouseLeftButtonDown="MenuItem_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚙"
+                                       Margin="4,0,8,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Cài đặt"
+                                       Style="{StaticResource MenuLabelStyle}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- ===== Row 2: Admin info ===== -->
+                <Border Grid.Row="2"
+                        Margin="10,8,10,12"
+                        Padding="12"
+                        BorderBrush="{StaticResource ColBorder}"
+                        BorderThickness="1"
+                        CornerRadius="12">
+                    <DockPanel>
+                        <Ellipse Width="32" Height="32" Fill="#2BB673" DockPanel.Dock="Left"/>
+
+                        <StackPanel Margin="10,0,0,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="{Binding AdminName, ElementName=Root, FallbackValue=Admin User}"
+                                       FontWeight="SemiBold"
+                                       Style="{StaticResource CollapseWithSidebar}"/>
+                            <TextBlock Text="{Binding AdminRole, ElementName=Root, FallbackValue=Quản lý}"
+                                       Foreground="#889"
+                                       FontSize="12"
+                                       Style="{StaticResource CollapseWithSidebar}"/>
+                        </StackPanel>
+
+                        <Border HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                CornerRadius="12"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource ColBorder}"
+                                Padding="6,4"
+                                Margin="8,0,0,0"
+                                Style="{StaticResource CollapseBorderWithSidebar}">
+                            <TextBlock Text="↦" />
+                        </Border>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- ===== Nút toggle tròn, nằm ngoài mép phải ===== -->
+        <Button x:Name="BtnToggle"
+                Width="38" Height="38"
+                Click="BtnToggle_Click"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,12,-45,0"
+                Background="Transparent"
+                BorderThickness="0"
+                Cursor="Hand">
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <!-- Nền tròn trắng -->
+                        <Ellipse x:Name="BaseCircle"
+                         Fill="White"/>
+
+                        <!-- Viền xanh chỉ hiện khi hover -->
+                        <Ellipse x:Name="HoverRing"
+                         Fill="Transparent"
+                         Stroke="#0FBF84"
+                         StrokeThickness="1.6"
+                         Opacity="0"/>
+
+                        <!-- Icon 3 gạch -->
+                        <StackPanel Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Rectangle Height="3" Width="17"
+                               Fill="#222"
+                               RadiusX="1.5" RadiusY="1.5"
+                               Margin="0,0,0,4"/>
+                            <Rectangle Height="3" Width="17"
+                               Fill="#222"
+                               RadiusX="1.5" RadiusY="1.5"
+                               Margin="0,0,0,4"/>
+                            <Rectangle Height="3" Width="17"
+                               Fill="#222"
+                               RadiusX="1.5" RadiusY="1.5"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Hover: hiện viền xanh -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HoverRing"
+                            Property="Opacity"
+                            Value="1"/>
+                        </Trigger>
+
+                        <!-- Nhấn chuột: nền hơi xanh nhạt -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="BaseCircle"
+                            Property="Fill"
+                            Value="#E6FFF5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
 </UserControl>
