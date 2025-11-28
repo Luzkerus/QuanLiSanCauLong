@@ -231,7 +231,7 @@
             <StackPanel>
 
                 <!-- KPI 4 thẻ: áp dụng KpiCardStyle như ucThanhToan -->
-                <UniformGrid Columns="4" Margin="0,0,0,12">
+                <UniformGrid Columns="3" Margin="0,0,0,12">
                     <!-- Doanh thu hôm nay -->
                     <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                         <Grid>
@@ -287,22 +287,6 @@
                     </Border>
 
                     <!-- Tỉ lệ lấp đầy -->
-                    <Border Style="{StaticResource KpiCardStyle}" Margin="8">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel>
-                                <TextBlock Text="Tỉ lệ lấp đầy" Style="{StaticResource KpiTitle}"/>
-                                <TextBlock x:Name="txtTyLeLapDay" Text="{Binding TiLeLapDay, StringFormat={}{0:P0}}" Style="{StaticResource KpiValue}"/>
-                                <TextBlock x:Name="txtBienDongLayDay" Text="{Binding BienDongLapDay}" Foreground="#DC2626" Margin="0,6,0,0"/>
-                            </StackPanel>
-                            <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
-                                <TextBlock Text="📈" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </Border>
-                        </Grid>
-                    </Border>
                 </UniformGrid>
 
                 <!-- Tình trạng sân + Top hội viên -->
@@ -389,7 +373,7 @@
                                     <GridViewColumn Header="Khách hàng" DisplayMemberBinding="{Binding TenKH}" Width="auto"/>
                                     <GridViewColumn Header="Ngày đặt" DisplayMemberBinding="{Binding NgayDat}" Width="auto"/>
                                     <GridViewColumn Header="Giờ bắt đầu" DisplayMemberBinding="{Binding GioBatDau}" Width="auto"/>
-                                    <GridViewColumn Header="Giờ bắt kết thúc" DisplayMemberBinding="{Binding GioBatDau}" Width="auto"/>
+                                    <GridViewColumn Header="Giờ bắt kết thúc" DisplayMemberBinding="{Binding GioKetThuc}" Width="auto"/>
                                     <GridViewColumn Header="Trạng thái" DisplayMemberBinding="{Binding TrangThai}" Width="auto">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>

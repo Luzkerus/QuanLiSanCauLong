@@ -16,7 +16,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             // Chuỗi kết nối đến cơ sở dữ liệu SQL Server
             ConnectStringDAL cs = new ConnectStringDAL();
             connectionString = cs.GetConnectionString();
-        }   
+        }
         public bool ThemNhanVien(NhanVien nv)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -101,7 +101,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         }
         public string LayMaNhanVienTiepTheo(string prefix)
         {
-            string sql = "SELECT MAX(MaNV) FROM NhanVien WHERE MaNV LIKE @p + '%'";
+            string sql = "SELECT MaNV FROM NhanVien WHERE MaNV LIKE @p + '%'";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -109,18 +109,77 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@p", prefix);
 
-                object result = cmd.ExecuteScalar();
-                if (result == null || result == DBNull.Value)
+                List<int> existingNumbers = new List<int>();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string ma = reader.GetString(0); // ví dụ: QL002
+                        if (ma.Length > prefix.Length)
+                        {
+                            if (int.TryParse(ma.Substring(prefix.Length), out int num))
+                            {
+                                existingNumbers.Add(num);
+                            }
+                        }
+                    }
+                }
+
+                // Nếu chưa có mã nào thì bắt đầu từ 1
+                if (existingNumbers.Count == 0)
                     return prefix + "001";
 
-                string maxMa = result.ToString();   // VD: FT005
-                int number = int.Parse(maxMa.Substring(prefix.Length));
-                number++;
+                // Tìm số nhỏ nhất chưa tồn tại
+                int next = 1;
+                while (existingNumbers.Contains(next))
+                {
+                    next++;
+                }
 
-                return prefix + number.ToString("000");
+                return prefix + next.ToString("000");
             }
         }
 
-
+        public bool DoiMatKhau(string maNV, string newPasswordHash)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"UPDATE NhanVien
+                               SET PasswordHash = @PasswordHash
+                               WHERE MaNV = @MaNV";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@MaNV", maNV);
+                cmd.Parameters.AddWithValue("@PasswordHash", newPasswordHash);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+        public bool SuaNhanVienVaMaNV(NhanVien nv, string maNVCu)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"UPDATE NhanVien
+                               SET MaNV = @MaNV,
+                                   TenNV = @TenNV,
+                                   SDT = @SDT,
+                                   Email = @Email,
+                                   VaiTro = @VaiTro,
+                                   TrangThai = @TrangThai,
+                                   GhiChu = @GhiChu
+                               WHERE MaNV = @MaNVCu";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@MaNV", nv.MaNV);
+                cmd.Parameters.AddWithValue("@MaNVCu", maNVCu);
+                cmd.Parameters.AddWithValue("@TenNV", nv.TenNV);
+                cmd.Parameters.AddWithValue("@SDT", nv.SDT ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Email", nv.Email ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@VaiTro", nv.VaiTro ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@TrangThai", nv.TrangThai ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@GhiChu", nv.GhiChu ?? (object)DBNull.Value);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
     }
 }

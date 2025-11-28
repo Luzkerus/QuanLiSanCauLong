@@ -617,7 +617,7 @@
                                          Background="Transparent"
                                          BorderThickness="0"
                                          Height="26"
-                                         FontSize="14"
+                                         FontSize="14" Name="txtSeach" TextChanged="txtTimKiemBanHang_TextChanged"
                                          Tag="Tìm sản phẩm"
                                          Text="{Binding PosSearch, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Border>
