@@ -1,142 +1,49 @@
-﻿using System;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using QuanLiSanCauLong.LopNghiepVu;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using NhanVienModel = QuanLiSanCauLong.LopDuLieu.NhanVien;
+
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.NhanVien
 {
-    public partial class frmThemNhanVien : Window, INotifyPropertyChanged
+    public partial class frmThemNhanVien : Window
     {
         // ===== INotifyPropertyChanged =====
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        // ===== Static counter giả lập tăng mã theo loại NV =====
-        // Sau này bạn có thể thay bằng query DB để lấy số lớn nhất
-        private static readonly Dictionary<string, int> _counterByPrefix = new Dictionary<string, int>();
-
-        // ===== Các property bind với XAML =====
-        private string _hoTen;
-        public string HoTen
-        {
-            get => _hoTen;
-            set { if (_hoTen != value) { _hoTen = value; OnPropertyChanged(); } }
-        }
-
-        private string _soDienThoai;
-        public string SoDienThoai
-        {
-            get => _soDienThoai;
-            set { if (_soDienThoai != value) { _soDienThoai = value; OnPropertyChanged(); } }
-        }
-
-        private string _email;
-        public string Email
-        {
-            get => _email;
-            set { if (_email != value) { _email = value; OnPropertyChanged(); } }
-        }
-
-        private string _note;
-        public string Note
-        {
-            get => _note;
-            set { if (_note != value) { _note = value; OnPropertyChanged(); } }
-        }
-
-        private string _vaiTro;
-        /// <summary>
-        /// Loại nhân viên: "Quản lý" / "Full-time" / "Part-time"
-        /// </summary>
-        public string VaiTro
-        {
-            get => _vaiTro;
-            set
-            {
-                if (_vaiTro != value)
-                {
-                    _vaiTro = value;
-                    OnPropertyChanged();
-                    GenerateMaNhanVien();   // mỗi lần đổi loại NV thì tự sinh mã
-                }
-            }
-        }
-
-        private DateTime? _ngayVaoLam = DateTime.Today;
-        public DateTime? NgayVaoLam
-        {
-            get => _ngayVaoLam;
-            set { if (_ngayVaoLam != value) { _ngayVaoLam = value; OnPropertyChanged(); } }
-        }
-
-        private string _trangThai = "Đang làm";
-        public string TrangThai
-        {
-            get => _trangThai;
-            set { if (_trangThai != value) { _trangThai = value; OnPropertyChanged(); } }
-        }
-
-        private string _maNhanVien;
-        public string MaNhanVien
-        {
-            get => _maNhanVien;
-            set { if (_maNhanVien != value) { _maNhanVien = value; OnPropertyChanged(); } }
-        }
+        
 
         // ===== Constructor =====
         public frmThemNhanVien()
         {
             InitializeComponent();
+            cmbVaiTro.SelectionChanged += CmbVaiTro_SelectionChanged;
 
             // dùng luôn chính window làm DataContext
             DataContext = this;
 
             // Giá trị mặc định
-            NgayVaoLam = DateTime.Today;
-            TrangThai = "Đang làm";
+
             // Nếu muốn default loại là Full-time:
             // VaiTro = "Full-time";  // sẽ tự sinh mã luôn
         }
+        private void CmbVaiTro_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbVaiTro.SelectedItem is ComboBoxItem selected)
+            {
+                string vaiTro = selected.Content.ToString();
+
+                NhanVienBLL bll = new NhanVienBLL();
+                txtMaNV.Text = bll.TaoMaNhanVienTheoVaiTro(vaiTro);
+            }
+        }
+
 
         // ===== Sinh mã nhân viên theo loại =====
-        private void GenerateMaNhanVien()
-        {
-            if (string.IsNullOrWhiteSpace(VaiTro))
-                return;
-
-            // Map loại nhân viên -> prefix (dùng switch thường để hợp C# 7.3)
-            string prefix;
-            switch (VaiTro)
-            {
-                case "Quản lý":
-                    prefix = "QL";
-                    break;
-                case "Full-time":
-                    prefix = "FT";
-                    break;
-                case "Part-time":
-                    prefix = "PT";
-                    break;
-                default:
-                    prefix = "NV";
-                    break;
-            }
-
-            // Lấy số hiện tại trong dictionary
-            if (!_counterByPrefix.TryGetValue(prefix, out int current))
-            {
-                current = 0;
-            }
-
-            current++;
-            _counterByPrefix[prefix] = current;
-
-            // Format: QL0001, FT0005, PT0010...
-            MaNhanVien = string.Format("{0}{1:0000}", prefix, current);
-        }
 
 
         // ===== Event UI =====
@@ -163,31 +70,94 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.NhanVien
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: validate & lưu nhân viên vào DB
-            // Ví dụ: kiểm tra HoTen, SoDienThoai không được trống
-
-            // Nếu chưa có mã (trường hợp người dùng chưa chọn loại nhân viên),
-            // có thể tự sinh mã ở đây lần cuối:
-            if (string.IsNullOrWhiteSpace(MaNhanVien))
+            try
             {
-                GenerateMaNhanVien();
+                // ======== Validate dữ liệu ========
+                string ten = txtTen.Text.Trim();
+                string sdt = txtSDT.Text.Trim();
+                string email = txtEmail.Text.Trim();
+                string vaiTro = cmbVaiTro.Text;
+                string trangThai = cmbTrangThai.Text;
+
+                if (string.IsNullOrWhiteSpace(ten))
+                {
+                    MessageBox.Show("Tên nhân viên không được để trống!");
+                    txtTen.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(sdt))
+                {
+                    MessageBox.Show("Số điện thoại không được để trống!");
+                    txtSDT.Focus();
+                    return;
+                }
+
+                // Regex kiểm tra SĐT: chỉ cho phép 10-11 số
+                if (!System.Text.RegularExpressions.Regex.IsMatch(sdt, @"^\d{10,11}$"))
+                {
+                    MessageBox.Show("Số điện thoại không hợp lệ! Phải từ 10 đến 11 chữ số.");
+                    txtSDT.Focus();
+                    return;
+                }
+
+                // Email nếu có nhập thì kiểm tra định dạng
+                if (!string.IsNullOrWhiteSpace(email))
+                {
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(email,
+                        @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    {
+                        MessageBox.Show("Email không hợp lệ!");
+                        txtEmail.Focus();
+                        return;
+                    }
+                }
+                var result = MessageBox.Show(
+           $"Bạn có chắc muốn tạo nhân viên: {ten} ?",
+           "Xác nhận tạo nhân viên",
+           MessageBoxButton.YesNo,
+           MessageBoxImage.Question
+       );
+
+                if (result != MessageBoxResult.Yes)
+                    return; // Người dùng chọn No, dừng
+                // ======== Tạo object nhân viên ========
+                NhanVienModel nv = new NhanVienModel
+                {
+                    TenNV = ten,
+                    SDT = sdt,
+                    Email = email,
+                    VaiTro = vaiTro,
+                    NgayVaoLam = dpNgayVaoLam.SelectedDate ?? DateTime.Now,
+                    TrangThai = trangThai,
+                    GhiChu = txtGhiChu.Text.Trim()
+                };
+
+                // ======== Gọi BLL thêm nhân viên ========
+                NhanVienBLL bll = new NhanVienBLL();
+                bool ok = bll.ThemNhanVien(nv);
+
+                if (ok)
+                {
+                    MessageBox.Show(
+                        $"Thêm thành công!\n" +
+                        $"Mã NV: {nv.MaNV}\n" +
+                        $"Username: {nv.Username}\n" +
+                        "Password mặc định: 123456"
+                    );
+                    DialogResult = true;
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("Lỗi thêm nhân viên!");
+                }
             }
-
-            // TODO: gọi repository / service để Insert NhanVien:
-            // var nv = new NhanVienEntity {
-            //     MaNhanVien = this.MaNhanVien,
-            //     HoTen = this.HoTen,
-            //     SoDienThoai = this.SoDienThoai,
-            //     Email = this.Email,
-            //     Note = this.Note,
-            //     VaiTro = this.VaiTro,
-            //     NgayVaoLam = this.NgayVaoLam,
-            //     TrangThai = this.TrangThai
-            // };
-            // _nhanVienService.Insert(nv);
-
-            DialogResult = true;
-            Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
         }
+
     }
 }

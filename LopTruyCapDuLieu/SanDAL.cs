@@ -110,7 +110,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 string query = @"
             UPDATE dbo.San
             SET TrangThai = N'Bảo trì'
-            WHERE CAST(NgayBaoTri AS date) = CAST(GETDATE() AS date);
+            WHERE CAST(NgayBaoTri AS date) = CAST(GETDATE() AS date) AND TrangThai <>N'Ngưng hoạt động';
 
         ";
 

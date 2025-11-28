@@ -259,8 +259,9 @@
                             <DataGridTextColumn Header="Ngày lập"        Binding="{Binding NgayLap, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="*" MinWidth="10"/>
                             <DataGridTextColumn Header="Khách hàng"      Binding="{Binding TenKH}" Width="*" MinWidth="10"/>
                             <DataGridTextColumn Header="SĐT"             Binding="{Binding SDT}" Width="*" MinWidth="10"/>
-                            <DataGridTextColumn Header="Tổng tiền sân"      Binding="{Binding TongTienSan}" Width="*" MinWidth="10"/>
                             <DataGridTextColumn Header="Phương thức"     Binding="{Binding PhuongThuc}" Width="*" MinWidth="10"/>
+                            <DataGridTextColumn Header="Tổng tiền sân"      Binding="{Binding TongTienSan}" Width="*" MinWidth="10"/>
+                           
                             <DataGridTextColumn Header="Tổng tiền thuê vợt"      Binding="{Binding TongTienThueVot}" Width="*" MinWidth="10"/>
                             <DataGridTextColumn Header="Tổng thanh toán" Binding="{Binding TongTien, StringFormat={}{0:N0} ₫}" Width="*" MinWidth="10"/>
                         </DataGrid.Columns>

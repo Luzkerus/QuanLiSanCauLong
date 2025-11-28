@@ -226,28 +226,28 @@
                     <TextBlock Text="Họ và tên *" Style="{StaticResource FieldLabel}"/>
                     <Border Style="{StaticResource FieldBox}">
                         <TextBox BorderThickness="0" Background="Transparent"
-                                 Text="{Binding HoTen, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Name="txtTen"/>
                     </Border>
 
                     <!-- Số điện thoại -->
                     <TextBlock Text="Số điện thoại *" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
                     <Border Style="{StaticResource FieldBox}">
                         <TextBox BorderThickness="0" Background="Transparent"
-                                 Text="{Binding SoDienThoai, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Name="txtSDT"/>
                     </Border>
 
                     <!-- Email -->
                     <TextBlock Text="Email" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
                     <Border Style="{StaticResource FieldBox}">
                         <TextBox BorderThickness="0" Background="Transparent"
-                                 Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Name="txtEmail"/>
                     </Border>
 
                     <!-- Ghi chú -->
                     <TextBlock Text="Ghi chú hiển thị dưới tên (tuỳ chọn)" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
                     <Border Style="{StaticResource FieldBox}" Padding="8,4">
                         <TextBox BorderThickness="0" Background="Transparent"
-                                 Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"
+                                Name="txtGhiChu"
                                  AcceptsReturn="True" Height="70"
                                  TextWrapping="Wrap"/>
                     </Border>
@@ -262,9 +262,8 @@
                     <TextBlock Text="Loại nhân viên" Style="{StaticResource FieldLabel}"/>
                     <Border Style="{StaticResource FieldBox}" Padding="4,2">
                         <ComboBox BorderThickness="0"
-                            MinHeight="25"
-                            SelectedValue="{Binding VaiTro}"     
-                            SelectedValuePath="Content">
+                            MinHeight="25" Name="cmbVaiTro" SelectionChanged="CmbVaiTro_SelectionChanged"
+                            >
                             <!-- lấy giá trị ở Content -->
                             <ComboBoxItem Content="Quản lý"/>
                             <ComboBoxItem Content="Full-time"/>
@@ -278,7 +277,7 @@
                     <TextBlock Text="Ngày vào làm" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
                     <Border Style="{StaticResource FieldBox}" Padding="4,0">
                         <DatePicker BorderThickness="0"
-                                    SelectedDate="{Binding NgayVaoLam, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Name="dpNgayVaoLam"
                                     Height="25"/>
                     </Border>
 
@@ -286,8 +285,8 @@
                     <TextBlock Text="Trạng thái" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
                     <Border Style="{StaticResource FieldBox}" Padding="4,2">
                         <ComboBox BorderThickness="0"
-                                  MinHeight="25"
-                                  SelectedItem="{Binding TrangThai}">
+                                  MinHeight="25" SelectedIndex="0" IsReadOnly="True"
+                                  Name="cmbTrangThai">
                             <ComboBoxItem Content="Đang làm"/>
                             <ComboBoxItem Content="Tạm ngưng"/>
                             <ComboBoxItem Content="Đã nghỉ"/>
@@ -298,7 +297,7 @@
                     <TextBlock Text="Mã nhân viên" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
                     <Border Style="{StaticResource FieldBox}">
                         <TextBox BorderThickness="0" Background="Transparent"
-                             Text="{Binding MaNhanVien, Mode=TwoWay}"
+                             Name="txtMaNV"
                              IsReadOnly="True"
                              Foreground="#0D7049"
                              FontWeight="SemiBold"/>

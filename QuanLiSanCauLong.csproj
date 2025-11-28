@@ -162,6 +162,7 @@
     <Compile Include="LopDuLieu\HangHoa.cs" />
     <Compile Include="LopDuLieu\HoaDon.cs" />
     <Compile Include="LopDuLieu\KhachHang.cs" />
+    <Compile Include="LopDuLieu\NhanVien.cs" />
     <Compile Include="LopDuLieu\PhieuNhap.cs" />
     <Compile Include="LopDuLieu\San.cs" />
     <Compile Include="LopDuLieu\ThanhToan.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="LopNghiepVu\HangHoaBLL.cs" />
     <Compile Include="LopNghiepVu\HoaDonBLL.cs" />
     <Compile Include="LopNghiepVu\KhachHangBLL.cs" />
+    <Compile Include="LopNghiepVu\NhanVienBLL.cs" />
     <Compile Include="LopNghiepVu\PhieuNhapBLL.cs" />
     <Compile Include="LopNghiepVu\SanBLL.cs" />
     <Compile Include="LopNghiepVu\ThanhToanBLL.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="LopTruyCapDuLieu\HangHoaDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\HoaDonDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\KhachHangDAL.cs" />
+    <Compile Include="LopTruyCapDuLieu\NhanVienDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\PhieuNhapDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ThanhToanDAL.cs" />
