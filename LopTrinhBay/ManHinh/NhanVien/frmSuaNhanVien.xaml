@@ -1,0 +1,341 @@
+﻿<Window x:Class="QuanLiSanCauLong.LopTrinhBay.ManHinh.NhanVien.frmSuaNhanVien"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Thêm nhân viên"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Height="580" Width="760">
+
+    <!-- ===== Palette / Styles (khớp ucNhanVien) ===== -->
+    <Window.Resources>
+        <SolidColorBrush x:Key="ColText"      Color="#21382D"/>
+        <SolidColorBrush x:Key="ColSub"       Color="#6B7E74"/>
+        <SolidColorBrush x:Key="ColCard"      Color="White"/>
+        <SolidColorBrush x:Key="ColBorder"    Color="#E1F0E9"/>
+        <SolidColorBrush x:Key="ColPrimary"   Color="#2BB673"/>
+        <SolidColorBrush x:Key="ColPrimarySoft" Color="#E8F8F1"/>
+
+        <!-- Card container -->
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Background" Value="{StaticResource ColCard}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="18" ShadowDepth="2" Opacity="0.28"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Label -->
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ColSub}"/>
+            <Setter Property="Margin" Value="2,4,0,4"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <!-- Ô nhập -->
+        <Style x:Key="FieldBox" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="8,6"/>
+        </Style>
+
+        <!-- Nút footer xám -->
+        <Style x:Key="FooterGrayBtn" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#21382D"/>
+            <Setter Property="Background" Value="#F2F4F7"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#D1D5DB"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#D1D5DB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Nút footer xanh -->
+        <Style x:Key="FooterPrimaryBtn" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="Padding" Value="18,6"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#0FBF84"/>
+            <Setter Property="BorderBrush" Value="#0D7049"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#0DAA78"/>
+                                <Setter TargetName="bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="14" ShadowDepth="0" Opacity="0.3" Color="#0DAA78"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.96"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource CardBorder}" Margin="12">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Header -->
+                <RowDefinition Height="*"/>
+                <!-- Body -->
+                <RowDefinition Height="Auto"/>
+                <!-- Footer -->
+            </Grid.RowDefinitions>
+
+            <!-- ===== HEADER ===== -->
+            <Border Grid.Row="0" Background="White" CornerRadius="12,12,0,0"
+                    BorderBrush="{StaticResource ColBorder}" BorderThickness="0,0,0,1">
+                <Grid MouseDown="Header_MouseDown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Vertical" Margin="12,8">
+                        <TextBlock Text="Sửa thông tin nhân viên"
+                                   FontSize="17" FontWeight="Bold"
+                                   Foreground="{StaticResource ColText}"/>
+                        <TextBlock Text="Nhập thông tin hồ sơ &amp; liên hệ nhân viên"
+                                   FontSize="12"
+                                   Foreground="{StaticResource ColSub}"/>
+                    </StackPanel>
+
+                    <!-- Minimize (nếu cần) -->
+                    <Button Grid.Column="1" Width="32" Height="26" Margin="0,6,4,6"
+                            Click="BtnMinimize_Click"
+                            ToolTip="Thu nhỏ"
+                            Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" CornerRadius="6"
+                                        Background="Transparent"
+                                        BorderBrush="#CBD5E1"
+                                        BorderThickness="1">
+                                    <TextBlock Text="—" FontSize="12" FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="#E0F2FE"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Close -->
+                    <Button Grid.Column="2" Width="32" Height="26" Margin="0,6,10,6"
+                            Click="BtnClose_Click"
+                            ToolTip="Đóng"
+                            Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" CornerRadius="6"
+                                        Background="Transparent"
+                                        BorderBrush="#FCA5A5"
+                                        BorderThickness="1">
+                                    <TextBlock Text="✕" FontSize="12" FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="#FEE2E2"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- ===== BODY ===== -->
+            <Grid Grid.Row="1" Margin="0,12,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.1*"/>
+                    <ColumnDefinition Width="0.9*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT: Thông tin cá nhân & liên hệ -->
+                <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                    <TextBlock Text="Thông tin nhân viên" FontWeight="SemiBold"
+                               Foreground="{StaticResource ColText}" Margin="0,0,0,6"/>
+
+                    <!-- Họ tên -->
+                    <TextBlock Text="Họ và tên *" Style="{StaticResource FieldLabel}"/>
+                    <Border Style="{StaticResource FieldBox}">
+                        <TextBox BorderThickness="0" Background="Transparent" IsReadOnly="True"
+                                 Name="txtTen"/>
+                    </Border>
+
+                    <!-- Số điện thoại -->
+                    <TextBlock Text="Số điện thoại *" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
+                    <Border Style="{StaticResource FieldBox}">
+                        <TextBox BorderThickness="0" Background="Transparent"
+                                 Name="txtSDT"/>
+                    </Border>
+
+                    <!-- Email -->
+                    <TextBlock Text="Email" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
+                    <Border Style="{StaticResource FieldBox}">
+                        <TextBox BorderThickness="0" Background="Transparent"
+                                 Name="txtEmail"/>
+                    </Border>
+
+                    <!-- Ghi chú -->
+                    <TextBlock Text="Ghi chú hiển thị dưới tên (tuỳ chọn)" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
+                    <Border Style="{StaticResource FieldBox}" Padding="8,4">
+                        <TextBox BorderThickness="0" Background="Transparent"
+                                Name="txtGhiChu"
+                                 AcceptsReturn="True" Height="70"
+                                 TextWrapping="Wrap"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- RIGHT: Thông tin làm việc -->
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Thông tin làm việc" FontWeight="SemiBold"
+                               Foreground="{StaticResource ColText}" Margin="0,0,0,6"/>
+
+                    <!-- Loại nhân viên -->
+                    <TextBlock Text="Loại nhân viên" Style="{StaticResource FieldLabel}"/>
+                    <Border Style="{StaticResource FieldBox}" Padding="4,2">
+                        <ComboBox BorderThickness="0"
+                            MinHeight="25" Name="cmbVaiTro" SelectionChanged="CmbVaiTro_SelectionChanged"
+                            >
+                            <!-- lấy giá trị ở Content -->
+                            <ComboBoxItem Content="Quản lý"/>
+                            <ComboBoxItem Content="Full-time"/>
+                            <ComboBoxItem Content="Part-time"/>
+                        </ComboBox>
+                    </Border>
+
+
+
+                    <!-- Ngày vào làm -->
+                    <TextBlock Text="Ngày vào làm" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
+                    <Border Style="{StaticResource FieldBox}" Padding="4,0">
+                        <DatePicker BorderThickness="0" IsEnabled="False"
+                                    Name="dpNgayVaoLam"
+                                    Height="25"/>
+                    </Border>
+
+                    <!-- Trạng thái -->
+                    <TextBlock Text="Trạng thái" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
+                    <Border Style="{StaticResource FieldBox}" Padding="4,2">
+                        <ComboBox BorderThickness="0"
+                                  MinHeight="25" 
+                                  Name="cmbTrangThai">
+                            <ComboBoxItem Content="Đang làm"/>
+                            <ComboBoxItem Content="Tạm ngưng"/>
+                            <ComboBoxItem Content="Đã nghỉ"/>
+                        </ComboBox>
+                    </Border>
+
+                    <!-- Mã nhân viên -->
+                    <TextBlock Text="Mã nhân viên" Style="{StaticResource FieldLabel}" Margin="0,10,0,4"/>
+                    <Border Style="{StaticResource FieldBox}">
+                        <TextBox BorderThickness="0" Background="Transparent"
+                             Name="txtMaNV"
+                             IsReadOnly="True"
+                             Foreground="#0D7049"
+                             FontWeight="SemiBold"/>
+                    </Border>
+
+                </StackPanel>
+            </Grid>
+
+            <!-- ===== FOOTER ===== -->
+            <Grid Grid.Row="2" Margin="0,4,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Hint bên trái -->
+                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                           Text="Các trường có dấu * là bắt buộc."
+                           Foreground="{StaticResource ColSub}" FontSize="12"/>
+
+                <!-- Hủy -->
+                <Button Grid.Column="1" Style="{StaticResource FooterGrayBtn}"
+                        Click="BtnCancel_Click">
+                    <TextBlock Text="Hủy" />
+                </Button>
+
+                <!-- Lưu -->
+                <Button Grid.Column="3" Style="{StaticResource FooterPrimaryBtn}"
+                        Click="BtnSave_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8FB;" FontFamily="Segoe MDL2 Assets"
+                                   Margin="0,0,6,0"/>
+                        <TextBlock Text="Lưu nhân viên"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

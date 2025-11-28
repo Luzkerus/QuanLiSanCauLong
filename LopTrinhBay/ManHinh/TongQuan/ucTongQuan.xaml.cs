@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan;
 using QuanLiSanCauLong.LopDuLieu;
 using QuanLiSanCauLong.LopNghiepVu;
 
@@ -37,12 +36,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.TongQuan
             txtDanhThuHomNay.Text = thanhToanBLL.LayDoanhThuHomNay().ToString("N0") + " Đ";
             txtSoLuot.Text = datSanBLL.DemTongSoDatSanHomNay().ToString();
             txtHoiVienMoi.Text = khachHangBLL.LayTongKhachHangMoiTrongThang().ToString();
-            txtTyLeLapDay.Text = datSanBLL.TinhTyLeLapDay().ToString("P1");
+
 
             txtBienDongDoanhThu.Text = thanhToanBLL.TinhBienDongDoanhThuNgay().ToString("P1");
             txtBienDongSoLuot.Text = datSanBLL.TinhBienDongSoLuotDatSan().ToString("P1");
             txtBienDongHoiVien.Text = khachHangBLL.TinhBienDongHoiVienMoi().ToString("P1");
-            txtBienDongLayDay.Text = datSanBLL.TinhBienDongTyLeLapDay().ToString("P1");
         }
 
         private void btnMoDatSan_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
