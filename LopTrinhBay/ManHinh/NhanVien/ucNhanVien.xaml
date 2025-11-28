@@ -360,7 +360,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Tổng nhân viên" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding TongNhanVien}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock Name="txtTongNV" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#ECF3FF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="👥" FontSize="20"/>
@@ -377,7 +377,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Nhân viên Full-time" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoFullTime}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock x:Name="txtTongNVFT" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#E8FBF2" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="💼" FontSize="20"/>
@@ -394,7 +394,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="Nhân viên Part-time" Style="{StaticResource KpiTitle}"/>
-                        <TextBlock Text="{Binding SoPartTime}" Style="{StaticResource KpiValue}"/>
+                        <TextBlock x:Name="txtTongNVPT" Style="{StaticResource KpiValue}"/>
                     </StackPanel>
                     <Border Grid.Column="1" Background="#FFF3E6" CornerRadius="12" Padding="10" Margin="8,0,0,28">
                         <TextBlock Text="⏱️" FontSize="20"/>
@@ -431,11 +431,11 @@
                                   Width="16" Height="16" Fill="{StaticResource ColSub}"/>
 
                             <Grid Grid.Column="1">
-                                <TextBox x:Name="tbSearch"
+                                <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged"
                                          BorderThickness="0" Background="Transparent"
                                          Foreground="{StaticResource ColText}"
                                          Text="{Binding TuKhoa, UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBlock IsHitTestVisible="False" Margin="2,0,0,0"
+                                <TextBlock IsHitTestVisible="False" Margin="2,0,0,0" 
                                            Foreground="{StaticResource ColSub}" Opacity="0.7"
                                            Text="Tìm nhân viên..."
                                            VerticalAlignment="Center">
@@ -459,7 +459,7 @@
                 </Grid>
 
                 <!-- Bảng -->
-                <DataGrid ItemsSource="{Binding NhanViensView}"
+                <DataGrid x:Name="dgNhanVien"
                           AutoGenerateColumns="False"
                           HeadersVisibility="Column"
                           GridLinesVisibility="Horizontal"
@@ -477,7 +477,7 @@
                           VerticalGridLinesBrush="#E3F0E8"
                           SnapsToDevicePixels="True"
                           AlternationCount="2"
-                          SelectionChanged="DataGrid_SelectionChanged">
+                         >
 
                     <DataGrid.Resources>
                         <!-- Header -->
@@ -572,10 +572,10 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical">
-                                        <TextBlock Text="{Binding HoTen}"
+                                        <TextBlock Text="{Binding TenNV}"
                                                    FontWeight="SemiBold"
                                                    Foreground="{StaticResource ColText}"/>
-                                        <TextBlock Text="{Binding Note}"
+                                        <TextBlock Text="{Binding GhiChu}"
                                                    FontSize="11"
                                                    Foreground="{StaticResource ColSub}"/>
                                     </StackPanel>
@@ -585,7 +585,7 @@
 
                         <!-- SĐT -->
                         <DataGridTextColumn Header="SĐT"
-                                            Binding="{Binding SoDienThoai}"
+                                            Binding="{Binding SDT}"
                                             Width="1.2*"/>
 
                         <!-- Email -->
@@ -599,16 +599,24 @@
                                             Width="1.2*"/>
 
                         <!-- Password -->
-                        <DataGridTextColumn Header="Password"
-                                            Binding="{Binding Password}"
-                                            Width="1.1*"/>
+                        <DataGridTemplateColumn Header="Password" Width="1.1*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!-- Hiển thị mật khẩu bằng dấu * -->
+                                        <TextBlock Text="*****" 
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0"/>
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                         <!-- Vai trò -->
                         <DataGridTemplateColumn Header="Vai trò" Width="1.1*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource RoleChipDynamic}">
-                                        <TextBlock Text="{Binding VaiTroText}"
+                                        <TextBlock Text="{Binding VaiTro}"
                                                    Foreground="White"
                                                    FontSize="12"
                                                    FontWeight="SemiBold"/>
@@ -627,7 +635,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource StatusChipDynamic}">
-                                        <TextBlock Text="{Binding TrangThaiText}"
+                                        <TextBlock Text="{Binding TrangThai}"
                                                    Foreground="White"
                                                    FontSize="12"
                                                    FontWeight="SemiBold"/>
@@ -655,9 +663,8 @@
                                         <!-- Sửa -->
                                         <Button Style="{StaticResource IconButtonGray}"
                                                 ToolTip="Chỉnh sửa"
-                                                Margin="0,0,4,0"
-                                                Command="{Binding DataContext.EditNhanVienCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}">
+                                                Margin="0,0,4,0" Click="BtnSuaNhanVien_Click"
+                                                >
                                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                                        FontSize="14"
                                                        Foreground="#25313F"
@@ -669,26 +676,17 @@
                                         <Button Style="{StaticResource IconButtonGray}"
                                                 ToolTip="Khóa / Mở"
                                                 Margin="0,0,4,0"
-                                                Command="{Binding DataContext.LockNhanVienCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}">
-                                            <TextBlock FontFamily="Segoe MDL2 Assets"
+                                                Click="BtnResetPassword_Click"
+                                               >
+                                            <TextBlock 
                                                        FontSize="14"
                                                        Foreground="#111827"
-                                                       Text="&#xE72E;"/>
+                                                       Text="⟳"/>
                                             <!-- icon ổ khóa -->
                                         </Button>
 
                                         <!-- Xóa -->
-                                        <Button Style="{StaticResource IconButtonDanger}"
-                                                ToolTip="Xóa nhân viên"
-                                                Command="{Binding DataContext.DeleteNhanVienCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}">
-                                            <TextBlock FontFamily="Segoe MDL2 Assets"
-                                                       FontSize="14"
-                                                       Foreground="#D92D20"
-                                                       Text="&#xE74D;"/>
-                                            <!-- icon thùng rác -->
-                                        </Button>
+                                     
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -699,37 +697,6 @@
         </Border>
 
         <!-- Ca làm việc hôm nay -->
-        <Border Style="{StaticResource StatCard}" Margin="0,12,0,0">
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Top" Text="Ca làm việc hôm nay" FontWeight="SemiBold" Margin="0,0,0,12"/>
-                <DataGrid ItemsSource="{Binding CaLamHomNay}" AutoGenerateColumns="False" GridLinesVisibility="None"
-                          CanUserAddRows="False" CanUserDeleteRows="False" BorderThickness="0" Background="Transparent" RowHeight="44">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nhân viên" Binding="{Binding HoTen}" Width="*"/>
-                        <DataGridTextColumn Header="Ngày" Binding="{Binding Ngay, StringFormat={}{0:yyyy-MM-dd}}" Width="140"/>
-                        <DataGridTemplateColumn Header="Ca" Width="120">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource ShiftChip}">
-                                        <TextBlock Text="{Binding Ca}" Foreground="#B35C00" FontSize="12"/>
-                                    </Border>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Check-in" Binding="{Binding CheckIn, StringFormat={}{0:HH\\:mm}}" Width="120"/>
-                        <DataGridTextColumn Header="Check-out" Binding="{Binding CheckOut, StringFormat={}{0:HH\\:mm}}" Width="120"/>
-                        <DataGridTemplateColumn Header="Trạng thái" Width="140">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource StatusChip}">
-                                        <TextBlock Text="{Binding TrangThai}" Foreground="#137A4F" FontSize="12"/>
-                                    </Border>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
-        </Border>
+    
     </DockPanel>
 </UserControl>

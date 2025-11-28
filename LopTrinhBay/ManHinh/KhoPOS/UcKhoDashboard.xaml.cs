@@ -57,6 +57,17 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             ).ToList();
             dgKho.ItemsSource = filteredItems;
         }
+        private void txtTimKiemBanHang_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string keyword = txtSeach.Text.Trim().ToLower();
+            HangHoaBLL hangHoaBLL = new HangHoaBLL();
+            var allItems = hangHoaBLL.LayTatCaHangHoa();
+            var filteredItems = allItems.Where(hh =>
+                hh.TenHang.ToLower().Contains(keyword)
+
+            ).ToList();
+            isSanPham.ItemsSource = filteredItems;
+        }
 
         private void btnNhapHang(object sender, RoutedEventArgs e)
         {

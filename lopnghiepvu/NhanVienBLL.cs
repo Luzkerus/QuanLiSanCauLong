@@ -2,6 +2,7 @@
 using QuanLiSanCauLong.LopTruyCapDuLieu;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace QuanLiSanCauLong.LopNghiepVu
@@ -141,6 +142,36 @@ namespace QuanLiSanCauLong.LopNghiepVu
             }
 
             return sb.ToString().Normalize(System.Text.NormalizationForm.FormC);
+        }
+
+        public bool DoiMatKhau(string maNV, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(maNV))
+                throw new ArgumentException("Mã nhân viên không hợp lệ");
+            if (string.IsNullOrWhiteSpace(newPassword))
+                throw new ArgumentException("Mật khẩu mới không hợp lệ");
+            string newPasswordHash = HashPassword(newPassword);
+            return _dal.DoiMatKhau(maNV, newPasswordHash);
+        }
+        public bool SuaNhanVienVaMaNV(NhanVien nv, string maNVCu)
+        {
+            if (string.IsNullOrWhiteSpace(maNVCu))
+                throw new ArgumentException("Mã nhân viên cũ không hợp lệ");
+            // Không cho sửa Username, PasswordHash, NgayVaoLam
+            return _dal.SuaNhanVienVaMaNV(nv, maNVCu);
+        }
+        public int TongSoNhanVien()
+        {
+            return LayDanhSachNhanVien()
+                   .Count(nv => nv.VaiTro != "Admin");
+        }
+        public int TongSoNVPartTime()
+        {
+            return LayDanhSachNhanVien().Count(nv => nv.VaiTro == "Part-time");
+        }
+        public int TongSoNVFullTime()
+        {
+            return LayDanhSachNhanVien().Count(nv => nv.VaiTro == "Full-time");
         }
 
     }
