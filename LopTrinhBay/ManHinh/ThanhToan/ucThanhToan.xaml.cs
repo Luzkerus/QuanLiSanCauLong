@@ -268,6 +268,15 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan
                 MessageBox.Show("Số điện thoại không hợp lệ! Vui lòng nhập lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            string thongBao = $"Xác nhận thanh toán tổng cộng {txtTongTien.Text} cho khách hàng {tenKH} ({sdt})?";
+            MessageBoxResult result = MessageBox.Show(thongBao, "Xác nhận Thanh Toán", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                // Người dùng chọn 'No', hủy thao tác
+                return;
+            }
+
             // Nếu khách hàng chưa có, tạo mới
             if (kh == null)
             {
