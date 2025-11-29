@@ -135,7 +135,7 @@
 
             <!-- CẤU HÌNH GIÁ -->
             <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,12,0">
-                <Grid Grid.Row="3" Margin="0,20,0,0">
+                <Grid Grid.Row="3" Margin="0,5,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -148,18 +148,18 @@
                     <StackPanel Grid.Row="0" Margin="4">
                         <TextBlock Text="Giờ bắt đầu" Style="{StaticResource Lbl}" />
                         <TextBox x:Name="txtGioBatDau"
-        Style="{StaticResource NumBox}"
-        ToolTip="Nhập giờ bắt đầu (hh:mm)"
-        MaxLength="5" PreviewTextInput="Gio_PreviewTextInput" TextChanged="Gio_TextChanged" />
+                                Style="{StaticResource NumBox}"
+                                ToolTip="Nhập giờ bắt đầu (hh:mm)"
+                                MaxLength="5" PreviewTextInput="Gio_PreviewTextInput" TextChanged="Gio_TextChanged" />
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" Margin="4">
                         <TextBlock Text="Giờ kết thúc" Style="{StaticResource Lbl}" />
                         <TextBox x:Name="txtGioKetThuc"
-        Style="{StaticResource NumBox}"
-        ToolTip="Nhập giờ kết thúc (hh:mm)"
-        MaxLength="5" PreviewTextInput="Gio_PreviewTextInput"
-        TextChanged="Gio_TextChanged"
+                                Style="{StaticResource NumBox}"
+                                ToolTip="Nhập giờ kết thúc (hh:mm)"
+                                MaxLength="5" PreviewTextInput="Gio_PreviewTextInput"
+                                TextChanged="Gio_TextChanged"
     />
                     </StackPanel>
 
@@ -167,10 +167,10 @@
                     <StackPanel Grid.Row="2" Margin="4">
                         <TextBlock Text="Giá cơ bản(VNĐ/giờ)" Style="{StaticResource Lbl}" />
                         <TextBox x:Name="txtGiaCoBan"
-                 Style="{StaticResource NumBox}"
-                 ToolTip="Nhập đơn giá (ví dụ 120000)"
-                 PreviewTextInput="Numeric_PreviewTextInput"
-                 TextChanged="AnyInput_TextChanged"/>
+                                 Style="{StaticResource NumBox}"
+                                 ToolTip="Nhập đơn giá (ví dụ 120000)"
+                                 PreviewTextInput="Numeric_PreviewTextInput"
+                                 TextChanged="AnyInput_TextChanged"/>
                     </StackPanel>
 
                     <!-- Loại ngày -->
@@ -179,9 +179,9 @@
 
                         <Border Style="{StaticResource PillField}"  BorderBrush="Gray" Background="Transparent" Padding="12,12">
                             <ComboBox x:Name="cbLoaiNgay"
-                  Padding="2,2"
-                  Style="{StaticResource FlatCombo}"
-                  SelectedIndex="0">
+                                      Padding="2,2"
+                                      Style="{StaticResource FlatCombo}"
+                                      SelectedIndex="0">
                                 <ComboBoxItem Content="Thứ 2-Thứ 6" />
                                 <ComboBoxItem Content="Cuối Tuần" />
                             </ComboBox>
@@ -194,10 +194,10 @@
                     <StackPanel Grid.Row="4" Margin="4">
                         <TextBlock Text="Phụ thu lễ (%)" Style="{StaticResource Lbl}" />
                         <TextBox x:Name="txtPhuThu"
-                 Style="{StaticResource NumBox}"
-                 ToolTip="Nhập phần trăm phụ thu lễ"
-                 PreviewTextInput="Numeric_PreviewTextInput"
-                 TextChanged="AnyInput_TextChanged"/>
+                                 Style="{StaticResource NumBox}"
+                                 ToolTip="Nhập phần trăm phụ thu lễ"
+                                 PreviewTextInput="Numeric_PreviewTextInput"
+                                 TextChanged="AnyInput_TextChanged"/>
                     </StackPanel>
                 </Grid>
             </Border>

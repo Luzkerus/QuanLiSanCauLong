@@ -166,53 +166,44 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
         // Đổi style active/normal theo SelectedKey
         private void ApplyActive(string key)
         {
-            if (string.IsNullOrWhiteSpace(key)) key = "overview";
+            if (string.IsNullOrWhiteSpace(key))
+                key = "overview";
 
             // Lấy style từ resource
             var activeStyle = TryFindResource("MenuItemActive") as Style;
             var normalStyle = TryFindResource("MenuItemNormal") as Style;
 
-            // Tìm tất cả Border menu trong StackPanel row=1
-            var root = this.Content as Border;
-            if (root?.Child is Grid grid && VisualTreeHelper.GetChildrenCount(grid) >= 2)
+            if (MenuPanel == null || activeStyle == null || normalStyle == null)
+                return;
+
+            foreach (var child in MenuPanel.Children.OfType<Border>())
             {
-                var menuPanel = grid.Children
-                    .OfType<StackPanel>()
-                    .FirstOrDefault(sp => Grid.GetRow(sp) == 1);
+                var isActive = (child.Tag as string)?.Equals(key, StringComparison.OrdinalIgnoreCase) == true;
+                child.Style = isActive ? activeStyle : normalStyle;
 
-                if (menuPanel != null)
+                // Đổi màu icon + label khi active
+                if (child.Child is StackPanel stack)
                 {
-                    foreach (var child in menuPanel.Children.OfType<Border>())
+                    var icon = stack.Children.OfType<TextBlock>().FirstOrDefault();
+                    var label = stack.Children.OfType<TextBlock>().Skip(1).FirstOrDefault();
+
+                    if (isActive)
                     {
-                        var isActive = (child.Tag as string)?.Equals(key, StringComparison.OrdinalIgnoreCase) == true;
-                        child.Style = isActive ? activeStyle : normalStyle;
-
-                        // Đổi màu chữ icon + label khi active để đảm bảo đọc tốt
-                        var stack = child.Child as StackPanel;
-                        if (stack != null)
+                        if (icon != null) icon.Foreground = new SolidColorBrush(Colors.White);
+                        if (label != null)
                         {
-                            var icon = stack.Children.OfType<TextBlock>().FirstOrDefault();
-                            var label = stack.Children.OfType<TextBlock>().Skip(1).FirstOrDefault();
-
-                            if (isActive)
-                            {
-                                if (icon != null) icon.Foreground = new SolidColorBrush(Colors.White);
-                                if (label != null)
-                                {
-                                    label.Foreground = new SolidColorBrush(Colors.White);
-                                    label.FontWeight = FontWeights.SemiBold;
-                                }
-                            }
-                            else
-                            {
-                                if (icon != null) icon.ClearValue(TextBlock.ForegroundProperty);
-                                if (label != null)
-                                {
-                                    // về lại màu chuẩn
-                                    label.Foreground = TryFindResource("ColText") as Brush ?? Brushes.Black;
-                                    label.FontWeight = FontWeights.Normal;
-                                }
-                            }
+                            label.Foreground = new SolidColorBrush(Colors.White);
+                            label.FontWeight = FontWeights.SemiBold;
+                        }
+                    }
+                    else
+                    {
+                        if (icon != null) icon.ClearValue(TextBlock.ForegroundProperty);
+                        if (label != null)
+                        {
+                            // về lại màu chuẩn
+                            label.Foreground = TryFindResource("ColText") as Brush ?? Brushes.Black;
+                            label.FontWeight = FontWeights.Normal;
                         }
                     }
                 }
