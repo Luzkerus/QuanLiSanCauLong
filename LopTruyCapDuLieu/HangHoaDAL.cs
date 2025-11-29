@@ -184,6 +184,8 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                         LanCuoiNhap = Convert.ToDateTime(reader["LanCuoiNhap"]),
                         TrangThai = reader["TrangThai"].ToString()
                     };
+                    CapNhatTrangThaiHangHoa(hh.MaHang);
+                    hh.TrangThai = hh.TrangThai;
                     hangHoas.Add(hh);
                 }
             }

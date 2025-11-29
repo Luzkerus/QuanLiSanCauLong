@@ -50,7 +50,7 @@ namespace QuanLiSanCauLong.LopNghiepVu
 
         //    return _dal.TimNhanVienTheoMa(maNV);
         //}
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
             using (SHA256 sha = SHA256.Create())
             {
@@ -172,6 +172,37 @@ namespace QuanLiSanCauLong.LopNghiepVu
         public int TongSoNVFullTime()
         {
             return LayDanhSachNhanVien().Count(nv => nv.VaiTro == "Full-time");
+        }
+        public NhanVien DangNhap(string username, string password)
+        {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("Tên đăng nhập và mật khẩu không được để trống.");
+            }
+
+            // 1. Tìm nhân viên theo Username
+            NhanVien nv = _dal.TimNhanVienTheoUsername(username);
+
+            if (nv == null)
+            {
+                // Không tìm thấy Username
+                return null;
+            }
+
+            // 2. Mã hóa mật khẩu người dùng nhập vào để so sánh với PasswordHash đã lưu
+            string inputHash = HashPassword(password);
+
+            // 3. So sánh Hash
+            if (inputHash.Equals(nv.PasswordHash, StringComparison.OrdinalIgnoreCase))
+            {
+                // Đăng nhập thành công
+                return nv;
+            }
+            else
+            {
+                // Sai mật khẩu
+                return null;
+            }
         }
 
     }

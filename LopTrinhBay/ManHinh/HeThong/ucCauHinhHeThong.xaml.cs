@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using QuanLiSanCauLong.LopNghiepVu;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong
 {
@@ -30,7 +31,84 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong
             TimeoutPhien = 30;
             NguongTonKhoThap = 20;
         }
+        private readonly NhanVienBLL _nhanVienBLL = new NhanVienBLL();
 
+        private void btnDoiMK_Click(object sender, RoutedEventArgs e)
+        {
+            if (!SessionManager.IsLoggedIn)
+            {
+                MessageBox.Show("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Lấy các giá trị từ PasswordBox
+            // PHẢI đảm bảo các PasswordBox có x:Name="TxtOldPassword", "TxtNewPassword", "TxtConfirmNewPassword" trong XAML
+            string oldPassword = TxtOldPassword.Password;
+            string newPassword = TxtNewPassword.Password;
+            string confirmPassword = TxtConfirmNewPassword.Password;
+
+            var user = SessionManager.CurrentUser;
+
+            // --- 1. Xác thực đầu vào cơ bản ---
+            if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
+            {
+                MessageBox.Show("Vui lòng điền đầy đủ các trường mật khẩu.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (newPassword != confirmPassword)
+            {
+                MessageBox.Show("Mật khẩu mới và xác nhận mật khẩu không khớp.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (newPassword.Length < 6)
+            {
+                MessageBox.Show("Mật khẩu mới phải có ít nhất 6 ký tự.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // --- 2. Xác thực mật khẩu cũ ---
+            try
+            {
+                // Sử dụng logic đăng nhập/hash để so sánh mật khẩu cũ nhập vào
+                string oldPasswordHash = _nhanVienBLL.HashPassword(oldPassword);
+
+                if (!oldPasswordHash.Equals(user.PasswordHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Mật khẩu cũ không chính xác.", "Lỗi bảo mật", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // --- 3. Cập nhật mật khẩu mới ---
+                if (_nhanVienBLL.DoiMatKhau(user.MaNV, newPassword))
+                {
+                    // Cập nhật thành công trong DB, cần cập nhật lại đối tượng CurrentUser trong Session
+                    // Gọi lại hàm HashPassword để lấy Hash mới cho mật khẩu mới
+                    user.PasswordHash = _nhanVienBLL.HashPassword(newPassword);
+
+                    // Xóa dữ liệu trên form
+                    TxtOldPassword.Clear();
+                    TxtNewPassword.Clear();
+                    TxtConfirmNewPassword.Clear();
+
+                    MessageBox.Show("Đổi mật khẩu thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Không thể cập nhật mật khẩu. Vui lòng thử lại.", "Lỗi cập nhật", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (ArgumentException aex)
+            {
+                // Bắt lỗi từ BLL (như MaNV không hợp lệ,...)
+                MessageBox.Show(aex.Message, "Lỗi nghiệp vụ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Đã xảy ra lỗi hệ thống: {ex.Message}", "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         // ====== Bindable properties ======
         private string _gioMoCua, _gioDongCua;
         private int _khoangTgToiThieu, _diemTichLuyPer10000, _nguongDiemUuDai, _tiLeUuDai;

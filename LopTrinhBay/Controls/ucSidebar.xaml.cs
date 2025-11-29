@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using QuanLiSanCauLong.LopNghiepVu;
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
 {
@@ -21,9 +23,57 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
                 // Set lại width theo trạng thái hiện tại
                 UpdateWidth();
                 ApplyActive(SelectedKey); // set active theo SelectedKey khi load
+                LoadCurrentUser();
             };
         }
+        private void LoadCurrentUser()
+        {
+            // Kiểm tra SessionManager để lấy thông tin đã lưu sau khi đăng nhập
+            if (SessionManager.IsLoggedIn)
+            {
+                var user = SessionManager.CurrentUser;
 
+                // Giả định ucSidebar có x:Name="sidebarControl"
+                AdminName = user.TenNV;
+                AdminRole = user.VaiTro;
+            }
+        }
+        private void btnLogOut_Click(object sender, RoutedEventArgs e)
+        {
+            // THÊM: Hộp thoại xác nhận trước khi đăng xuất
+            MessageBoxResult result = MessageBox.Show(
+                "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?", // Nội dung thông báo
+                "Xác nhận Đăng xuất", // Tiêu đề hộp thoại
+                MessageBoxButton.YesNo, // Các nút hiển thị (Có, Không)
+                MessageBoxImage.Question // Biểu tượng câu hỏi
+            );
+
+            // Kiểm tra kết quả
+            if (result == MessageBoxResult.Yes)
+            {
+                // 1. Thực hiện thao tác đăng xuất (xóa phiên làm việc)
+                SessionManager.Logout();
+
+                // 2. Chuyển người dùng về màn hình đăng nhập (sử dụng ShowDialog)
+
+                // Tìm cửa sổ cha (MainWindow)
+                Window parentWindow = Window.GetWindow(this);
+
+                // Giả định MainWindow là cửa sổ chính
+                if (parentWindow is MainWindow mainWindow)
+                {
+                    // Mở form đăng nhập mới dưới dạng Dialog (blocking)
+                    // Bạn cần đảm bảo frmDangNhap là một Window, không phải UserControl
+                    frmDangNhap frmDangNhap = new frmDangNhap();
+                    frmDangNhap.Show(); // Nên dùng Show() thay vì ShowDialog() ở đây
+
+                    // Đóng cửa sổ chính sau khi đã mở màn hình đăng nhập
+                    // Đặt lệnh Close() sau lệnh Show() hoặc ShowDialog()
+                    mainWindow.Close();
+                }
+            }
+            // Nếu người dùng chọn No, không làm gì cả và giữ nguyên màn hình.
+        }
         // ================= TRẠNG THÁI THU GỌN/MỞ RỘNG =================
 
         /// <summary>
@@ -89,7 +139,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.Controls
         }
         public static readonly DependencyProperty AdminNameProperty =
             DependencyProperty.Register(nameof(AdminName), typeof(string), typeof(ucSidebar),
-                new PropertyMetadata("Admin User"));
+                new PropertyMetadata());
 
         public string AdminRole
         {

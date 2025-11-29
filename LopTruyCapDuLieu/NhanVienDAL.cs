@@ -181,5 +181,37 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+
+        public NhanVien TimNhanVienTheoUsername(string username)
+        {
+            NhanVien nv = null;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT * FROM NhanVien WHERE Username = @Username";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Username", username);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    nv = new NhanVien
+                    {
+                        MaNV = reader["MaNV"].ToString(),
+                        TenNV = reader["TenNV"].ToString(),
+                        SDT = reader["SDT"] != DBNull.Value ? reader["SDT"].ToString() : null,
+                        Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : null,
+                        Username = reader["Username"].ToString(),
+                        PasswordHash = reader["PasswordHash"].ToString(),
+                        VaiTro = reader["VaiTro"] != DBNull.Value ? reader["VaiTro"].ToString() : null,
+                        NgayVaoLam = Convert.ToDateTime(reader["NgayVaoLam"]),
+                        TrangThai = reader["TrangThai"] != DBNull.Value ? reader["TrangThai"].ToString() : null,
+                        GhiChu = reader["GhiChu"] != DBNull.Value ? reader["GhiChu"].ToString() : null
+                    };
+                }
+            }
+            return nv;
+        }
     }
 }

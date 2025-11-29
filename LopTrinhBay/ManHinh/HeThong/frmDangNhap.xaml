@@ -193,14 +193,11 @@
                         </StackPanel>
 
                         <!-- Options -->
-                        <DockPanel Grid.Row="3" Margin="0,10,0,8" LastChildFill="False">
-                            <CheckBox Content="Ghi nhớ đăng nhập" Foreground="{StaticResource ColSub}" VerticalAlignment="Center"/>
-                            <TextBlock DockPanel.Dock="Right" Style="{StaticResource Link}" Text="Quên mật khẩu?" />
-                        </DockPanel>
+
 
                         <!-- Submit -->
                         <StackPanel Grid.Row="4">
-                            <Button x:Name="btnLogin" Style="{StaticResource BtnPrimary}" Content="Đăng nhập" />
+                            <Button x:Name="btnLogin" Style="{StaticResource BtnPrimary}" Content="Đăng nhập" Click="BtnLogin_Click"/>
                         </StackPanel>
                     </Grid>
                 </Border>

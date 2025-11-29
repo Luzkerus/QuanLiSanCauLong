@@ -1,14 +1,15 @@
-﻿using System;
-using System.Windows;
-using QuanLiSanCauLong.LopTrinhBay.ManHinh.TongQuan;
-using QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan;
+﻿using QuanLiSanCauLong.LopNghiepVu;
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.BaoCao;
 using QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan;
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong;
 using QuanLiSanCauLong.LopTrinhBay.ManHinh.KhachHoiVien;
-using QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan;
 using QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS;
 using QuanLiSanCauLong.LopTrinhBay.ManHinh.NhanVien;
-using QuanLiSanCauLong.LopTrinhBay.ManHinh.BaoCao;
-using QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong;
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.QuanLySan;
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan;
+using QuanLiSanCauLong.LopTrinhBay.ManHinh.TongQuan;
+using System;
+using System.Windows;
 
 // using ... các màn khác
 
@@ -25,6 +26,7 @@ namespace QuanLiSanCauLong
             // hoặc 1 UserControl tổng quan:
            MainFrame.Content = new ucTongQuan(); // thay bằng màn thật 
         }
+
 
         // TẤT CẢ trang chức năng chỉ chạy ở đây (ô trắng)
         private void Sidebar_NavigateRequested(object sender, string key)

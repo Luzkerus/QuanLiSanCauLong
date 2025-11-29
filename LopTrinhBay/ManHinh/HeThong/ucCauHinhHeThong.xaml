@@ -22,7 +22,14 @@
             <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
-
+        <Style TargetType="PasswordBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="#F6FDF9"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,6,0,12"/>
+            <Setter Property="Padding" Value="8,4"/>
+        </Style>
         <!-- Section (nền pastel) -->
         <Style x:Key="Section" TargetType="Border" BasedOn="{StaticResource Card}">
             <Setter Property="Padding" Value="16"/>
@@ -151,7 +158,42 @@
                     Margin="0,10,0,0"
                     BorderThickness="0"
                     Background="Transparent">
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="🔑 Đổi mật khẩu" FontSize="14"/>
+                </TabItem.Header>
 
+                <DockPanel Margin="0,8,0,0">
+
+                    <Button Content="Đổi mật khẩu"
+                            DockPanel.Dock="Bottom"
+                            Width="140" Height="36"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Right"
+                            Background="#0FBF84"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Click="btnDoiMK_Click"
+                            Cursor="Hand"/>
+
+                    <Border Style="{StaticResource Card}"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Width="400"
+                            Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Mật khẩu cũ" Style="{StaticResource FieldLabel}"/>
+                            <PasswordBox x:Name="TxtOldPassword" Tag="Mật khẩu cũ"/>
+
+                            <TextBlock Text="Mật khẩu mới" Style="{StaticResource FieldLabel}"/>
+                            <PasswordBox x:Name="TxtNewPassword" Tag="Mật khẩu mới"/>
+
+                            <TextBlock Text="Nhập lại mật khẩu mới" Style="{StaticResource FieldLabel}"/>
+                            <PasswordBox x:Name="TxtConfirmNewPassword" Tag="Nhập lại mật khẩu mới"/>
+                        </StackPanel>
+                    </Border>
+                </DockPanel>
+            </TabItem>
             <!-- =======================
                  TAB 1: CẤU HÌNH HỆ THỐNG
                  ======================= -->
@@ -235,185 +277,7 @@
             <!-- =======================
                  TAB 2: PHÂN QUYỀN
                  ======================= -->
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="🔐 Phân quyền" FontSize="14"/>
-                </TabItem.Header>
-
-                <Grid Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="270"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- ===== CỘT TRÁI: VAI TRÒ ===== -->
-                    <Border Grid.Column="0"
-                            Style="{StaticResource Section}"
-                            Background="#E8F8F1"
-                            Margin="0,0,10,0">
-                        <DockPanel>
-
-                            <!-- Nút thêm vai trò -->
-                            <Button Content="➕ Thêm vai trò"
-                                    DockPanel.Dock="Bottom"
-                                    Margin="0,10,0,0"
-                                    Height="34"
-                                    HorizontalAlignment="Stretch"
-                                    Background="#0FBF84"
-                                    Foreground="White"
-                                    BorderThickness="0"
-                                    Cursor="Hand"
-                                    Click="BtnThemVaiTro_Click"/>
-
-                            <!-- Danh sách vai trò -->
-                            <StackPanel>
-                                <TextBlock Text="Vai trò &amp; nhóm quyền"
-                                           FontWeight="SemiBold"
-                                           Foreground="{StaticResource ColText}"
-                                           Margin="0,0,0,6"/>
-
-                                <TextBlock Text="Chọn một vai trò để cấu hình chi tiết quyền theo chức năng."
-                                           Foreground="{StaticResource ColSub}"
-                                           FontSize="11"
-                                           TextWrapping="Wrap"
-                                           Margin="0,0,0,8"/>
-
-                                <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                              Height="380">
-                                    <ListBox ItemsSource="{Binding DanhSachVaiTro}"
-                                             SelectedItem="{Binding VaiTroDangChon}"
-                                             ItemContainerStyle="{StaticResource RoleItemStyle}"
-                                             BorderThickness="0"
-                                             Background="White"/>
-                                </ScrollViewer>
-                            </StackPanel>
-                        </DockPanel>
-                    </Border>
-
-                    <!-- ===== CỘT PHẢI: PHÂN QUYỀN CHỨC NĂNG ===== -->
-                    <Border Grid.Column="1"
-                            Style="{StaticResource Section}"
-                            Background="#FFFFFF">
-                        <DockPanel>
-
-                            <!-- Nút lưu phân quyền -->
-                            <Button Content="💾 Lưu phân quyền"
-                                    DockPanel.Dock="Bottom"
-                                    Margin="0,8,0,0"
-                                    Height="36"
-                                    HorizontalAlignment="Right"
-                                    Width="150"
-                                    Background="#0FBF84"
-                                    Foreground="White"
-                                    BorderThickness="0"
-                                    Cursor="Hand"
-                                    Command="{Binding CmdLuuPhanQuyen}"/>
-
-                            <!-- Nội dung -->
-                            <StackPanel>
-                                <TextBlock Text="Phân quyền theo chức năng"
-                                           FontWeight="SemiBold"
-                                           Foreground="{StaticResource ColText}"/>
-
-                                <Border Margin="0,6,0,10"
-                                        Padding="8,4"
-                                        CornerRadius="8"
-                                        Background="#F1F5F9">
-                                    <TextBlock Text="{Binding TieuDeVaiTroDangChon}"
-                                               Foreground="{StaticResource ColSub}"
-                                               FontSize="12"
-                                               TextWrapping="Wrap"/>
-                                </Border>
-
-                                <!-- Header cột quyền -->
-                                <Grid Margin="0,0,0,4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="70"/>
-                                        <ColumnDefinition Width="70"/>
-                                        <ColumnDefinition Width="70"/>
-                                        <ColumnDefinition Width="70"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Chức năng"
-                                               Grid.Column="0"
-                                               FontSize="12"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource ColSub}"/>
-                                    <TextBlock Text="Xem" Grid.Column="1"
-                                               HorizontalAlignment="Center"
-                                               FontSize="12"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource ColSub}"/>
-                                    <TextBlock Text="Thêm" Grid.Column="2"
-                                               HorizontalAlignment="Center"
-                                               FontSize="12"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource ColSub}"/>
-                                    <TextBlock Text="Sửa" Grid.Column="3"
-                                               HorizontalAlignment="Center"
-                                               FontSize="12"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource ColSub}"/>
-                                    <TextBlock Text="Xóa" Grid.Column="4"
-                                               HorizontalAlignment="Center"
-                                               FontSize="12"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource ColSub}"/>
-                                </Grid>
-
-                                <!-- Danh sách quyền -->
-                                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl ItemsSource="{Binding DanhSachQuyen}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Style="{StaticResource PermissionRowBorder}">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="70"/>
-                                                            <ColumnDefinition Width="70"/>
-                                                            <ColumnDefinition Width="70"/>
-                                                            <ColumnDefinition Width="70"/>
-                                                        </Grid.ColumnDefinitions>
-
-                                                        <!-- Tên chức năng -->
-                                                        <StackPanel Grid.Column="0" Orientation="Vertical">
-                                                            <TextBlock Text="{Binding TenChucNang}"
-                                                                       Foreground="{StaticResource ColText}"/>
-                                                            <TextBlock Text="{Binding MoTa}"
-                                                                       Foreground="{StaticResource ColSub}"
-                                                                       FontSize="11"
-                                                                       TextTrimming="CharacterEllipsis"/>
-                                                        </StackPanel>
-
-                                                        <!-- Checkboxes -->
-                                                        <CheckBox Grid.Column="1"
-                                                                  HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center"
-                                                                  IsChecked="{Binding QuyenXem}"/>
-                                                        <CheckBox Grid.Column="2"
-                                                                  HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center"
-                                                                  IsChecked="{Binding QuyenThem}"/>
-                                                        <CheckBox Grid.Column="3"
-                                                                  HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center"
-                                                                  IsChecked="{Binding QuyenSua}"/>
-                                                        <CheckBox Grid.Column="4"
-                                                                  HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center"
-                                                                  IsChecked="{Binding QuyenXoa}"/>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </ScrollViewer>
-                            </StackPanel>
-                        </DockPanel>
-                    </Border>
-                </Grid>
-            </TabItem>
+           
 
         </TabControl>
     </Grid>

@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LopDuLieu\BangGiaChung.cs" />
+    <Compile Include="LopDuLieu\CauHinhHeThong.cs" />
     <Compile Include="LopDuLieu\ChiTietChuaThanhToan.cs" />
     <Compile Include="LopDuLieu\ChiTietDatSan.cs" />
     <Compile Include="LopDuLieu\ChiTietDatSanVM.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="LopDuLieu\ThanhToan.cs" />
     <Compile Include="LopDuLieu\TimeSlotVM.cs" />
     <Compile Include="LopNghiepVu\BangGiaBLL.cs" />
+    <Compile Include="LopNghiepVu\CauHinhHeThongBLL.cs" />
     <Compile Include="LopNghiepVu\ChiTietDatSanBLL.cs" />
     <Compile Include="LopNghiepVu\ChiTietPhieuNhapBLL.cs" />
     <Compile Include="LopNghiepVu\DatSanBLL.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="LopNghiepVu\NhanVienBLL.cs" />
     <Compile Include="LopNghiepVu\PhieuNhapBLL.cs" />
     <Compile Include="LopNghiepVu\SanBLL.cs" />
+    <Compile Include="LopNghiepVu\SessionManager.cs" />
     <Compile Include="LopNghiepVu\ThanhToanBLL.cs" />
     <Compile Include="LopTrinhBay\Controls\ucHeader.xaml.cs">
       <DependentUpon>ucHeader.xaml</DependentUpon>
@@ -257,6 +260,7 @@
       <DependentUpon>ucTongQuan.xaml</DependentUpon>
     </Compile>
     <Compile Include="LopTruyCapDuLieu\BangGiaDAL.cs" />
+    <Compile Include="LopTruyCapDuLieu\CauHinhHeThongDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ChiTietDatSanDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ChiTietHoaDonDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ChiTietPhieuNhapDAL.cs" />

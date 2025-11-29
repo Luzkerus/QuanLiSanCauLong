@@ -256,11 +256,13 @@
                         <StackPanel Margin="10,0,0,0"
                                     VerticalAlignment="Center">
                             <TextBlock Text="{Binding AdminName, ElementName=Root, FallbackValue=Admin User}"
+                                  
                                        FontWeight="SemiBold"
                                        Style="{StaticResource CollapseWithSidebar}"/>
                             <TextBlock Text="{Binding AdminRole, ElementName=Root, FallbackValue=Quản lý}"
                                        Foreground="#889"
                                        FontSize="12"
+                                      
                                        Style="{StaticResource CollapseWithSidebar}"/>
                         </StackPanel>
 
@@ -270,7 +272,7 @@
                                 BorderThickness="1"
                                 BorderBrush="{StaticResource ColBorder}"
                                 Padding="6,4"
-                                Margin="8,0,0,0"
+                                Margin="8,0,0,0" MouseLeftButtonDown="btnLogOut_Click"
                                 Style="{StaticResource CollapseBorderWithSidebar}">
                             <TextBlock Text="↦" />
                         </Border>
