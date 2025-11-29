@@ -51,6 +51,37 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
                 return MapDictionaryToDTO(configDict);
             }
         }
+        public string LayGiaTriThamSo(string tenThamSo)
+        {
+            string giaTri = null;
+            string query = "SELECT GiaTriThamSo FROM CauHinhHeThong WHERE TenThamSo = @TenThamSo";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                // Sử dụng tham số để tránh SQL Injection
+                cmd.Parameters.AddWithValue("@TenThamSo", tenThamSo);
+
+                try
+                {
+                    conn.Open();
+                    // ExecuteScalar lý tưởng để lấy một giá trị đơn
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        giaTri = result.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Ghi log lỗi kết nối/DB
+                    Console.WriteLine($"Lỗi khi tải tham số '{tenThamSo}': {ex.Message}");
+                    // Trả về null khi có lỗi
+                }
+            }
+            return giaTri;
+        }
 
         // --- LuuCauHinh (Dùng SqlCommand.ExecuteNonQuery) ---
         /// <summary>

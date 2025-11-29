@@ -28,5 +28,31 @@ namespace QuanLiSanCauLong.LopNghiepVu
         {
             CurrentUser = null;
         }
+
+        private const string ROLE_ADMIN = "Admin";
+        private const string ROLE_QUAN_LY = "Quản lý";
+        private const string ROLE_NHAN_VIEN = "Nhân viên";
+
+        /// <summary>
+        /// Kiểm tra người dùng hiện tại có vai trò Admin.
+        /// </summary>
+        public static bool IsAdmin => IsLoggedIn && CurrentUser.VaiTro == ROLE_ADMIN;
+
+        /// <summary>
+        /// Kiểm tra người dùng hiện tại có vai trò Quản lý.
+        /// </summary>
+        public static bool IsQuanLy => IsLoggedIn && CurrentUser.VaiTro == ROLE_QUAN_LY;
+
+        /// <summary>
+        /// Kiểm tra người dùng hiện tại có quyền truy cập vào màn hình Quản lý Sân (QLSan).
+        /// (Chỉ Quản lý và Admin)
+        /// </summary>
+        public static bool CanAccessQuanLySan => IsAdmin || IsQuanLy;
+
+        /// <summary>
+        /// Kiểm tra người dùng hiện tại có quyền truy cập vào màn hình Báo Cáo.
+        /// (Admin và Nhân viên)
+        /// </summary>
+        public static bool CanAccessBaoCao => IsAdmin || IsLoggedIn && CurrentUser.VaiTro == ROLE_NHAN_VIEN;
     }
 }

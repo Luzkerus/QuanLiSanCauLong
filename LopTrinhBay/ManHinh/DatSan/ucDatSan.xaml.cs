@@ -1,7 +1,11 @@
-﻿using QuanLiSanCauLong.LopNghiepVu;
+﻿using ClosedXML.Excel;
+using Microsoft.Win32;
+using QuanLiSanCauLong.LopDuLieu;
+using QuanLiSanCauLong.LopNghiepVu;
 using QuanLiSanCauLong.LopTruyCapDuLieu;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel; // cho ICollectionView
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +16,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.ComponentModel; // cho ICollectionView
-using ClosedXML.Excel;
-using Microsoft.Win32;
 using System.Windows.Shapes;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
@@ -27,7 +28,7 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         DatSanBLL bll = new DatSanBLL();
         private ICollectionView viewDanhSachDatSan;
         private List<ChiTietDatSanVM> danhSachGoc;
-
+        private readonly CauHinhHeThongBLL cauHinhBLL = new CauHinhHeThongBLL();
 
         public ucDatSan()
         {
@@ -35,8 +36,57 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             LoadData();
 
         }
+        private void KiemTraVaHuyNoShow()
+        {
+            // 1. Lấy ngưỡng cảnh báo từ Cấu hình
+            int nguongCanhBaoPhut = 15; // Mặc định
+            try
+            {
+                CauHinhHeThong config = cauHinhBLL.LayCauHinhHeThong();
+                if (config.CanhBaoNoShow > 0)
+                {
+                    nguongCanhBaoPhut = config.CanhBaoNoShow;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi tải cấu hình CanhBaoNoShow: {ex.Message}");
+            }
+
+            // 2. Tải danh sách các đơn chưa bắt đầu/đã đặt
+            List<ChiTietDatSanVM> dsCanKiemTra = bll.LayTatCaDatSan()
+                .Where(x => (x.TrangThai == "Đã đặt" || x.TrangThai == "Chưa bắt đầu")
+                           && x.TrangThaiThanhToan != "Đã thanh toán")
+                .ToList();
+
+            DateTime now = DateTime.Now;
+            ChiTietDatSanDAL ctdal = new ChiTietDatSanDAL();
+            int soLuongHuy = 0;
+
+            foreach (var chiTiet in dsCanKiemTra)
+            {
+                DateTime gioBatDauThucTe = chiTiet.NgayDat.Date + chiTiet.GioBatDau;
+
+                // Nếu thời gian hiện tại đã trễ quá ngưỡng cảnh báo
+                if (now > gioBatDauThucTe.AddMinutes(nguongCanhBaoPhut))
+                {
+                    // Thực hiện hủy trong DB
+                    bool kq = ctdal.CapNhatTrangThai(chiTiet.MaChiTiet, "Đã hủy");
+
+                    if (kq)
+                    {
+                        chiTiet.TrangThai = "Đã hủy"; // Cập nhật trạng thái trong bộ nhớ
+                        soLuongHuy++;
+                    }
+                }
+            }
+
+            // Thông báo kết quả tự động hủy (nếu có)
+           
+        }
         private void LoadData()
         {
+            KiemTraVaHuyNoShow();
             danhSachGoc = bll.LayTatCaDatSan();
             viewDanhSachDatSan = CollectionViewSource.GetDefaultView(danhSachGoc);
             lvDanhSachDatSan.ItemsSource = viewDanhSachDatSan;
@@ -80,28 +130,25 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 MessageBox.Show("Không lấy được chi tiết!");
                 return;
             }
+
+            // Cần tải lại ngưỡng nếu muốn kiểm tra ở đây, nhưng khuyến nghị đã hủy khi load
+            // int nguongCanhBaoPhut = 15; // Giữ nguyên, hoặc tải từ BLL nếu muốn chính xác ngay lúc click
+
             DateTime now = DateTime.Now;
             DateTime gioBatDauThucTe = chiTiet.NgayDat.Date + chiTiet.GioBatDau;
-            if (now > gioBatDauThucTe.AddMinutes(15)&&chiTiet.TrangThaiThanhToan!="Đã thanh toán")
+
+            // KIỂM TRA TRẠNG THÁI HIỆN TẠI (Đã hủy chưa?)
+            if (chiTiet.TrangThai == "Đã hủy")
             {
-                ChiTietDatSanDAL ctdal = new ChiTietDatSanDAL();
-                bool kq = ctdal.CapNhatTrangThai(chiTiet.MaChiTiet, "Đã hủy");
-
-                if (kq)
-                {
-                    chiTiet.TrangThai = "Đã hủy";
-                    lvDanhSachDatSan.Items.Refresh();
-                    CapNhatKpi();
-
-                    MessageBox.Show(
-                        $"Chi tiết {chiTiet.MaChiTiet} đã tự động hủy vì trễ hơn 15 phút.",
-                        "Đã hủy",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
-
-                    return; // dừng luôn, không cho bắt đầu
-                }
+                MessageBox.Show(
+                   $"Chi tiết {chiTiet.MaChiTiet} đã bị hủy (No-show hoặc thủ công). Không thể bắt đầu.",
+                   "Đã bị hủy",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Warning);
+                return;
             }
+
+            // KIỂM TRA BẮT ĐẦU QUÁ SỚM (Logic còn lại)
             if (now < gioBatDauThucTe)
             {
                 MessageBox.Show(
@@ -115,10 +162,11 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
             if (chiTiet.TrangThai != "Chưa bắt đầu" && chiTiet.TrangThai != "Đã đặt")
             {
                 MessageBox.Show($"Chi tiết {chiTiet.MaChiTiet} không thể bắt đầu vì trạng thái hiện tại: {chiTiet.TrangThai}",
-                                "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                                 "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
+            // Thực hiện cập nhật trạng thái "Đang chơi"
             ChiTietDatSanDAL dal = new ChiTietDatSanDAL();
             bool ok = dal.CapNhatTrangThai(chiTiet.MaChiTiet, "Đang chơi");
 
@@ -129,12 +177,12 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 CapNhatKpi();
 
                 MessageBox.Show($"Chi tiết {chiTiet.MaChiTiet} đã được bắt đầu.",
-                                "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                                 "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
                 MessageBox.Show($"Không thể cập nhật trạng thái cho chi tiết {chiTiet.MaChiTiet}.",
-                                "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                                 "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -154,7 +154,7 @@
         </StackPanel>
 
         <!-- ===== TABCONTROL CHÍNH ===== -->
-        <TabControl Grid.Row="1"
+        <TabControl Grid.Row="1" SelectionChanged="TabControl_SelectionChanged"
                     Margin="0,10,0,0"
                     BorderThickness="0"
                     Background="Transparent">
@@ -197,7 +197,7 @@
             <!-- =======================
                  TAB 1: CẤU HÌNH HỆ THỐNG
                  ======================= -->
-            <TabItem>
+            <TabItem Name="TabCauHinhHeThong">
                 <TabItem.Header>
                     <TextBlock Text="⚙ Cấu hình hệ thống" FontSize="14"/>
                 </TabItem.Header>

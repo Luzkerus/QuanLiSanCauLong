@@ -130,30 +130,36 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
             }
 
         }
+        // Trong HangHoaDAL.cs
+
         public void CapNhatTrangThaiHangHoa(string maHang)
         {
+            // LẤY NGƯỠNG ĐỘNG TỪ DB
+            int nguongTonKhoThap = LayNguongTonKhoThapTuDB();
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Lấy số lượng hiện tại
+                // ... (Giữ nguyên phần SELECT TonKho) ...
                 string selectSql = "SELECT TonKho FROM HangHoa WHERE MaHang = @MaHang";
                 SqlCommand selectCmd = new SqlCommand(selectSql, conn);
                 selectCmd.Parameters.AddWithValue("@MaHang", maHang);
 
                 conn.Open();
                 object result = selectCmd.ExecuteScalar();
-                if (result == null) return; // Không tìm thấy mã hàng
+                if (result == null || result == DBNull.Value) return; // Không tìm thấy mã hàng
 
                 int tonKho = Convert.ToInt32(result);
                 string trangThai;
 
                 if (tonKho == 0)
                     trangThai = "Hết";
-                else if (tonKho <= 30)
+                // SỬ DỤNG BIẾN NGUONGTONKHOTHAP
+                else if (tonKho <= nguongTonKhoThap)
                     trangThai = "Sắp hết";
                 else
                     trangThai = "Bình thường";
 
-                // Cập nhật trạng thái
+                // ... (Giữ nguyên phần UPDATE TrangThai) ...
                 string updateSql = "UPDATE HangHoa SET TrangThai = @TrangThai WHERE MaHang = @MaHang";
                 SqlCommand updateCmd = new SqlCommand(updateSql, conn);
                 updateCmd.Parameters.AddWithValue("@TrangThai", trangThai);
@@ -161,6 +167,37 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
 
                 updateCmd.ExecuteNonQuery();
             }
+        }
+        private int LayNguongTonKhoThapTuDB()
+        {
+            int nguongMacDinh = 20; // Giá trị mặc định an toàn
+            string query = "SELECT GiaTriThamSo FROM CauHinhHeThong WHERE TenThamSo = 'NguongTonKhoThap'";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                try
+                {
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        // Thử chuyển đổi giá trị sang số nguyên
+                        if (int.TryParse(result.ToString(), out int nguong))
+                        {
+                            // Chỉ trả về nếu giá trị hợp lệ (> 0)
+                            return nguong > 0 ? nguong : nguongMacDinh;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Ghi log lỗi nếu cần
+                    Console.WriteLine($"Lỗi khi tải ngưỡng tồn kho từ DB: {ex.Message}");
+                }
+            }
+            return nguongMacDinh;
         }
         public List<HangHoa> LayTatCaHangHoa()
         {

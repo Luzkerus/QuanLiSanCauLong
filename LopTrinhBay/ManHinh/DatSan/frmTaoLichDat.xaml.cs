@@ -21,8 +21,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
         private SanBLL sanBLL = new SanBLL();
         private BangGiaBLL bgBLL = new BangGiaBLL();
         private List<ChiTietDatSan> GioDat = new List<ChiTietDatSan>();
-       // public int GioCount => GioDat.Count;
-
+        // public int GioCount => GioDat.Count;
+        private readonly CauHinhHeThongBLL _cauHinhBLL = new CauHinhHeThongBLL();
         public frmTaoLichDat()
         {
             InitializeComponent();
@@ -137,20 +137,49 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 return;
 }
 
-            if (GioDat.Count >= 10)
+            int soSlotToiDa = 10; // Giá trị mặc định an toàn
+            int soSanToiDa = 5;   // Giá trị mặc định an toàn
+
+            try
             {
-                MessageBox.Show("Bạn chỉ được đặt tối đa 10 slot trong giỏ.", "Giới hạn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Lấy DTO cấu hình
+                var config = _cauHinhBLL.LayCauHinhHeThong();
+
+                // Cập nhật giá trị giới hạn từ cấu hình
+                if (config.SoSlotToiDa > 0)
+                {
+                    soSlotToiDa = config.SoSlotToiDa;
+                }
+                if (config.SoSanToiDa > 0)
+                {
+                    soSanToiDa = config.SoSanToiDa;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi nếu không lấy được cấu hình
+                Console.WriteLine($"Lỗi khi tải cấu hình giới hạn đặt sân: {ex.Message}");
+            }
+
+            // 2. Kiểm tra giới hạn số SLOT
+            if (GioDat.Count >= soSlotToiDa)
+            {
+                MessageBox.Show($"Bạn chỉ được đặt tối đa {soSlotToiDa} slot trong giỏ. Vui lòng thanh toán hoặc xóa bớt.", "Giới hạn slot", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            // 3. Kiểm tra giới hạn số SÂN KHÁC NHAU
             var distinctSan = GioDat.Select(g => g.MaSan).Distinct().ToList();
-            if (distinctSan.Count >= 5 && !distinctSan.Contains(san.MaSan))
+
+            // Kiểm tra: Nếu số lượng sân khác nhau hiện tại BẰNG giới hạn VÀ sân đang chọn KHÔNG phải là sân đã có
+            // (Nếu sân đang chọn đã có trong giỏ thì vẫn được thêm slot cho sân đó)
+            if (distinctSan.Count >= soSanToiDa && !distinctSan.Contains(san.MaSan))
             {
-                MessageBox.Show("Bạn chỉ được đặt tối đa 5 sân khác nhau trong giỏ.", "Giới hạn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Bạn chỉ được đặt tối đa {soSanToiDa} sân khác nhau trong giỏ.", "Giới hạn sân", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-                // Tạo chi tiết đặt sân
-                var chiTiet = new ChiTietDatSan
+            // Tạo chi tiết đặt sân
+            var chiTiet = new ChiTietDatSan
             {
                 MaSan = san.MaSan,
                 TenSanCached = san.TenSan,
