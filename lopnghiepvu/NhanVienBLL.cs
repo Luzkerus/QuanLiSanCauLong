@@ -175,10 +175,6 @@ namespace QuanLiSanCauLong.LopNghiepVu
         }
         public NhanVien DangNhap(string username, string password)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException("Tên đăng nhập và mật khẩu không được để trống.");
-            }
 
             // 1. Tìm nhân viên theo Username
             NhanVien nv = _dal.TimNhanVienTheoUsername(username);
@@ -187,6 +183,11 @@ namespace QuanLiSanCauLong.LopNghiepVu
             {
                 // Không tìm thấy Username
                 return null;
+            }
+            if (nv.TrangThai != "Đang làm")
+            {
+                // Không ném lỗi, chỉ trả về null hoặc báo riêng
+                return new NhanVien { TrangThai = nv.TrangThai };
             }
 
             // 2. Mã hóa mật khẩu người dùng nhập vào để so sánh với PasswordHash đã lưu

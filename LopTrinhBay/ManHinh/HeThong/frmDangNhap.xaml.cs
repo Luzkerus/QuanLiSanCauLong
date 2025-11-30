@@ -32,42 +32,34 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong
             // Lấy thông tin từ giao diện
             string username = txtUser.Text.Trim();
             string password = pwd.Password; // Lấy mật khẩu từ PasswordBox
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Tên đăng nhập và mật khẩu không được để trống.",
+                                "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-            try
-            {
-                // Gọi hàm nghiệp vụ để kiểm tra đăng nhập
-                NhanVienModel nhanVienDangNhap = _nhanVienBLL.DangNhap(username, password);
+                // Trả về ngay lập tức, không gọi hàm DangNhap
+                return;
+            }
+            NhanVienModel nhanVienDangNhap = _nhanVienBLL.DangNhap(username, password);
 
-                if (nhanVienDangNhap != null)
-                {
-                    SessionManager.Login(nhanVienDangNhap);
-                    // Đăng nhập thành công
-                    MessageBox.Show($"Đăng nhập thành công! Chào mừng {nhanVienDangNhap.TenNV} ({nhanVienDangNhap.VaiTro}).",
-                                    "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-                    MainWindow mainWindow = new MainWindow();
-                    mainWindow.Show();
-                    // TODO: Chuyển sang màn hình chính (Main Window)
-                    // Ví dụ:
-                    // new MainWindow().Show();
-                    this.Close();
-                }
-                else
-                {
-                    // Đăng nhập thất bại (Sai Username hoặc Password)
-                    MessageBox.Show("Tên đăng nhập hoặc mật khẩu không đúng.",
-                                    "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            catch (ArgumentException ex)
+            if (nhanVienDangNhap == null)
             {
-                // Xử lý lỗi do nhập thiếu dữ liệu (ví dụ: Username/Password trống)
-                MessageBox.Show(ex.Message, "Lỗi nhập liệu", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Tên đăng nhập hoặc mật khẩu không đúng.",
+                                "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch (Exception ex)
+            else if (nhanVienDangNhap.TrangThai != "Đang làm")
             {
-                // Xử lý lỗi khác (ví dụ: lỗi kết nối CSDL)
-                MessageBox.Show($"Đã xảy ra lỗi hệ thống: {ex.Message}",
-                                "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Tài khoản đang ở trạng thái {nhanVienDangNhap.TrangThai}, không thể đăng nhập.",
+                                "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                SessionManager.Login(nhanVienDangNhap);
+                MessageBox.Show($"Đăng nhập thành công! Chào mừng {nhanVienDangNhap.TenNV} ({nhanVienDangNhap.VaiTro}).",
+                                "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
             }
         }
     }
