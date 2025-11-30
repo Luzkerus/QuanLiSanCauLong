@@ -111,6 +111,8 @@ namespace QuanLiSanCauLong
 
             // Ví dụ: Đóng cửa sổ chính (kết thúc ứng dụng)
             // Nếu bạn có màn hình đăng nhập, bạn nên đóng MainWindow và mở lại LoginWindow.
+            frmDangNhap frmDangNhap = new frmDangNhap();
+            frmDangNhap.ShowDialog();
             this.Close();
         }
         // TẤT CẢ trang chức năng chỉ chạy ở đây (ô trắng)
