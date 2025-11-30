@@ -299,6 +299,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LopTrinhBay\ManHinh\XacThuc\" />
+    <Folder Include="LopTrinhBay\TaiNguyen\ThanhToan\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="LopTrinhBay\Controls\ucHeader.xaml">
