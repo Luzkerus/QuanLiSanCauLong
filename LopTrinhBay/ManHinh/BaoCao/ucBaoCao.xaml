@@ -276,7 +276,7 @@
         </Grid>
 
         <!-- Chart -->
-        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="0">
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,16,12" Padding="0">
             <Grid Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -318,85 +318,94 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- TRÁI: Top ca đông / vắng khách -->
+            <!-- TRÁI: Top ca đông / vắng khách (có scroll bên trong) -->
             <Border Style="{StaticResource Card}" Grid.Column="0">
-                <StackPanel>
-                    <TextBlock Text="Top ca đông / vắng khách"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Tiêu đề -->
+                        <RowDefinition Height="*"/>
+                        <!-- Nội dung scroll -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Tiêu đề -->
+                    <TextBlock Grid.Row="0"
+                   Text="Top ca đông / vắng khách"
                    FontWeight="SemiBold"
                    Foreground="{StaticResource ColText}"
                    Margin="0,0,0,8"/>
 
-                    <ItemsControl ItemsSource="{Binding TopTimeSlots}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Background="#F9FAFB"
-                            CornerRadius="10"
-                            Padding="10"
-                            Margin="0,4,0,4">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                    <!-- Nội dung có thể trượt lên/xuống -->
+                    <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TopTimeSlots}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#F9FAFB"
+                                CornerRadius="10"
+                                Padding="10"
+                                Margin="0,4,0,4">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <!-- Thông tin ca -->
-                                        <StackPanel Grid.Column="0">
-                                            <!-- Ví dụ: "Ca 18:00 - 20:00" -->
-                                            <TextBlock Text="{Binding TimeRange}"
-                                           FontWeight="SemiBold"
-                                           Foreground="{StaticResource ColText}"/>
-                                            <!-- Ví dụ: "Lượt đặt: 23" -->
-                                            <TextBlock Text="{Binding BookingsDisplay}"
-                                           FontSize="11"
-                                           Foreground="{StaticResource ColSub}"
-                                           Margin="0,2,0,0"/>
-                                        </StackPanel>
+                                            <!-- Thông tin ca -->
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding TimeRange}"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource ColText}"/>
+                                                <TextBlock Text="{Binding BookingsDisplay}"
+                                               FontSize="11"
+                                               Foreground="{StaticResource ColSub}"
+                                               Margin="0,2,0,0"/>
+                                            </StackPanel>
 
-                                        <!-- % công suất + chip Đông / Vắng -->
-                                        <StackPanel Grid.Column="1"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center">
-                                            <TextBlock x:Name="PercentText"
-                                           Text="{Binding UtilPercent, StringFormat={}{0}%}"
-                                           FontWeight="Bold"
-                                           HorizontalAlignment="Right"
-                                           Foreground="#16A34A"/>
+                                            <!-- % công suất + chip Đông / Vắng -->
+                                            <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center">
+                                                <TextBlock x:Name="PercentText"
+                                               Text="{Binding UtilPercent, StringFormat={}{0}%}"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Right"
+                                               Foreground="#16A34A"/>
 
-                                            <Border x:Name="StatusChip"
-                                        Background="#DCFCE7"
-                                        CornerRadius="999"
-                                        Padding="6,1"
-                                        Margin="0,4,0,0"
-                                        HorizontalAlignment="Right">
-                                                <!-- Ví dụ: "Ca đông" / "Ca vắng" -->
-                                                <TextBlock Text="{Binding StatusText}"
-                                               FontSize="10"
-                                               Foreground="#166534"/>
-                                            </Border>
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
+                                                <Border x:Name="StatusChip"
+                                            Background="#DCFCE7"
+                                            CornerRadius="999"
+                                            Padding="6,1"
+                                            Margin="0,4,0,0"
+                                            HorizontalAlignment="Right">
+                                                    <TextBlock Text="{Binding StatusText}"
+                                                   FontSize="10"
+                                                   Foreground="#166534"/>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
 
-                                <!-- ĐỔI MÀU NẾU KHÔNG PHẢI CA ĐÔNG -->
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding IsPeak}" Value="False">
-                                        <Setter TargetName="PercentText"
-                                    Property="Foreground"
-                                    Value="#4B5563"/>
-                                        <Setter TargetName="StatusChip"
-                                    Property="Background"
-                                    Value="#E5E7EB"/>
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+                                    <!-- ĐỔI MÀU NẾU KHÔNG PHẢI CA ĐÔNG -->
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsPeak}" Value="False">
+                                            <Setter TargetName="PercentText"
+                                        Property="Foreground"
+                                        Value="#4B5563"/>
+                                            <Setter TargetName="StatusChip"
+                                        Property="Background"
+                                        Value="#E5E7EB"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
             </Border>
 
-
             <!-- Phải: Tổng hợp chi tiết (3 block như hình, có scroll) -->
-            <Border Style="{StaticResource Card}" Grid.Column="1" Margin="12,0,0,0">
+            <Border Style="{StaticResource Card}" Grid.Column="1" Margin="12,0,15,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -414,7 +423,8 @@
 
                     <!-- Nội dung có scroll -->
                     <ScrollViewer Grid.Row="1"
-                              VerticalScrollBarVisibility="Auto" Margin="0,10,0,-10">
+                              VerticalScrollBarVisibility="Auto" 
+                                  Margin="0,8,0,0">
                         <StackPanel>
 
                             <!-- Block 1: Đặt sân -->
