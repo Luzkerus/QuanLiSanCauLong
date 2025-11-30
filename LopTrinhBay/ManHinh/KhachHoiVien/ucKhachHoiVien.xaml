@@ -377,10 +377,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel>
                             <TextBlock Text="Khách hàng mới (tháng)" Style="{StaticResource KpiTitle}"/>
-                            <TextBlock Text="{Binding KpiKhachMoiThang}" Style="{StaticResource KpiValue}" Foreground="#7C3AED"/>
+                            <TextBlock x:Name="txtTongKhachHangMoi" Style="{StaticResource KpiValue}" Foreground="#7C3AED"/>
                         </StackPanel>
                         <Border Grid.Column="1" Background="#F5ECFF" CornerRadius="12" Padding="10" Margin="8,0,0,28">
-                            <TextBlock x:Name="txtTongKhachHangMoi" Text="🆕" FontSize="20"/>
+                            <TextBlock  Text="🆕" FontSize="20"/>
                         </Border>
                     </Grid>
                 </Border>

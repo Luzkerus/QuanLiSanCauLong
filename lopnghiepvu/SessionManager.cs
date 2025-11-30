@@ -53,6 +53,6 @@ namespace QuanLiSanCauLong.LopNghiepVu
         /// Kiểm tra người dùng hiện tại có quyền truy cập vào màn hình Báo Cáo.
         /// (Admin và Nhân viên)
         /// </summary>
-        public static bool CanAccessBaoCao => IsAdmin || IsLoggedIn && CurrentUser.VaiTro == ROLE_NHAN_VIEN;
+        public static bool CanAccessBaoCao => IsAdmin || IsQuanLy;
     }
 }
