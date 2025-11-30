@@ -480,7 +480,7 @@
         </DockPanel>
 
         <!-- ===== KPI (effect + icon position như ucThanhToan) ===== -->
-        <UniformGrid Grid.Row="1" Columns="3" Margin="12,10,12,0">
+        <UniformGrid Grid.Row="1" Columns="3" Margin="0,8,0,0">
 
             <!-- Tổng giá trị tồn -->
             <Border Style="{StaticResource KpiCardStyle}">
@@ -565,7 +565,7 @@
                 <Border Grid.Row="0"
                     Style="{StaticResource Card}"
                     Padding="12"
-                    Margin="0,0,0,12">
+                    Margin="10,0,0,12">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Background="#E8F5EE"
                             CornerRadius="999"
@@ -585,7 +585,7 @@
 
                 <!-- Nội dung: Tab POS + Quản lý kho -->
                 <Border Grid.Row="1"
-                    Style="{StaticResource Card}">
+                    Style="{StaticResource Card}" Margin="10,0,0,0">
                     <TabControl Background="Transparent"
                             BorderThickness="0"
                             VerticalAlignment="Stretch">
@@ -747,8 +747,8 @@
             </Grid>
 
             <!-- Phải: Giỏ hàng -->
-            <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                <Border Style="{StaticResource Card}">
+            <StackPanel Grid.Column="1" Margin="8,0,10,0">
+                <Border Style="{StaticResource Card}" Width="333">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,8">
                             <Border Background="#E8F5EE" CornerRadius="999" Width="26" Height="26" Margin="0,0,8,0">
