@@ -121,25 +121,109 @@
         <Style x:Key="TrangThaiBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="#FFFFFF"/>
             <Setter Property="BorderBrush" Value="#E5E7EB"/>
+
             <Style.Triggers>
+                <!-- Đang hoạt động / Đang chơi: xanh lá -->
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đang hoạt động">
+                    <Setter Property="Background" Value="#DFF7EA"/>
+                    <Setter Property="BorderBrush" Value="#1E7F4C"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding TrangThai}" Value="Đang chơi">
                     <Setter Property="Background" Value="#DFF7EA"/>
                     <Setter Property="BorderBrush" Value="#1E7F4C"/>
                 </DataTrigger>
+
+                <!-- Trống: xanh dương nhạt -->
                 <DataTrigger Binding="{Binding TrangThai}" Value="Trống">
                     <Setter Property="Background" Value="#EDF3FF"/>
                     <Setter Property="BorderBrush" Value="#3C5AA8"/>
                 </DataTrigger>
+
+                <!-- Đã đặt: cam -->
                 <DataTrigger Binding="{Binding TrangThai}" Value="Đã đặt">
                     <Setter Property="Background" Value="#FFF4E3"/>
                     <Setter Property="BorderBrush" Value="#B76B00"/>
                 </DataTrigger>
+
+                <!-- Bảo trì: đỏ, chữ nhật bo góc -->
                 <DataTrigger Binding="{Binding TrangThai}" Value="Bảo trì">
                     <Setter Property="Background" Value="#FFE5E5"/>
                     <Setter Property="BorderBrush" Value="#CC0000"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="TrangThaiPill"
+               TargetType="Border"
+               BasedOn="{StaticResource TrangThaiBorderStyle}">
+            <!-- bo góc vừa phải -->
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <!-- không stretch full width, chỉ ô nhỏ quanh text -->
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+
+        <!-- DataGrid phẳng dùng cho 'Lịch đặt sân' -->
+        <Style x:Key="FlatDataGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="RowHeight" Value="32"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E5E7EB"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#E5E7EB"/>
+            <Setter Property="ColumnHeaderHeight" Value="32"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+
+            <!-- Header -->
+            <Setter Property="ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F6F8F7"/>
+                        <Setter Property="Foreground" Value="{StaticResource ColSub}"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+                        <Setter Property="Padding" Value="8,0"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+
+            <!-- Cell -->
+            <Setter Property="CellStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="8,0"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+
+            <!-- Row -->
+            <Setter Property="RowStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F0FFFA"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
     </UserControl.Resources>
 
     <!-- =================== LAYOUT =================== -->
@@ -190,11 +274,11 @@
 
             <!-- Đặt sân mới -->
             <Border Grid.Column="2"
-        x:Name="btnMoDatSan"
-        Cursor="Hand"
-        CornerRadius="8"
-        Background="#2BB673"
-        MouseLeftButtonUp="btnMoDatSan_MouseLeftButtonUp">
+                    x:Name="btnMoDatSan"
+                    Cursor="Hand"
+                    CornerRadius="8"
+                    Background="#2BB673"
+                    MouseLeftButtonUp="btnMoDatSan_MouseLeftButtonUp">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Background" Value="#2BB673"/>
@@ -217,11 +301,11 @@
                     </Style>
                 </Border.Style>
                 <TextBlock Text="Đặt sân mới"
-               FontSize="14"
-               FontWeight="SemiBold"
-               Foreground="White"
-               VerticalAlignment="Center"
-               HorizontalAlignment="Center"/>
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
             </Border>
 
         </Grid>
@@ -231,7 +315,7 @@
             <StackPanel>
 
                 <!-- KPI 4 thẻ: áp dụng KpiCardStyle như ucThanhToan -->
-                <UniformGrid Columns="3" Margin="0,0,0,12">
+                <UniformGrid Columns="3" Margin="0,0,0,0">
                     <!-- Doanh thu hôm nay -->
                     <Border Style="{StaticResource KpiCardStyle}" Margin="8">
                         <Grid>
@@ -289,40 +373,212 @@
                     <!-- Tỉ lệ lấp đầy -->
                 </UniformGrid>
 
-                <!-- Tình trạng sân + Top hội viên -->
+                <!-- Tình trạng sân + Lịch đặt sân (cột trái)  +  Top hội viên (cột phải) -->
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!-- Tình trạng sân -->
-                    <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="8">
+                    <!-- ========== CỘT TRÁI: Tình trạng sân + Lịch đặt sân ========== -->
+                    <StackPanel Grid.Column="0">
+
+                        <!-- Tình trạng sân: card giống bên Quản lý sân -->
+                        <Border Style="{StaticResource CardBorder}" Margin="8,0,8,8">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,8">
+                                    <TextBlock Text="Tình trạng sân"
+                                               FontWeight="SemiBold"
+                                               FontSize="14"
+                                               DockPanel.Dock="Left"/>
+
+                                </DockPanel>
+
+                                <ItemsControl x:Name="dgTinhTrangSan">
+                                    <!-- Card sân xếp theo WrapPanel -->
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource KpiCardStyle}"
+                                                    Width="260"
+                                                    Margin="6">
+                                                <Border.Resources>
+                                                    <!-- pill trạng thái tái dùng từ TrangThaiBorderStyle -->
+                                                    <Style x:Key="TrangThaiPill"
+                                                           TargetType="Border"
+                                                           BasedOn="{StaticResource TrangThaiBorderStyle}">
+                                                        <Setter Property="CornerRadius" Value="6"/>
+                                                        <Setter Property="Padding" Value="6,2"/>
+                                                    </Style>
+                                                </Border.Resources>
+
+                                                <StackPanel>
+                                                    <!-- Icon + tên sân -->
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                        <Grid Width="28" Height="28" Margin="0,0,8,0">
+                                                            <Ellipse>
+                                                                <Ellipse.Fill>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                        <GradientStop Color="#F2C94C" Offset="0"/>
+                                                                        <GradientStop Color="#E6A500" Offset="1"/>
+                                                                    </LinearGradientBrush>
+                                                                </Ellipse.Fill>
+                                                            </Ellipse>
+                                                            <TextBlock Text="🏸"
+                                                                       FontSize="14"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Grid>
+
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding TenSan}"
+                                                                       FontWeight="SemiBold"
+                                                                       Foreground="{StaticResource ColText}"/>
+                                                            <!-- Nếu không có mã sân thì sẽ để trống, không lỗi -->
+                                                            <TextBlock Text="{Binding MaSan}"
+                                                                       FontSize="11"
+                                                                       Foreground="{StaticResource ColSub}"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+
+                                                    <!-- trạng thái -->
+                                                    <Border Style="{StaticResource TrangThaiPill}"
+                                                            Margin="0,0,0,6">
+                                                        <TextBlock Text="{Binding TrangThai}"
+                                                                   FontSize="12"
+                                                                   FontWeight="SemiBold"/>
+                                                    </Border>
+
+                                                    <!-- Lịch bảo trì (nếu có) -->
+                                                    <TextBlock Text="{Binding NgayBaoTri, StringFormat='Lịch bảo trì: {0:dd/MM/yyyy}'}"
+                                                               FontSize="11"
+                                                               Foreground="{StaticResource ColSub}"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Lịch đặt sân gần đây: DataGrid phẳng -->
+                        <Border Style="{StaticResource CardBorder}" Margin="8,0,8,0">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,8">
+                                    <TextBlock Text="📅"
+                                               DockPanel.Dock="Left"
+                                               Margin="0,0,6,0"/>
+                                    <TextBlock Text="Lịch đặt sân gần đây"
+                                               FontWeight="SemiBold"/>
+                                </DockPanel>
+
+                                <DataGrid x:Name="dgLichDatGanDay"
+                                          Style="{StaticResource FlatDataGrid}"
+                                          BorderThickness="0"
+                                          ItemsSource="{Binding}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Sân"
+                                                            Binding="{Binding TenSanCached}"
+                                                            Width="60" />
+                                        <DataGridTextColumn Header="Khách hàng"
+                                                            Binding="{Binding TenKH}"
+                                                            Width="140" />
+                                        <DataGridTextColumn Header="Ngày đặt"
+                                                            Binding="{Binding NgayDat}"
+                                                            Width="130" />
+                                        <DataGridTextColumn Header="Giờ bắt đầu"
+                                                            Binding="{Binding GioBatDau}"
+                                                            Width="100" />
+                                        <DataGridTextColumn Header="Giờ kết thúc"
+                                                            Binding="{Binding GioKetThuc}"
+                                                            Width="100" />
+                                        <DataGridTemplateColumn Header="Trạng thái"
+                                                                Width="110">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border Style="{StaticResource TrangThaiBorderStyle}">
+                                                        <TextBlock Text="{Binding TrangThai}"
+                                                                   FontSize="12"
+                                                                   FontWeight="SemiBold"
+                                                                   HorizontalAlignment="Center"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+
+                    <!-- ========== CỘT PHẢI: Top hội viên (một cột dài) ========== -->
+                    <Border Grid.Column="1" Style="{StaticResource CardBorder}" Margin="8,0,10,0">
                         <StackPanel>
                             <DockPanel Margin="0,0,0,8">
-                                <TextBlock Text="Tình trạng sân" FontWeight="SemiBold"/>
+                                <TextBlock Text="⭐"
+                                           DockPanel.Dock="Left"
+                                           Margin="0,0,6,0"/>
+                                <TextBlock Text="Top hội viên"
+                                           FontWeight="SemiBold"/>
                             </DockPanel>
 
-                            <ItemsControl x:Name="dgTinhTrangSan">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Columns="3"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
+                            <ItemsControl x:Name="dgTopHoiVien">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Style="{StaticResource CardBorder}" Padding="12" Margin="8">
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding TenSan}" FontWeight="SemiBold"/>
-                                                <Border CornerRadius="10" Padding="8,2" Margin="0,6,0,0"
-                                                        Style="{StaticResource TrangThaiBorderStyle}">
-                                                    <TextBlock Text="{Binding TrangThai}" FontSize="12" FontWeight="SemiBold"/>
+                                        <Border CornerRadius="10"
+                                                Padding="8"
+                                                Margin="0,4,0,4"
+                                                Background="#F6F8F7">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Avatar tròn -->
+                                                <Border Grid.Column="0"
+                                                        Width="32" Height="32"
+                                                        CornerRadius="16"
+                                                        Background="White"
+                                                        BorderBrush="#E1F0E9"
+                                                        BorderThickness="1"
+                                                        VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding TenVietTat}"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="SemiBold"/>
                                                 </Border>
-                                                <TextBlock Text="{Binding NgayBaoTri, StringFormat={}{0:dd/MM/yyyy}}" 
-           Foreground="#6B7E74" 
-           Margin="0,6,0,0" 
-           FontSize="12"/>
-                                            </StackPanel>
+
+                                                <!-- Tên + lượt chơi -->
+                                                <StackPanel Grid.Column="1"
+                                                            Margin="8,0,8,0"
+                                                            VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Ten}"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{StaticResource ColText}"/>
+                                                    <TextBlock Text="{Binding LuotChoi, StringFormat=' {0} lượt chơi'}"
+                                                               FontSize="11"
+                                                               Foreground="{StaticResource ColSub}"/>
+                                                </StackPanel>
+
+                                                <!-- Điểm -->
+                                                <StackPanel Grid.Column="2"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding DiemTichLuy, StringFormat=' {0} điểm'}"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{StaticResource ColAccent}"
+                                                               FontSize="12"
+                                                               HorizontalAlignment="Right"/>
+                                                </StackPanel>
+                                            </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -330,64 +586,10 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Top hội viên -->
-                    <Border Grid.Column="1" Style="{StaticResource CardBorder}" Margin="8">
-                        <StackPanel>
-                            <DockPanel Margin="0,0,0,8">
-                                <TextBlock Text="⭐" DockPanel.Dock="Left" Margin="0,0,6,0"/>
-                                <TextBlock Text="Top hội viên" FontWeight="SemiBold"/>
-                            </DockPanel>
-
-                            <ItemsControl x:Name="dgTopHoiVien">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <DockPanel Margin="0,6,0,6">
-                                            <Border Width="36" Height="36" CornerRadius="18" Background="#F6F8F7" DockPanel.Dock="Left">
-                                                <TextBlock Text="{Binding TenVietTat}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                                            </Border>
-                                            <StackPanel Margin="10,0,0,0">
-                                                <TextBlock Text="{Binding Ten}"/>
-                                                <TextBlock Text="{Binding LuotChoi, StringFormat={}{0} lượt chơi}" Foreground="#6B7E74" FontSize="12"/>
-                                            </StackPanel>
-                                            <TextBlock Text="{Binding DiemTichLuy, StringFormat={}{0} điểm}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
                 </Grid>
 
-                <!-- Lịch đặt sân gần đây -->
-                <Border Style="{StaticResource CardBorder}" Margin="8">
-                    <StackPanel>
-                        <DockPanel Margin="0,0,0,8">
-                            <TextBlock Text="📅" DockPanel.Dock="Left" Margin="0,0,6,0"/>
-                            <TextBlock Text="Lịch đặt sân gần đây" FontWeight="SemiBold"/>
-                        </DockPanel>
 
-                        <ListView x:Name="dgLichDatGanDay" BorderThickness="0">
-                            <ListView.View>
-                                <GridView AllowsColumnReorder="False">
-                                    <GridViewColumn Header="Sân" DisplayMemberBinding="{Binding TenSanCached}" Width="auto"/>
-                                    <GridViewColumn Header="Khách hàng" DisplayMemberBinding="{Binding TenKH}" Width="auto"/>
-                                    <GridViewColumn Header="Ngày đặt" DisplayMemberBinding="{Binding NgayDat}" Width="auto"/>
-                                    <GridViewColumn Header="Giờ bắt đầu" DisplayMemberBinding="{Binding GioBatDau}" Width="auto"/>
-                                    <GridViewColumn Header="Giờ bắt kết thúc" DisplayMemberBinding="{Binding GioKetThuc}" Width="auto"/>
-                                    <GridViewColumn Header="Trạng thái" DisplayMemberBinding="{Binding TrangThai}" Width="auto">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Border CornerRadius="10" Padding="8,2" Style="{StaticResource TrangThaiBorderStyle}">
-                                                    <TextBlock Text="{Binding TrangThai}" FontSize="12" FontWeight="SemiBold"/>
-                                                </Border>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </StackPanel>
-                </Border>
+
 
             </StackPanel>
         </ScrollViewer>

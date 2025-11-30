@@ -74,6 +74,43 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Nút Logout: dựa trên CollapseBorderWithSidebar, thêm màu & hover -->
+        <Style x:Key="LogoutBorderStyle"
+           TargetType="Border"
+           BasedOn="{StaticResource CollapseBorderWithSidebar}">
+            <Setter Property="CornerRadius" Value="999"/>
+            <Setter Property="Background" Value="#FFF7F7"/>
+            <Setter Property="BorderBrush" Value="#F5C2C2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE5E5"/>
+                    <Setter Property="BorderBrush" Value="#E55353"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <!-- Avatar cho Admin-->
+        <ImageBrush x:Key="AvatarAdminBrush"
+                ImageSource="/LopTrinhBay/TaiNguyen/Logo/admin.png"
+                Stretch="UniformToFill"/>
+
+        <!-- Avatar cho quản lý -->
+        <ImageBrush x:Key="AvatarManagerBrush"
+                ImageSource="/LopTrinhBay/TaiNguyen/Logo/quanl.jpg"
+                Stretch="UniformToFill"/>
+
+        <!-- Avatar cho nhân viên -->
+        <ImageBrush x:Key="AvatarStaffBrush"
+                ImageSource="/LopTrinhBay/TaiNguyen/Logo/nhanvien.png"
+                Stretch="UniformToFill"/>
+
+
     </UserControl.Resources>
 
     <!-- ================= Layout chính ================= -->
@@ -114,7 +151,7 @@
                 </StackPanel>
 
                 <!-- ===== Row 1: Menu ===== -->
-                <StackPanel Grid.Row="1" Margin="4,4,4,0">
+                <StackPanel x:Name="MenuPanel" Grid.Row="1" Margin="4,4,4,0">
 
                     <!-- Tổng quan -->
                     <Border x:Name="Item_Overview"
@@ -243,41 +280,128 @@
                     </Border>
                 </StackPanel>
 
-                <!-- ===== Row 2: Admin info ===== -->
-                <Border Grid.Row="2"
-                        Margin="10,8,10,12"
-                        Padding="12"
-                        BorderBrush="{StaticResource ColBorder}"
-                        BorderThickness="1"
-                        CornerRadius="12">
-                    <DockPanel>
-                        <Ellipse Width="32" Height="32" Fill="#2BB673" DockPanel.Dock="Left"/>
+                <!-- ===== Row 2: Admin info (2 trạng thái) ===== -->
+                <Grid Grid.Row="2" Margin="10,8,10,12">
 
-                        <StackPanel Margin="10,0,0,0"
-                                    VerticalAlignment="Center">
-                            <TextBlock Text="{Binding AdminName, ElementName=Root, FallbackValue=Admin User}"
-                                  
-                                       FontWeight="SemiBold"
-                                       Style="{StaticResource CollapseWithSidebar}"/>
-                            <TextBlock Text="{Binding AdminRole, ElementName=Root, FallbackValue=Quản lý}"
-                                       Foreground="#889"
-                                       FontSize="12"
-                                      
-                                       Style="{StaticResource CollapseWithSidebar}"/>
-                        </StackPanel>
+                    <!-- 1. Sidebar MỞ: card admin đầy đủ -->
+                    <Border x:Name="AdminCardExpanded"
+                            Padding="12"
+                            BorderBrush="{StaticResource ColBorder}"
+                            BorderThickness="1"
+                            CornerRadius="12">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsExpanded, ElementName=Root}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
 
-                        <Border HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                CornerRadius="12"
-                                BorderThickness="1"
-                                BorderBrush="{StaticResource ColBorder}"
-                                Padding="6,4"
-                                Margin="8,0,0,0" MouseLeftButtonDown="btnLogOut_Click"
-                                Style="{StaticResource CollapseBorderWithSidebar}">
-                            <TextBlock Text="↦" />
-                        </Border>
-                    </DockPanel>
-                </Border>
+                        <DockPanel>
+                            <!-- Avatar theo vai trò -->
+                            <Ellipse Width="32" Height="32" DockPanel.Dock="Left">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Fill" Value="{StaticResource AvatarAdminBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AdminRole, ElementName=Root}" Value="Quản lý">
+                                                <Setter Property="Fill" Value="{StaticResource AvatarManagerBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AdminRole, ElementName=Root}" Value="Nhân viên">
+                                                <Setter Property="Fill" Value="{StaticResource AvatarStaffBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+
+                            <StackPanel Margin="10,0,0,0"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="{Binding AdminName, ElementName=Root, FallbackValue=Admin User}"
+                                           FontWeight="SemiBold"
+                                           Style="{StaticResource CollapseWithSidebar}"/>
+
+                                <TextBlock Text="{Binding AdminRole, ElementName=Root, FallbackValue=Admin}"
+                                           Foreground="#889"
+                                           FontSize="12"
+                                           Style="{StaticResource CollapseWithSidebar}"/>
+                            </StackPanel>
+
+                            <!-- Logout chỉ icon -->
+                            <Border HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="8,0,0,0"
+                                    Style="{StaticResource LogoutBorderStyle}"
+                                    MouseLeftButtonDown="btnLogOut_Click">
+                                <TextBlock Text="⎋"
+                                           Foreground="#E55353"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- 2. Sidebar THU NHỎ: Avatar nhỏ + tooltip -->
+                    <Border x:Name="AdminCardCollapsed"
+                            Width="44" Height="44"
+                            CornerRadius="22"
+                            Background="White"
+                            BorderBrush="{StaticResource ColBorder}"
+                            BorderThickness="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Padding="4"
+                            ToolTipService.InitialShowDelay="200"
+                            ToolTipService.ShowDuration="5000"
+                            MouseLeftButtonDown="btnLogOut_Click">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsExpanded, ElementName=Root}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Border.ToolTip>
+                            <StackPanel Margin="4">
+                                <TextBlock Text="{Binding AdminName, ElementName=Root, FallbackValue=Admin User}"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding AdminRole, ElementName=Root, FallbackValue=Admin}"
+                                           Foreground="#666"
+                                           FontSize="12"/>
+                                <TextBlock Text="Nhấn để đăng xuất"
+                                           Foreground="#999"
+                                           FontSize="11"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Border.ToolTip>
+
+                        <Ellipse>
+                            <Ellipse.Style>
+                                <Style TargetType="Ellipse">
+                                    <Setter Property="Fill" Value="{StaticResource AvatarAdminBrush}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AdminRole, ElementName=Root}" Value="Quản lý">
+                                            <Setter Property="Fill" Value="{StaticResource AvatarManagerBrush}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding AdminRole, ElementName=Root}" Value="Nhân viên">
+                                            <Setter Property="Fill" Value="{StaticResource AvatarStaffBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+                    </Border>
+
+                </Grid>
             </Grid>
         </Border>
 

@@ -154,6 +154,67 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Button Reset-->
+        <Style x:Key="BtnReset" TargetType="Button">
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Background" Value="#F3F4F6"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#E5E7EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Button Tạo hóa đơn-->
+        <Style x:Key="BtnInvoice" TargetType="Button">
+            <Setter Property="Foreground" Value="#1E3A8A"/>
+            <Setter Property="Background" Value="#DBEAFE"/>
+            <Setter Property="BorderBrush" Value="#93C5FD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#BFDBFE"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
     </UserControl.Resources>
 
     <!-- ========= LAYOUT ========= -->
@@ -263,45 +324,130 @@
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="12,0,12,0">
             <StackPanel>
 
-                <!-- THÔNG TIN KHÁCH HÀNG – card dài bo tròn -->
-                <Border Style="{StaticResource CardStyle}"
-                        Background="#EAF2FF"
-                        BorderBrush="#CFE1FF"
-                        CornerRadius="28"
-                        Padding="18"
-                        Margin="0,16,0,8">
-                    <StackPanel>
-                        <TextBlock Text="Thông tin khách hàng"
-                                   FontWeight="SemiBold"
-                                   FontSize="15"
-                                   Margin="0,0,0,10"
-                                   Foreground="{StaticResource ColText}"/>
+                <!-- HÀNG ĐẦU: 3 CỘT = THÔNG TIN KH + TỔNG CỘNG + 3 NÚT -->
+                <Grid Margin="0,16,12,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.1*" />
+                        <ColumnDefinition Width="1.4*" />
+                        <ColumnDefinition Width="1.2*" />
+                    </Grid.ColumnDefinitions>
 
-                            <!-- Khối thông tin chính: SĐT, Tên, Email -->
-                            <StackPanel Grid.Column="0" Margin="0,0,18,0">
-                                <!-- Số điện thoại (trên cùng) -->
-                                <TextBlock Text="Số điện thoại"
-                                           Foreground="{StaticResource ColSub}"/>
-                                <TextBox x:Name="txtSDT"
-                                         Style="{StaticResource RoundedInput}"
-                                         Text="{Binding SDT}"
-                                         TextChanged="txtSDT_TextChanged"
-                                         Margin="0,2,0,8"/>
+                    <!-- Cột 1: Thông tin khách hàng (card nhỏ lại) -->
+                    <Border Grid.Column="0"
+                            Style="{StaticResource CardStyle}"
+                            Background="#EAF2FF"
+                            BorderBrush="#CFE1FF"
+                            CornerRadius="24"
+                            Padding="16"
+                            Margin="0,0,8,0">
 
-                                <!-- Tên khách hàng (dưới SĐT) -->
-                                <TextBlock Text="Tên khách hàng"
-                                           Foreground="{StaticResource ColSub}"/>
-                                <TextBox x:Name="txtTenKH"
-                                         Style="{StaticResource RoundedInput}"
-                                         Text="{Binding TenKH}"
-                                         Margin="0,2,0,8"/>
+                        <StackPanel>
+                            <TextBlock Text="Thông tin khách hàng"
+                                       FontWeight="SemiBold"
+                                       FontSize="15"
+                                       Margin="0,0,0,8"
+                                       Foreground="{StaticResource ColText}"/>
 
+                            <!-- Số điện thoại -->
+                            <TextBlock Text="Số điện thoại"
+                                       Foreground="{StaticResource ColSub}"
+                                       FontSize="12"/>
+                            <TextBox x:Name="txtSDT"
+                                     Style="{StaticResource RoundedInput}"
+                                     Text="{Binding SDT}"
+                                     TextChanged="txtSDT_TextChanged"
+                                     Margin="0,2,0,8"/>
 
-                            </StackPanel>
+                            <!-- Tên khách hàng -->
+                            <TextBlock Text="Tên khách hàng"
+                                       Foreground="{StaticResource ColSub}"
+                                       FontSize="12"/>
+                            <TextBox x:Name="txtTenKH"
+                                     Style="{StaticResource RoundedInput}"
+                                     Text="{Binding TenKH}"
+                                     Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Border>
 
+                    <!-- Cột 2: Tổng cộng -->
+                    <Border Grid.Column="1"
+                            Style="{StaticResource CardStyle}"
+                            CornerRadius="20"
+                            Background="#F6FFFA"
+                            Margin="12,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Tổng cộng"
+                                       FontWeight="SemiBold"
+                                       FontSize="15"
+                                       Margin="0,0,0,4"/>
+                            <TextBlock Text="Số tiền cần thanh toán"
+                                       Foreground="{StaticResource ColSub}"
+                                       FontSize="11"/>
 
-                    </StackPanel>
-                </Border>
+                            <!-- Tổng tiền lớn -->
+                            <TextBlock x:Name="txtTongTien"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="#0D7049"
+                                       Margin="0,10,0,0"/>
+
+                            <!-- Ghi chú nhỏ -->
+                            <TextBlock Text="(Đã bao gồm tiền sân &amp; thuê vợt)"
+                                       Foreground="{StaticResource ColSub}"
+                                       FontSize="11"
+                                       Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Cột 3: 3 nút hành động -->
+                    <Border Grid.Column="2"
+                            Style="{StaticResource CardStyle}"
+                            CornerRadius="20" Margin="27,0,0,0">
+                        <StackPanel VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch">
+
+                            <!-- Nút Reset -->
+                            <Button Style="{StaticResource BtnReset}"
+                                    Padding="14,8"
+                                    Click="btnReset_Click"
+                                    Margin="0,8,0,8"
+                                    Height="36">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                               Text=""
+                                               Margin="0,0,6,0"/>
+                                    <TextBlock Text="Reset"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- Nút Tạo hóa đơn -->
+                            <Button Style="{StaticResource BtnInvoice}"
+                                    Padding="14,8"
+                                    Click="btnTaoHD_Click"
+                                    x:Name="btnTaoHD"
+                                    Margin="0,0,0,8"
+                                    Height="36">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                               Text=""
+                                               Margin="0,0,6,0"/>
+                                    <TextBlock Text="Tạo hóa đơn"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- Nút Thanh toán – giữ nguyên màu xanh -->
+                            <Button Style="{StaticResource BtnSolidGreenRounded}"
+                                    Click="btnThanhToan_Click"
+                                    Height="38">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Thanh toán"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                    </Border>
+                </Grid>
 
                 <!-- KHỐI 2 CỘT: CHI TIẾT ĐẶT SÂN + (THUÊ VỢT, PHƯƠNG THỨC TT) -->
                 <Grid Margin="0,0,0,8">
@@ -602,60 +748,7 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- TỔNG CỘNG -->
-                <Border Style="{StaticResource CardStyle}" CornerRadius="18">
-                    <DockPanel>
-                        <TextBlock Text="Tổng cộng:"
-                                   Foreground="{StaticResource ColSub}"
-                                   VerticalAlignment="Center"/>
-                        <TextBlock x:Name="txtTongTien"
-                                   FontSize="22"
-                                   FontWeight="Bold"
-                                   DockPanel.Dock="Right"
-                                   HorizontalAlignment="Right"
-                                   Margin="12,0,0,0"/>
-                    </DockPanel>
-                </Border>
 
-                <!-- NÚT HÀNH ĐỘNG -->
-                <Border Grid.Row="3" Margin="12" Style="{StaticResource CardStyle}" CornerRadius="18">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Style="{StaticResource GrayGhostButton}"
-                                Padding="20,12"
-                                Click="btnReset_Click"
-                                Margin="0,0,12,0"
-                                Width="120" Height="32">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="Reset"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource GrayGhostButton}"
-                                Padding="20,12"
-                                Click="btnTaoHD_Click"
-                                Margin="0,0,12,0"
-                                x:Name="btnTaoHD"
-                                Width="120" Height="32">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock FontFamily="Segoe MDL2 Assets"
-                                           Text=""
-                                           Margin="0,0,8,0"/>
-                                <TextBlock Text="Tạo hóa đơn"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource BtnSolidGreenRounded}"
-                                Click="btnThanhToan_Click"
-                                Width="120" Height="32">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock FontFamily="Segoe MDL2 Assets"
-                                           Text=""
-                                           Margin="0,0,8,0"/>
-                                <TextBlock Text="Thanh toán"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </Border>
 
             </StackPanel>
         </ScrollViewer>

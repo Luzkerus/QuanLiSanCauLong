@@ -299,6 +299,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LopTrinhBay\ManHinh\XacThuc\" />
+    <Folder Include="LopTrinhBay\TaiNguyen\ThanhToan\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="LopTrinhBay\Controls\ucHeader.xaml">
@@ -432,6 +433,14 @@
     <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sting_vang_chai.jpg" />
     <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sting_vang_lon.jpg" />
     <Resource Include="LopTrinhBay\TaiNguyen\Sanpham\sua_vinamilk_itduong.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\admin.png" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\nhanvien.png" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\quanl.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\khachhang.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

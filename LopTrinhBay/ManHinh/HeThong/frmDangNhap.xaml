@@ -22,7 +22,7 @@
         <Style x:Key="Card" TargetType="Border">
             <Setter Property="CornerRadius" Value="16"/>
             <Setter Property="Background" Value="{StaticResource ColCard}"/>
-            <Setter Property="Padding" Value="24"/>
+            <Setter Property="Padding" Value="28"/>
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect Color="#103B2C" BlurRadius="18" ShadowDepth="0" Opacity="0.12"/>
@@ -88,6 +88,7 @@
             <Setter Property="Foreground" Value="{StaticResource ColAccent}"/>
             <Setter Property="TextDecorations" Value="Underline"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="12"/>
         </Style>
     </Window.Resources>
 
@@ -98,21 +99,18 @@
             <ColumnDefinition Width="540"/>
         </Grid.ColumnDefinitions>
 
-        <!-- ===== LEFT HERO (bo góc chỉ bên phải) ===== -->
+        <!-- ===== LEFT HERO (gradient xanh lá - vàng, bo góc bên phải) ===== -->
         <Border Grid.Column="0" 
-        CornerRadius="0,24,24,0"     
-                
-        ClipToBounds="True">
-            <!-- Để ảnh + overlay bị cắt theo bo góc -->
+                CornerRadius="0,24,24,0"
+                ClipToBounds="True">
             <Grid>
-                <!-- Ảnh nền -->
-
-                <!-- Lớp phủ xanh -->
-                <Rectangle Opacity="0.85">
+                <!-- Lớp phủ gradient -->
+                <Rectangle Opacity="0.95">
                     <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="#144E39" Offset="0"/>
-                            <GradientStop Color="#118257" Offset="1"/>
+                        <!-- Xanh lá → vàng -->
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#16A36A" Offset="0"/>
+                            <GradientStop Color="#F6D365" Offset="1"/>
                         </LinearGradientBrush>
                     </Rectangle.Fill>
                 </Rectangle>
@@ -121,45 +119,44 @@
                 <StackPanel Margin="48" VerticalAlignment="Center" MaxWidth="520">
                     <DockPanel LastChildFill="False" Margin="0,0,0,24">
                         <Border Width="36" Height="36" CornerRadius="8"
-                        Background="White" Margin="0,0,12,0">
+                                Background="White" Margin="0,0,12,0">
                             <Viewbox Stretch="Uniform">
-                                <TextBlock Text="⚡" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="🏸" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Viewbox>
                         </Border>
                         <TextBlock Text="Sân cầu lông Củ Chi" FontSize="24" Foreground="White"
-                           VerticalAlignment="Center" FontWeight="Bold"/>
+                                   VerticalAlignment="Center" FontWeight="Bold"/>
                     </DockPanel>
 
                     <TextBlock Text="Hệ thống Quản lý Sân Cầu Lông"
-                       Foreground="White" FontSize="28" FontWeight="Bold"
-                       TextWrapping="Wrap"/>
-                    <TextBlock Text="Giải pháp toàn diện cho việc quản lý sân bãi, đặt sân, thanh toán và nhiều tính năng khác"
-                       Foreground="#E6FFFFFF" Margin="0,8,0,16" TextWrapping="Wrap"/>
+                               Foreground="White" FontSize="28" FontWeight="Bold"
+                               TextWrapping="Wrap"/>
+                    <TextBlock Text="Giải pháp toàn diện cho việc quản lý sân bãi, đặt sân, thanh toán và chăm sóc hội viên."
+                               Foreground="#E6FFFFFF" Margin="0,8,0,16" TextWrapping="Wrap"/>
 
                     <!-- Bullets -->
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,6">
                             <Ellipse Width="18" Height="18" Fill="#15A06D" Margin="0,2,10,0"/>
-                            <TextBlock Foreground="White" Text="Quản lý sân bãi realtime với sơ đồ trực quan"/>
+                            <TextBlock Foreground="White" Text="Quản lý sơ đồ sân realtime, tránh trùng giờ."/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,6">
                             <Ellipse Width="18" Height="18" Fill="#15A06D" Margin="0,2,10,0"/>
-                            <TextBlock Foreground="White" Text="Đặt sân linh hoạt với kiểm tra xung đột tự động"/>
+                            <TextBlock Foreground="White" Text="Check-in / Check-out nhanh ngay tại quầy."/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,6">
                             <Ellipse Width="18" Height="18" Fill="#15A06D" Margin="0,2,10,0"/>
-                            <TextBlock Foreground="White" Text="Thanh toán đa phương thức qua QR code"/>
+                            <TextBlock Foreground="White" Text="Thanh toán đa phương thức, gộp sân + nước + thuê vợt."/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
                 <!-- Footer -->
-                <TextBlock Text="©2025 Sân Cầu lông Củ Chi. Phần mềm quản lý sân cầu lông chuyên nghiệp."
-                   Foreground="#CCFFFFFF" HorizontalAlignment="Left"
-                   Margin="48" VerticalAlignment="Bottom"/>
+                <TextBlock Text="©2025 Sân Cầu lông Củ Chi - TTDY"
+                           Foreground="#CCFFFFFF" HorizontalAlignment="Left"
+                           Margin="48,0,48,32" VerticalAlignment="Bottom"/>
             </Grid>
         </Border>
-
 
         <!-- ===== RIGHT FORM ===== -->
         <Grid Grid.Column="1" Background="#FBFDFB">
@@ -168,36 +165,58 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <!-- Tiêu đề -->
                             <RowDefinition Height="Auto"/>
+                            <!-- Username -->
                             <RowDefinition Height="Auto"/>
+                            <!-- Password -->
+                            <RowDefinition Height="Auto"/>
+                            <!-- Options -->
+                            <RowDefinition Height="Auto"/>
+                            <!-- Button -->
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
+                            <!-- filler -->
                         </Grid.RowDefinitions>
 
-                        <StackPanel>
-                            <TextBlock Text="Đăng nhập" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
-                            <TextBlock Text="Nhập thông tin tài khoản để truy cập hệ thống"
-                                       Foreground="{StaticResource ColSub}" Margin="0,2,0,14"/>
+                        <!-- Header -->
+                        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                            <TextBlock Text="Chào mừng bạn trở lại 👋"
+                                       FontSize="20" FontWeight="Bold"
+                                       Foreground="{StaticResource ColText}"/>
+                            <TextBlock Text="Đăng nhập bằng tài khoản đã được cấp để truy cập hệ thống quản lý sân."
+                                       Foreground="{StaticResource ColSub}"
+                                       Margin="0,4,0,0" TextWrapping="Wrap"/>
                         </StackPanel>
 
                         <!-- Username -->
-                        <StackPanel Grid.Row="1" Margin="0,2,0,10">
-                            <TextBlock Text="Tên đăng nhập" Foreground="{StaticResource ColSub}" Margin="0,0,0,6"/>
-                            <TextBox x:Name="txtUser" Style="{StaticResource Txt}" />
+                        <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                            <TextBlock Text="Tên đăng nhập" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource ColSub}" Margin="0,0,0,6"/>
+                            <TextBox x:Name="txtUser" FontSize="15" Style="{StaticResource Txt}" />
                         </StackPanel>
 
-                        <!-- Password + hint -->
-                        <StackPanel Grid.Row="2" Margin="0,2,0,2">
-                            <TextBlock Text="Mật khẩu" Foreground="{StaticResource ColSub}" Margin="0,0,0,6"/>
-                            <PasswordBox x:Name="pwd" Style="{StaticResource Pwd}" />
+                        <!-- Password -->
+                        <StackPanel Grid.Row="2" Margin="0,0,0,4">
+                            <TextBlock Text="Mật khẩu" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource ColSub}" Margin="0,0,0,6"/>
+                            <PasswordBox x:Name="pwd" FontSize="15" Style="{StaticResource Pwd}" />
                         </StackPanel>
 
-                        <!-- Options -->
+                        <!-- Options: Remember + Forgot (tạo khoảng cách với nút) -->
+                        <Grid Grid.Row="3" Margin="0,8,0,18">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
+                        
+                        </Grid>
 
                         <!-- Submit -->
                         <StackPanel Grid.Row="4">
-                            <Button x:Name="btnLogin" Style="{StaticResource BtnPrimary}" Content="Đăng nhập" Click="BtnLogin_Click"/>
+                            <Button x:Name="btnLogin"
+                                    Style="{StaticResource BtnPrimary}"
+                                    Content="Đăng nhập"
+                                    FontSize="16"
+                                    Click="BtnLogin_Click"/>
                         </StackPanel>
                     </Grid>
                 </Border>
