@@ -34,9 +34,18 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.BaoCao
             dpTuNgay.SelectedDate = dauThang;
             dpDenNgay.SelectedDate = cuoiThang;
             this.Loaded += (s, e) => LoadDuLieu();
+            this.ChartCanvas.SizeChanged += ChartCanvas_SizeChanged;
 
         }
-
+        private void ChartCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Kiểm tra xem đã có dữ liệu để vẽ chưa
+            if (dpTuNgay.SelectedDate.HasValue && dpDenNgay.SelectedDate.HasValue)
+            {
+                // Vẽ lại biểu đồ với kích thước mới
+                VeBieuDo(dpTuNgay.SelectedDate.Value, dpDenNgay.SelectedDate.Value);
+            }
+        }
         private void Loc_Click(object sender, RoutedEventArgs e)
         {
             LoadDuLieu();
@@ -111,22 +120,41 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.BaoCao
 
             // Vẽ nhãn ngày bên dưới
             int n = data.Count;
+            // Số ngày tối đa có thể hiển thị (ví dụ: 8 nhãn)
+            int maxLabels = 8;
+            // Bước nhảy: Tính xem cần bỏ qua bao nhiêu ngày
+            int step = 1;
+            if (n > maxLabels)
+            {
+                // Chia tổng số ngày cho số nhãn tối đa mong muốn (làm tròn lên)
+                step = (int)Math.Ceiling((double)n / maxLabels);
+            }
+
             for (int i = 0; i < n; i++)
             {
+                // Chỉ vẽ nhãn nếu 'i' là bội số của 'step'
+                if (i % step != 0 && i != n - 1) // Luôn hiển thị ngày đầu tiên (i=0) và ngày cuối cùng (i=n-1) nếu cần
+                {
+                    continue;
+                }
+
                 double x = (width / (n - 1)) * i;
-                // đặt nhãn ở dưới cùng (height + margin)
-                TextBlock lbl = new TextBlock
+                // Đặt nhãn ở dưới cùng (height - offsetBottom + margin)
+                TextBlock lbl = new TextBlock
                 {
                     Text = data[i].Ngay.ToString("dd/MM"),
                     FontSize = 10,
                     Foreground = Brushes.Black
                 };
-                Canvas.SetLeft(lbl, x - 15); // dịch trái một chút để căn giữa
-                Canvas.SetTop(lbl, height - 20);
+                Canvas.SetLeft(lbl, x - (lbl.Text.Length * 3)); // Dịch trái để căn giữa gần đúng
+                Canvas.SetTop(lbl, height - 20); // Đảm bảo vị trí Top nằm ngoài khu vực biểu đồ
+
+                // Tránh lỗi khi n=1 (biểu đồ 1 ngày)
+                if (n == 1) Canvas.SetLeft(lbl, (width / 2) - (lbl.Text.Length * 3));
 
                 ChartCanvas.Children.Add(lbl);
-            }
 
+            }
         }
 
 

@@ -141,6 +141,58 @@ namespace QuanLiSanCauLong.LopNghiepVu
 
             return holidays.Any(d => d.Date == date.Date);
         }
+        private static List<DateTime> GetFixedHolidays(int year)
+        {
+            var holidays = new List<DateTime>
+            {
+                // Tết Dương lịch (1 ngày)
+                new DateTime(year, 1, 1), 
+
+                // Giải phóng miền Nam (1 ngày)
+                new DateTime(year, 4, 30), 
+
+                // Quốc tế Lao động (1 ngày)
+                new DateTime(year, 5, 1), 
+                
+                // Quốc khánh (2 ngày: 2/9 và ngày liền kề theo quy định) - Chỉ lấy 2/9
+                new DateTime(year, 9, 2) 
+
+                // ⚠️ Nếu muốn thêm Giỗ Tổ Hùng Vương (10/3 Âm lịch) và Tết Nguyên Đán,
+                // bạn CẦN sử dụng một thư viện Lịch Âm để chuyển đổi.
+                // Ví dụ: new DateTime(year, 4, 21) // Giả sử Giỗ Tổ năm 2025
+            };
+
+            // Nếu bạn không dùng API, bạn có thể thêm các ngày nghỉ bù cuối tuần vào đây nếu cần.
+            return holidays;
+        }
+
+        public async Task<bool> IsHolidayAsync(DateTime date)
+        {
+            try
+            {
+                // 🔹 ƯU TIÊN 1: Gọi API
+                var holidays = await QuanLiSanCauLong.API.HolidayApiService.GetHolidaysAsync(date.Year);
+
+                // 🔹 So sánh ngày hiện tại với ngày lễ từ API
+                return holidays.Any(h =>
+                {
+                    if (DateTime.TryParse(h.Date, out var holidayDate))
+                        return holidayDate.Date == date.Date;
+                    return false;
+                });
+            }
+            catch (Exception ex)
+            {
+                // 🔹 FALLBACK: Nếu API lỗi, sử dụng danh sách cố định đã tạo
+                Console.WriteLine($"API Error: {ex.Message}. Falling back to fixed list.");
+
+                // Lấy danh sách ngày lễ cố định của năm đó
+                var fixedHolidays = GetFixedHolidays(date.Year);
+
+                // Kiểm tra xem ngày có trùng với bất kỳ ngày nào trong danh sách cố định không
+                return fixedHolidays.Any(h => h.Date == date.Date);
+            }
+        }
 
     }
 }
