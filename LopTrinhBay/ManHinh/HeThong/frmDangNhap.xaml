@@ -198,20 +198,18 @@
                         <StackPanel Grid.Row="2" Margin="0,0,0,4">
                             <TextBlock Text="Mật khẩu" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource ColSub}" Margin="0,0,0,6"/>
                             <PasswordBox x:Name="pwd" FontSize="15" Style="{StaticResource Pwd}" />
+
                         </StackPanel>
+                        <CheckBox x:Name="chkRememberMe" 
+             Grid.Row="3"  Margin="0,6,0,0"
+              Content="Ghi nhớ đăng nhập"
+              FontSize="12"
+              Foreground="{StaticResource ColSub}"
+              VerticalAlignment="Center"/>
 
-                        <!-- Options: Remember + Forgot (tạo khoảng cách với nút) -->
-                        <Grid Grid.Row="3" Margin="0,8,0,18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                        
-                        </Grid>
 
                         <!-- Submit -->
-                        <StackPanel Grid.Row="4">
+                        <StackPanel Grid.Row="4" Margin="0,12,0,0">
                             <Button x:Name="btnLogin"
                                     Style="{StaticResource BtnPrimary}"
                                     Content="Đăng nhập"

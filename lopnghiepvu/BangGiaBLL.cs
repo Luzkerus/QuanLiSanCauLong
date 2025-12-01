@@ -85,7 +85,7 @@ namespace QuanLiSanCauLong.LopNghiepVu
             return donGia * tongGio;
         }
 
-        public decimal TinhPhuThu(DateTime ngayDat, TimeSpan gioBatDau, TimeSpan gioKetThuc)
+        public  decimal TinhPhuThu(DateTime ngayDat, TimeSpan gioBatDau, TimeSpan gioKetThuc)
         {
             var bangGia = LayBangGiaChung();
             if (bangGia.Rows.Count == 0) return 0;

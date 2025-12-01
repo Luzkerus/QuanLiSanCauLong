@@ -276,9 +276,6 @@
     <Compile Include="LopTruyCapDuLieu\PhieuNhapDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\SanDAL.cs" />
     <Compile Include="LopTruyCapDuLieu\ThanhToanDAL.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
