@@ -39,6 +39,107 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             txtTongThanhToan.Text = "0 đ";
 
         }
+        // Trong frmNhapHang.xaml.cs
+        private void txtNhaCungCap_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string nhapLieu = txtNhaCungCap.Text.Trim();
+
+            if (nhapLieu.Length > 0)
+            {
+                PhieuNhapBLL phieuBLL = new PhieuNhapBLL();
+
+                // Gọi hàm BLL để lấy gợi ý (giả sử đã định nghĩa như bước trước)
+                List<string> goiYList = phieuBLL.LayDanhSachNhaCungCapGoiY(nhapLieu);
+
+                lstNhaCungCapGoiY.ItemsSource = goiYList;
+
+                if (goiYList.Count > 0)
+                {
+                    popupGoiYNCC.IsOpen = true;
+                }
+                else
+                {
+                    popupGoiYNCC.IsOpen = false;
+                }
+            }
+            else
+            {
+                // Đóng popup nếu không có nhập liệu
+                popupGoiYNCC.IsOpen = false;
+            }
+        }
+        // Trong frmNhapHang.xaml.cs
+        private void lstNhaCungCapGoiY_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstNhaCungCapGoiY.SelectedItem != null)
+            {
+                // Đặt giá trị được chọn vào TextBox
+                txtNhaCungCap.Text = lstNhaCungCapGoiY.SelectedItem.ToString();
+
+                // Đóng popup
+                popupGoiYNCC.IsOpen = false;
+
+                // Đặt con trỏ về cuối TextBox
+                txtNhaCungCap.SelectionStart = txtNhaCungCap.Text.Length;
+            }
+        }
+        // Trong frmNhapHang.xaml.cs
+        private void txtNhaCungCap_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // Chỉ xử lý khi Popup đang mở
+            if (popupGoiYNCC.IsOpen)
+            {
+                // 1. Xử lý phím MŨI TÊN XUỐNG (Down Arrow)
+                if (e.Key == Key.Down)
+                {
+                    // Chuyển focus xuống ListBox và chọn mục đầu tiên
+                    if (lstNhaCungCapGoiY.Items.Count > 0)
+                    {
+                        lstNhaCungCapGoiY.Focus();
+                        lstNhaCungCapGoiY.SelectedIndex = 0;
+                        e.Handled = true;
+                    }
+                }
+                // 2. Xử lý phím TAB (Mục tiêu của bạn)
+                else if (e.Key == Key.Tab)
+                {
+                    // Kiểm tra xem ListBox có mục nào được chọn hoặc có dữ liệu không
+                    if (lstNhaCungCapGoiY.Items.Count > 0)
+                    {
+                        // Nếu chưa có mục nào được highlight, chọn mục đầu tiên
+                        if (lstNhaCungCapGoiY.SelectedItem == null)
+                        {
+                            lstNhaCungCapGoiY.SelectedIndex = 0;
+                        }
+
+                        // Cập nhật TextBox với mục đã chọn
+                        txtNhaCungCap.Text = lstNhaCungCapGoiY.SelectedItem.ToString();
+
+                        // Đóng popup
+                        popupGoiYNCC.IsOpen = false;
+
+                        // KHÔNG đặt e.Handled = true.
+                        // Điều này cho phép sự kiện Tab tiếp tục lan truyền, 
+                        // giúp focus tự động chuyển sang control tiếp theo sau khi chọn.
+                    }
+                }
+                // 3. Xử lý phím ENTER
+                else if (e.Key == Key.Enter)
+                {
+                    if (lstNhaCungCapGoiY.Items.Count > 0)
+                    {
+                        if (lstNhaCungCapGoiY.SelectedItem == null)
+                        {
+                            lstNhaCungCapGoiY.SelectedIndex = 0;
+                        }
+
+                        txtNhaCungCap.Text = lstNhaCungCapGoiY.SelectedItem.ToString();
+                        popupGoiYNCC.IsOpen = false;
+                        e.Handled = true;
+                    }
+                }
+            }
+        }
         private void btnThemHang_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtMaHang.Text) ||
@@ -278,7 +379,62 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
                 txtMaHang.Text = hangHoaBLL.TaoMaHang(donViTinh, maTrongGrid);
             }
         }
+        // Trong frmNhapHang.xaml.cs, thêm sau các hàm của Nhà cung cấp (hoặc ở cuối lớp)
 
+        private void txtTenHang_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string nhapLieu = txtTenHang.Text.Trim();
+
+            // Đảm bảo TextChanged cho Tên hàng không bị gọi lặp lại khi chọn mục gợi ý
+            // Bằng cách kiểm tra xem sự thay đổi có phải do chọn từ ListBox không (dùng logic tạm)
+
+
+            if (nhapLieu.Length > 0)
+            {
+                HangHoaBLL hangHoaBLL = new HangHoaBLL();
+
+                // Gọi hàm BLL để lấy gợi ý Tên Hàng
+                List<string> goiYList = hangHoaBLL.LayDanhSachTenHangGoiY(nhapLieu);
+
+                lstTenHangGoiY.ItemsSource = goiYList;
+
+                if (goiYList.Count > 0)
+                {
+                    popupGoiYTenHang.IsOpen = true;
+                }
+                else
+                {
+                    popupGoiYTenHang.IsOpen = false;
+                }
+            }
+            else
+            {
+                // Đóng popup nếu không có nhập liệu
+                popupGoiYTenHang.IsOpen = false;
+                CapNhatMaHang(); // Gọi lại để xóa Mã hàng nếu Tên hàng bị xóa
+            }
+
+            // Tạm thời bỏ gọi CapNhatMaHang ở đây để tránh gọi quá nhiều lần
+            //CapNhatMaHang(); 
+        }
+        // Trong frmNhapHang.xaml.cs
+        private void lstTenHangGoiY_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstTenHangGoiY.SelectedItem != null)
+            {
+                // Đặt giá trị được chọn vào TextBox
+                txtTenHang.Text = lstTenHangGoiY.SelectedItem.ToString();
+
+                // CẬP NHẬT MÃ HÀNG ngay sau khi chọn Tên hàng
+                CapNhatMaHang();
+
+                // Đóng popup
+                popupGoiYTenHang.IsOpen = false;
+
+                // Đặt con trỏ về cuối TextBox
+                txtTenHang.SelectionStart = txtTenHang.Text.Length;
+            }
+        }
 
 
         private void cboDVT_LostFocus(object sender, RoutedEventArgs e)
@@ -286,11 +442,51 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.KhoPOS
             // Cập nhật khi người dùng rời khỏi ComboBox, đảm bảo giá trị đã ổn định
             CapNhatMaHang();
         }
-
-        private void txtTenHang_TextChanged(object sender, RoutedEventArgs e)
+        // Trong frmNhapHang.xaml.cs
+        private void txtTenHang_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            // Cập nhật khi người dùng RỜI KHỎI ô Tên Hàng
-            CapNhatMaHang();
+            if (popupGoiYTenHang.IsOpen)
+            {
+                if (e.Key == Key.Down)
+                {
+                    // Chuyển focus xuống ListBox và chọn mục đầu tiên
+                    if (lstTenHangGoiY.Items.Count > 0)
+                    {
+                        lstTenHangGoiY.Focus();
+                        lstTenHangGoiY.SelectedIndex = 0;
+                        e.Handled = true; // Ngăn không cho TextBox xử lý phím Down
+                    }
+                }
+                else if (e.Key == Key.Enter || e.Key == Key.Tab) // Xử lý Enter và Tab cùng lúc
+                {
+                    if (lstTenHangGoiY.Items.Count > 0)
+                    {
+                        // Chọn mục đầu tiên nếu chưa chọn
+                        if (lstTenHangGoiY.SelectedItem == null)
+                        {
+                            lstTenHangGoiY.SelectedIndex = 0;
+                        }
+
+                        // Commit giá trị
+                        txtTenHang.Text = lstTenHangGoiY.SelectedItem.ToString();
+
+                        // CẬP NHẬT MÃ HÀNG
+                        CapNhatMaHang();
+
+                        // Đóng popup
+                        popupGoiYTenHang.IsOpen = false;
+
+                        // Nếu là Enter thì chặn (e.Handled=true) để không chuyển focus
+                        // Nếu là Tab thì KHÔNG chặn để chuyển focus sang ô tiếp theo
+                        if (e.Key == Key.Enter)
+                        {
+                            e.Handled = true;
+                        }
+                    }
+                }
+            }
         }
+
+       
     }
 }

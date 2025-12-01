@@ -2,6 +2,7 @@
 using QuanLiSanCauLong.LopTruyCapDuLieu;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuanLiSanCauLong.LopNghiepVu
 {
@@ -108,6 +109,33 @@ namespace QuanLiSanCauLong.LopNghiepVu
                 }
             }
             return sum;
+        }
+        // Trong PhieuNhapBLL.cs
+        // Trong PhieuNhapBLL.cs
+        public List<string> LayDanhSachNhaCungCapGoiY(string nhapLieu)
+        {
+            // 1. Lấy tất cả các phiếu nhập
+            // Nếu LayTatCaPhieuNhap() lấy dữ liệu trực tiếp từ DAL, 
+            // bạn cần đảm bảo rằng nó không gây chậm nếu có quá nhiều dữ liệu.
+            // Tối ưu nhất là tạo một hàm mới chỉ lấy DISTINCT NhaCungCap từ DAL.
+            var tatCaPhieu = LayTatCaPhieuNhap(); // Giả sử hàm này đã được định nghĩa trong PhieuNhapBLL
+
+            // 2. Trích xuất danh sách tên Nhà Cung Cấp duy nhất (DISTINCT)
+            var tatCaNhaCungCap = tatCaPhieu
+                .Select(p => p.NhaCungCap) // Chọn trường NhaCungCap
+                .Where(n => !string.IsNullOrEmpty(n))
+                .Distinct() // Chỉ lấy các tên duy nhất
+                .ToList();
+
+            // 3. Lọc theo ký tự đang nhập (không phân biệt hoa thường)
+            var goiYList = tatCaNhaCungCap
+                .Where(ncc => ncc.ToLower().Contains(nhapLieu.ToLower()))
+                .OrderByDescending(ncc => ncc.ToLower().StartsWith(nhapLieu.ToLower())) // Ưu tiên các tên bắt đầu bằng ký tự nhập
+                .ThenBy(ncc => ncc) // Sắp xếp theo tên
+                .Take(3) // Chỉ lấy tối đa 3 kết quả
+                .ToList();
+
+            return goiYList;
         }
     }
 }

@@ -200,20 +200,47 @@
 
                 <!-- Hàng 1 -->
                 <!-- Nhà cung cấp (TextBox + khung bo góc) -->
-                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,8">
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,0">
                     <TextBlock Text="Nhà cung cấp" Foreground="#6B7E74"/>
 
-                    <Border Background="White"
-                        CornerRadius="0"
-                        BorderBrush="#E1F0EC"
-                        BorderThickness="1"
-                        Padding="0">
-                        <TextBox Style="{StaticResource WatermarkTextBox}"
-                             BorderThickness="0"
-                             Background="Transparent" x:Name="txtNhaCungCap"
-                             Tag="Nhập tên nhà cung cấp..."
-                             Text="{Binding NhaCungCapText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </Border>
+                    <Grid>
+                        <Border Background="White"
+    CornerRadius="0"
+    BorderBrush="Gray"
+    BorderThickness="0.8"
+    Padding="0">
+                        <TextBox 
+            x:Name="txtNhaCungCap"
+            Height="30"
+            Style="{StaticResource WatermarkTextBox}"
+            Tag="Nhập tên nhà cung cấp..."
+            Text="{Binding NhaCungCapText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextChanged="txtNhaCungCap_TextChanged"
+            PreviewKeyDown="txtNhaCungCap_PreviewKeyDown"
+            VerticalContentAlignment="Center"
+            />
+                        </Border>
+
+                        <Popup x:Name="popupGoiYNCC"
+               PlacementTarget="{Binding ElementName=txtNhaCungCap}"
+               Placement="Bottom"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               Width="{Binding ElementName=txtNhaCungCap, Path=ActualWidth}"
+               MaxHeight="150"
+               IsOpen="False">
+
+                            <Border BorderBrush="#E1F0EC" BorderThickness="1" Background="White" CornerRadius="4">
+                                <ListBox 
+                    x:Name="lstNhaCungCapGoiY"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    SelectionChanged="lstNhaCungCapGoiY_SelectionChanged"
+                    KeyboardNavigation.TabNavigation="None"
+                    />
+                            </Border>
+                        </Popup>
+                    </Grid>
                 </StackPanel>
 
 
@@ -289,10 +316,42 @@
                         <!-- Tên hàng -->
                         <StackPanel Grid.Column="1" Margin="0,0,8,0">
                             <TextBlock Text="Tên hàng" Foreground="#6B7E74"/>
-                            <TextBox Height="32" x:Name="txtTenHang" TextChanged="txtTenHang_TextChanged"
-                                     Text="{Binding NhapNhanh_TenHang, UpdateSourceTrigger=PropertyChanged}"
-                                     Tag="Nhập tên hàng..."
-                                     VerticalContentAlignment="Center"/>
+
+                            <Grid>
+                                <Border Background="White"
+CornerRadius="0"
+BorderBrush="Gray"
+BorderThickness="0.8"
+Padding="0">
+                                    <TextBox Height="30" 
+            x:Name="txtTenHang" 
+            TextChanged="txtTenHang_TextChanged"
+            PreviewKeyDown="txtTenHang_PreviewKeyDown" Style="{StaticResource WatermarkTextBox}"
+            Tag="Nhập tên hàng..."
+            Text="{Binding NhapNhanh_TenHang, UpdateSourceTrigger=PropertyChanged}"
+            VerticalContentAlignment="Center"
+            />
+                                </Border>
+
+                                <Popup x:Name="popupGoiYTenHang"
+               PlacementTarget="{Binding ElementName=txtTenHang}"
+               Placement="Bottom"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               Width="{Binding ElementName=txtTenHang, Path=ActualWidth}"
+               MaxHeight="150"
+               IsOpen="False">
+
+                                    <Border BorderBrush="#E1F0EC" BorderThickness="1" Background="White" CornerRadius="4">
+                                        <ListBox 
+                    x:Name="lstTenHangGoiY"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    SelectionChanged="lstTenHangGoiY_SelectionChanged" KeyboardNavigation.TabNavigation="None"
+                    />
+                                    </Border>
+                                </Popup>
+                            </Grid>
                         </StackPanel>
 
                         <!-- Đơn vị -->

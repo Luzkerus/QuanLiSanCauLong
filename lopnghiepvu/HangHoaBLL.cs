@@ -95,7 +95,31 @@ namespace QuanLiSanCauLong.LopNghiepVu
             }
             return tongGiaTri;
         }
-        
+        public List<string> LayDanhSachTenHangGoiY(string nhapLieu)
+        {
+            // Bỏ khoảng trắng dư thừa và chuyển về chữ thường để so sánh không phân biệt hoa/thường
+            string keyword = nhapLieu.Trim().ToLower();
+
+            // 1. Tối ưu nhất là gọi DAL để truy vấn SELECT DISTINCT Tên Hàng (có LIKE %keyword%)
+            // Vì tôi không có code DAL của bạn, tôi sẽ giả định gọi DAL để lấy toàn bộ danh sách 
+            // và lọc trong BLL (Cách này dễ thực hiện nhưng kém hiệu suất nếu DB quá lớn).
+
+            var tatCaHangHoa = LayTatCaHangHoa(); // Phương thức này đã có sẵn
+
+            // 2. Trích xuất, làm sạch, và lọc danh sách Tên Hàng
+            var goiYList = tatCaHangHoa
+                .Select(hh => hh.TenHang) // Chỉ lấy cột TenHang
+                .Where(ten => !string.IsNullOrEmpty(ten))
+                .Distinct() // Chỉ lấy các tên duy nhất
+                .Where(ten => ten.ToLower().Contains(keyword)) // Lọc theo từ khóa nhập liệu
+                .OrderByDescending(ten => ten.ToLower().StartsWith(keyword)) // Ưu tiên các tên bắt đầu bằng từ khóa
+                .ThenBy(ten => ten) // Sắp xếp theo tên
+                .Take(5) // Giới hạn số lượng gợi ý, ví dụ: 5 mục
+                .ToList();
+
+            return goiYList;
+        }
+
     }
 
 }
