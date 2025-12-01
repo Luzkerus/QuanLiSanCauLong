@@ -23,5 +23,8 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong
         {
             InitializeComponent();
         }
+        private void chkWindowsAuth_Checked(object sender, RoutedEventArgs e) { }
+        private void BtnTest_Click(object sender, RoutedEventArgs e) { }
+        private void BtnSave_Click(object sender, RoutedEventArgs e) { }
     }
 }

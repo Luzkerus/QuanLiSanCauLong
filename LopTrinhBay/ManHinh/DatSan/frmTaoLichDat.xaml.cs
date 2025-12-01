@@ -1,6 +1,8 @@
-﻿using QuanLiSanCauLong.LopNghiepVu;
+﻿using QuanLiSanCauLong.LopDuLieu;
+using QuanLiSanCauLong.LopNghiepVu;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +12,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using QuanLiSanCauLong.LopDuLieu;
 using System.Windows.Media.Imaging;
 
 namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
@@ -102,7 +103,70 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 MessageBox.Show("Giờ kết thúc phải lớn hơn giờ bắt đầu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            var bangGiaList = bgBLL.LayBangGiaChung();
 
+            if (bangGiaList == null || bangGiaList.Rows.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy bảng giá chung. Không thể thêm slot.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Lấy giờ sớm nhất và muộn nhất từ Bảng Giá
+            TimeSpan gioSomNhat;
+            TimeSpan gioMuonNhat;
+
+            // Giả sử: Bảng giá chung (DataTable) có các cột "GioBatDauBG" và "GioKetThucBG"
+            // Cần có một hàm trong BLL để tính ra giờ sớm nhất/muộn nhất từ DataTable/List.
+            // Nếu không có, ta phải duyệt qua bảng giá hoặc gọi phương thức BLL tương ứng.
+
+            try
+            {
+                // **Đây là phần giả định:** Bạn cần thêm phương thức này vào lớp BangGiaBLL
+                // để trả về Giờ Sớm nhất và Giờ Muộn nhất trong toàn bộ bảng giá.
+                // Ví dụ:
+                // (gioSomNhat, gioMuonNhat) = bgBLL.LayPhamViGioTrongBangGia(); 
+
+                // Vì BLL trả về DataTable, ta sẽ thực hiện tìm kiếm trực tiếp (cần đảm bảo 
+                // các cột GioBatDauBG và GioKetThucBG có kiểu dữ liệu tương thích, ví dụ: TimeSpan)
+                gioSomNhat = bangGiaList.AsEnumerable()
+                    .Min(row => (TimeSpan)row["GioBatDau"]); // Thay "GioBatDauBG" bằng tên cột thực tế
+
+                // Để lấy giờ kết thúc *muộn nhất* từ bảng giá
+                gioMuonNhat = bangGiaList.AsEnumerable()
+                    .Max(row => (TimeSpan)row["GioKetThuc"]); // Thay "GioKetThucBG" bằng tên cột thực tế
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Không thể xác định phạm vi giờ của bảng giá. Vui lòng kiểm tra dữ liệu bảng giá.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+
+            // Kiểm tra Giờ Bắt Đầu phải >= Giờ Sớm Nhất
+            if (gioBatDau < gioSomNhat)
+            {
+                MessageBox.Show($"Giờ bắt đầu phải trong phạm vi bảng giá, sớm nhất là **{gioSomNhat:hh\\:mm}**.", "Lỗi Phạm Vi Giờ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Kiểm tra Giờ Kết Thúc phải <= Giờ Muộn Nhất
+            // Chú ý: Vì giờ kết thúc của slot đặt phải khớp với giờ kết thúc của một slot trong bảng giá
+            if (gioKetThuc > gioMuonNhat)
+            {
+                MessageBox.Show($"Giờ kết thúc phải trong phạm vi bảng giá, muộn nhất là **{gioMuonNhat:hh\\:mm}**.", "Lỗi Phạm Vi Giờ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            TimeSpan duration = gioKetThuc - gioBatDau;
+            decimal thanhTienTinhToan = bgBLL.TinhTongTien(dpNgayDat.SelectedDate.Value, gioBatDau, gioKetThuc);
+
+            if (thanhTienTinhToan == 0 && duration > TimeSpan.Zero)
+            {
+                MessageBox.Show("Khoảng thời gian đặt bị thiếu khung giờ hợp lệ (có khoảng trống giá). Vui lòng kiểm tra lại giờ đặt.",
+                                "Lỗi Khoảng Giờ",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
             var san = (San)cboSan.SelectedItem;
 
             // Kiểm tra trùng ngày + sân + giờ
