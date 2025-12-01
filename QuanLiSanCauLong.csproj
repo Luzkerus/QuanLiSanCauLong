@@ -199,6 +199,9 @@
     <Compile Include="LopTrinhBay\ManHinh\DatSan\ucDatSan.xaml.cs">
       <DependentUpon>ucDatSan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\HeThong\frmCauHinhKetNoi.xaml.cs">
+      <DependentUpon>frmCauHinhKetNoi.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LopTrinhBay\ManHinh\HeThong\frmDangNhap.xaml.cs">
       <DependentUpon>frmDangNhap.xaml</DependentUpon>
     </Compile>
@@ -323,6 +326,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LopTrinhBay\ManHinh\DatSan\ucDatSan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LopTrinhBay\ManHinh\HeThong\frmCauHinhKetNoi.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
