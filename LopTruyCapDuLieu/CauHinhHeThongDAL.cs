@@ -16,8 +16,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         public CauHinhHeThongDAL()
         {
             // Lấy chuỗi kết nối (Cần có ConnectStringDAL hoặc thay bằng chuỗi cứng)
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
 
         // --- LayCauHinh (Dùng SqlDataAdapter) ---

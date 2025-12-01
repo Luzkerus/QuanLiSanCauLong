@@ -14,8 +14,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         private readonly string connectionString;
         public KhachHangDAL()
         {
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
         public List<KhachHang> LayTatCaKhachHang()
         {

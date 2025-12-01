@@ -13,8 +13,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         private readonly string connectionString;
         public ChiTietPhieuNhapDAL()
         {
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
         public void ThemChiTiet(string soPhieu, ChiTietPhieuNhap ct)
         {

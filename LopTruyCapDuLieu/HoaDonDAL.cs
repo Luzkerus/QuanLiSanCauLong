@@ -13,8 +13,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         private readonly string connectionString;
         public HoaDonDAL()
         {
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
         public void ThemHoaDon(HoaDon hd)
         {

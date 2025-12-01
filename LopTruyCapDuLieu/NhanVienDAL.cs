@@ -14,8 +14,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         public NhanVienDAL()
         {
             // Chuỗi kết nối đến cơ sở dữ liệu SQL Server
-            ConnectStringDAL cs = new ConnectStringDAL();
-            connectionString = cs.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
         public bool ThemNhanVien(NhanVien nv)
         {

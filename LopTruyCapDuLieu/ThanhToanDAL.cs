@@ -13,8 +13,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         private string connectionString;
         public ThanhToanDAL()
         {
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
         public bool LuuHoaDon(ThanhToan hoaDon)
         {

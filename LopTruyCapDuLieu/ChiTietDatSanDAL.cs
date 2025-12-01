@@ -13,8 +13,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
         private readonly string connectionString;
         public ChiTietDatSanDAL()
         {
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
         public bool KiemTraTrungLich(int maSan, DateTime ngayDat, TimeSpan gioBD, TimeSpan gioKT)
         {

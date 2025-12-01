@@ -14,8 +14,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
 
         public PhieuNhapDAL()
         {
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
 
         public void LuuPhieu(PhieuNhap phieu)

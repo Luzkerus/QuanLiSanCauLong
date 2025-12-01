@@ -14,8 +14,7 @@ namespace QuanLiSanCauLong.LopTruyCapDuLieu
 
         public DatSanDAL()
         {
-            ConnectStringDAL connect = new ConnectStringDAL();
-            connectionString = connect.GetConnectionString();
+            connectionString = ConnectStringDAL.Instance.GetConnectionString();
         }
         public bool LuuDatSan(DatSan datSan, List<ChiTietDatSan> chiTiets)
         {
