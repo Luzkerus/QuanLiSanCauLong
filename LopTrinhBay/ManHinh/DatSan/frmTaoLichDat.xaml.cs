@@ -332,6 +332,16 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.DatSan
                 MessageBox.Show("Chưa có số điện thoại khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            MessageBoxResult result = MessageBox.Show(
+        "Bạn có chắc chắn muốn tạo đơn hàng với các sân đã chọn?",
+        "Xác nhận tạo đơn",
+        MessageBoxButton.YesNo, // Sử dụng YesNo
+        MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.No)
+            {
+                return; // Dừng lại nếu người dùng chọn 'No'
+            }
 
             var kh = khBLL.LayKhachHangTheoSDT(sdt);
 
