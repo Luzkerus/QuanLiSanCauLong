@@ -302,7 +302,6 @@
     </UserControl.Resources>
 
     <!-- ===== Body ===== -->
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
         <Grid Margin="16">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -315,7 +314,7 @@
             <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,8">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                     <TextBlock Text="Quản lý khách hàng &amp; Hội viên" Foreground="{StaticResource ColText}" FontSize="24" FontWeight="Bold"/>
-                    <TextBlock Text="Quản lý thông tin khách hàng, điểm thưởng và chương trình CRM" FontWeight="SemiBold" Foreground="{StaticResource ColSub}"/>
+                    <TextBlock Text="Quản lý thông tin khách hàng, điểm thưởng" FontWeight="SemiBold" Foreground="{StaticResource ColSub}"/>
                 </StackPanel>
             </DockPanel>
 
@@ -472,8 +471,8 @@
                               CellStyle="{StaticResource DGCell}"
                               SelectionMode="Single"
                               SelectionUnit="FullRow"
-                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                              ScrollViewer.CanContentScroll="False">
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ScrollViewer.CanContentScroll="True">
 
                         <DataGrid.Columns>
                             <!-- Khách hàng (avatar + tên + SĐT) -->
@@ -589,5 +588,4 @@
                 </Grid>
             </Border>
         </Grid>
-    </ScrollViewer>
 </UserControl>
