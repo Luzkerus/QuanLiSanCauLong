@@ -334,7 +334,7 @@
 
                 <StackPanel>
                     <TextBlock Text="Quản lý Nhân viên" FontSize="24" FontWeight="Bold" Foreground="{StaticResource ColText}"/>
-                    <TextBlock Text="Hồ sơ nhân viên và phân ca làm việc" FontWeight="SemiBold" Foreground="{StaticResource ColSub}" Margin="0,4,0,0"/>
+                    <TextBlock Text="Quản lý hồ sơ nhân viên" FontWeight="SemiBold" Foreground="{StaticResource ColSub}" Margin="0,4,0,0"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">

@@ -194,7 +194,7 @@
                 <!-- ===== Row 0: Logo ===== -->
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
-                            Margin="10,10,10,6"
+                            Margin="15,10,10,6"
                             VerticalAlignment="Center">
                     <!-- Logo tròn -->
                     <Ellipse Width="42" Height="42">

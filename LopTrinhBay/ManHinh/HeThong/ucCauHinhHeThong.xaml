@@ -213,7 +213,7 @@
                     <Border Grid.Column="0"
                             Style="{StaticResource Card}"
                             Padding="20"
-                            Margin="0,80,12,110">
+                            Margin="0,0,12,0">
 
                         <StackPanel>
 
@@ -304,7 +304,7 @@
                             Padding="10"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
-                            Margin="0,30,12,0">
+                            Margin="0,0,12,0">
 
                         <!-- Đổi đường dẫn theo ảnh GIF của bạn -->
                         <Image Source="/LopTrinhBay/TaiNguyen/Logo/Sodosan.png"
