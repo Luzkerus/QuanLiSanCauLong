@@ -57,6 +57,13 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.HeThong
                 MessageBox.Show("Mật khẩu mới phải có ít nhất 6 ký tự.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            string passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$";
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(newPassword, passwordRegex))
+            {
+                MessageBox.Show("Mật khẩu mới phải bao gồm ít nhất:\n- 1 chữ viết hoa\n- 1 chữ viết thường\n- 1 chữ số.", "Lỗi quy tắc mật khẩu", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             // --- 2. Xác thực mật khẩu cũ ---
             try
