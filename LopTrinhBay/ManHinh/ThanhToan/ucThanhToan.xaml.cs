@@ -1,4 +1,8 @@
-﻿using Microsoft.CSharp.RuntimeBinder;
+﻿using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using Microsoft.CSharp.RuntimeBinder;
+using Microsoft.Win32;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 using QuanLiSanCauLong.LopDuLieu;
 using QuanLiSanCauLong.LopNghiepVu;
 using QuanLiSanCauLong.LopTruyCapDuLieu;
@@ -15,9 +19,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf;
 //using System.Windows.Shapes;
 
 
@@ -412,110 +413,241 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan
             }
         }
 
-        private void TaoHoaDonPDF(QuanLiSanCauLong.LopDuLieu.ThanhToan hd, List<dynamic> chiTiets, int soLuongVot, decimal donGiaVot)
+        private void TaoHoaDonPDF(
+            QuanLiSanCauLong.LopDuLieu.ThanhToan hd,
+            List<dynamic> chiTiets,
+            int soLuongVot,
+            decimal donGiaVot)
         {
             PdfDocument document = new PdfDocument();
             document.Info.Title = "Phiếu Thanh Toán";
             PdfPage page = document.AddPage();
-            page.Size = PdfSharpCore.PageSize.A6;
+            page.Size = PdfSharpCore.PageSize.A5;
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            XFont fontTitle = new XFont("Arial", 16, XFontStyle.Bold);
+            XFont fontTitle = new XFont("Arial", 18, XFontStyle.Bold);
+            XPen penLine = new XPen(XColors.Gray, 0.6);
+            XFont fontHeader = new XFont("Arial", 11, XFontStyle.Bold);
             XFont fontNormal = new XFont("Arial", 10);
             XFont fontSmall = new XFont("Arial", 8);
+            XFont fontBold10 = new XFont("Arial", 10, XFontStyle.Bold);
+            XFont fontItalic9 = new XFont("Arial", 9, XFontStyle.Italic);
 
             double pageWidth = page.Width;
+            double marginLeft = 40;
+            double marginRight = 40;
+            double y = 20;
 
-            // ======= CĂN GIỮA TIÊU ĐỀ =======
-            gfx.DrawString("PHIẾU THANH TOÁN", fontTitle, XBrushes.Black,
-                new XRect(0, 20, pageWidth, 20), XStringFormats.TopCenter);
+            // ======================= LOGO + HEADER ==========================
+            double logoWidth = 70;
+            double logoHeight = 0;
 
-            gfx.DrawString("SÂN CẦU LÔNG CỦ CHI", fontNormal, XBrushes.Black,
-                new XRect(0, 50, pageWidth, 20), XStringFormats.TopCenter);
-
-            gfx.DrawString("72, Tỉnh lộ 15, Ấp Phú Thuận, Xã Phú Hòa Đông, TP. Hồ Chí Minh", fontSmall, XBrushes.Black,
-                new XRect(0, 70, pageWidth, 20), XStringFormats.TopCenter);
-
-            gfx.DrawString("Tel: 0966752642", fontSmall, XBrushes.Black,
-                new XRect(0, 85, pageWidth, 20), XStringFormats.TopCenter);
-
-            double y = 110;
-
-            // ===== Ngày giờ =====
-            string ngayGio = hd.NgayLap.ToString("dd.MM.yyyy HH:mm");
-
-            gfx.DrawString($"NGÀY/ GIỜ : {ngayGio}", fontSmall, XBrushes.Black, new XPoint(10, y));
-            y += 15;
-
-
-            gfx.DrawString($"SỐ CHỨNG TỪ: {hd.SoHD}", fontSmall, XBrushes.Black, new XPoint(10, y));
-            y += 20;
-
-            gfx.DrawString($"TÊN KHÁCH HÀNG: {hd.TenKH}", fontNormal, XBrushes.Black, new XPoint(10, y));
-            y += 15;
-
-            // ======= ĐẶT SÂN =======
-            gfx.DrawString("ĐẶT SÂN", fontNormal, XBrushes.Black, new XPoint(10, y));
-            y += 20;
-
-
-
-
-            gfx.DrawString($"TỔNG TIỀN SÂN: {hd.TongTienSan} VNĐ", fontNormal, XBrushes.Black, new XPoint(10,y));
-
-
-            y += 15;
-
-            // ======= THUÊ VỢT =======
-            if (soLuongVot > 0)
+            try
             {
-                gfx.DrawString("THUÊ VỢT", fontNormal, XBrushes.Black, new XPoint(10, y));
-                y += 15;
+                string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+                string logoPath = Path.Combine(exeDir, "TaiNguyen", "Logo", "sancaulongcuchi-logo.png");
+                if (!File.Exists(logoPath))
+                    logoPath = Path.Combine(exeDir, "LopTrinhBay", "TaiNguyen", "Logo", "sancaulongcuchi-logo.png");
 
-                gfx.DrawString($"SỐ LƯỢNG: {soLuongVot}", fontNormal, XBrushes.Black, new XPoint(10, y));
-                y += 12;
-
-                gfx.DrawString($"THÀNH TIỀN: {(soLuongVot * donGiaVot):N0}", fontNormal, XBrushes.Black, new XPoint(10, y));
-                y += 12;
-
-                gfx.DrawString($"ĐƠN GIÁ: {donGiaVot:N0}", fontNormal, XBrushes.Black, new XPoint(10, y));
-                y += 20;
+                if (File.Exists(logoPath))
+                {
+                    XImage logo = XImage.FromFile(logoPath);
+                    logoHeight = logo.PixelHeight * logoWidth / logo.PixelWidth;
+                    double logoX = (pageWidth - logoWidth) / 2;
+                    gfx.DrawImage(logo, logoX, y, logoWidth, logoHeight);
+                    y += logoHeight + 8;
+                }
+                else
+                {
+                    logoHeight = 40;
+                    y += logoHeight;
+                }
+            }
+            catch
+            {
+                y += 40;
             }
 
-            y += 15;
+            gfx.DrawString("SÂN CẦU LÔNG CỦ CHI", fontHeader, XBrushes.Black,
+                new XRect(0, y, pageWidth, 14), XStringFormats.TopCenter);
+            y += 14;
 
-            // ======= TỔNG TIỀN (CĂN GIỮA) =======
-            gfx.DrawString("TỔNG GIÁ TRỊ HÓA ĐƠN", fontNormal, XBrushes.Black,
+            gfx.DrawString("72, Tỉnh lộ 15, Ấp Phú Thuận, Xã Phú Hòa Đông, TP. Hồ Chí Minh",
+                fontSmall, XBrushes.Black,
+                new XRect(0, y, pageWidth, 12), XStringFormats.TopCenter);
+            y += 12;
+
+            gfx.DrawString("Tel: 0966752642", fontSmall, XBrushes.Black,
+                new XRect(0, y, pageWidth, 12), XStringFormats.TopCenter);
+            y += 16;
+
+            // gạch ngang
+            gfx.DrawLine(XPens.Gray, marginLeft, y, pageWidth - marginRight, y);
+            y += 22;
+
+            // ======================= TIÊU ĐỀ PHIẾU ==========================
+            gfx.DrawString("PHIẾU THANH TOÁN", fontTitle, XBrushes.Black,
                 new XRect(0, y, pageWidth, 20), XStringFormats.TopCenter);
-
-            y += 18;
-
-            gfx.DrawString($"{hd.TongTien:N0} VNĐ", fontTitle, XBrushes.Black,
-                new XRect(0, y, pageWidth, 20), XStringFormats.TopCenter);
-
             y += 30;
 
-            gfx.DrawString("CẢM ƠN VÀ HẸN GẶP LẠI Ở LẦN CHƠI TIẾP THEO!", fontNormal, XBrushes.Black,
-                new XRect(0, y, pageWidth, 20), XStringFormats.TopCenter);
+            // ======================= THÔNG TIN CHUNG (2 CỘT) =================
+            double colMidX = pageWidth / 2 + 5;
+            double leftX = marginLeft;
+            double rightX = colMidX;
 
+            string ngayVao = hd.NgayLap.ToString("dd.MM.yyyy HH:mm"); // bạn có thể thay bằng giờ vào thực tế
+            string ngayRa = hd.NgayLap.ToString("dd.MM.yyyy HH:mm"); // hoặc dùng thuộc tính khác
+
+            gfx.DrawString("NGÀY/ GIỜ VÀO:", fontSmall, XBrushes.Black, new XPoint(leftX, y));
+            gfx.DrawString(ngayVao, fontSmall, XBrushes.Black,
+                new XPoint(leftX + 90, y));
+
+            gfx.DrawString("SỐ CHỨNG TỪ:", fontSmall, XBrushes.Black, new XPoint(rightX, y));
+            gfx.DrawString(hd.SoHD, fontSmall, XBrushes.Black,
+                new XPoint(rightX + 80, y));
+            y += 14;
+
+            gfx.DrawString("NGÀY/ GIỜ RA:", fontSmall, XBrushes.Black, new XPoint(leftX, y));
+            gfx.DrawString(ngayRa, fontSmall, XBrushes.Black,
+                new XPoint(leftX + 90, y));
+
+            gfx.DrawString("THU NGÂN:", fontSmall, XBrushes.Black, new XPoint(rightX, y));
+            // TODO: thay bằng tên thu ngân thực tế
+            gfx.DrawString("TƯỜNG VY", fontSmall, XBrushes.Black,
+                new XPoint(rightX + 80, y));
             y += 20;
 
-            // ======= MÃ HÓA ĐƠN + NGÀY =======
+            // Tên khách hàng + điểm
+            int diemTichLuy = 0; // TODO: lấy từ dữ liệu nếu có
+            gfx.DrawString("TÊN KHÁCH HÀNG: " + hd.TenKH, fontNormal, XBrushes.Black, new XPoint(leftX, y));
+            y += 14;
+            gfx.DrawString("ĐIỂM TÍCH LŨY: " + diemTichLuy, fontSmall, XBrushes.Black, new XPoint(leftX, y));
+            y += 18;
+
+            // ======================= CHI TIẾT DỊCH VỤ ========================
+            gfx.DrawString("CHI TIẾT DỊCH VỤ", fontBold10, XBrushes.Black, new XPoint(leftX, y));
+            y += 8;
+
+            // ---- Bảng ĐẶT SÂN ----
+            double tableX = marginLeft;
+            double tableWidth = pageWidth - marginLeft - marginRight;
+            double rowHeight = 16;
+
+            // Cột: ĐẶT SÂN | BẮT ĐẦU | KẾT THÚC | ĐƠN GIÁ | SỐ GIỜ | THÀNH TIỀN
+            double[] colWidths = { 70, 60, 60, 60, 50, 70 };
+            double[] colX = new double[colWidths.Length];
+            colX[0] = tableX;
+            for (int i = 1; i < colWidths.Length; i++)
+                colX[i] = colX[i - 1] + colWidths[i - 1];
+
+            // Header row
+            gfx.DrawString("ĐẶT SÂN", fontSmall, XBrushes.Black, new XPoint(colX[0], y));
+            gfx.DrawString("BẮT ĐẦU", fontSmall, XBrushes.Black, new XPoint(colX[1], y));
+            gfx.DrawString("KẾT THÚC", fontSmall, XBrushes.Black, new XPoint(colX[2], y));
+            gfx.DrawString("ĐƠN GIÁ", fontSmall, XBrushes.Black, new XPoint(colX[3], y));
+            gfx.DrawString("SỐ GIỜ", fontSmall, XBrushes.Black, new XPoint(colX[4], y));
+            gfx.DrawString("THÀNH TIỀN", fontSmall, XBrushes.Black, new XPoint(colX[5], y));
+            y += rowHeight;
+
+            // ====== DÒNG DỮ LIỆU ĐẶT SÂN ======
+            foreach (var item in chiTiets)
+            {
+                if (!HasProperty(item, "Loai") || item.Loai != "San") continue;
+
+                string tenSan = item.TenSan;
+                DateTime batDau = item.BatDau;
+                DateTime ketThuc = item.KetThuc;
+                decimal donGia = item.DonGia;
+                double soGio = item.SoGio;
+                decimal thanhTien = item.ThanhTien;
+
+                gfx.DrawString(tenSan, fontSmall, XBrushes.Black, new XPoint(colX[0], y));
+                gfx.DrawString(batDau.ToString("HH:mm"), fontSmall, XBrushes.Black, new XPoint(colX[1], y));
+                gfx.DrawString(ketThuc.ToString("HH:mm"), fontSmall, XBrushes.Black, new XPoint(colX[2], y));
+                gfx.DrawString(donGia.ToString("N0"), fontSmall, XBrushes.Black, new XPoint(colX[3], y));
+                gfx.DrawString(soGio.ToString("0.##"), fontSmall, XBrushes.Black, new XPoint(colX[4], y));
+                gfx.DrawString(thanhTien.ToString("N0"), fontSmall, XBrushes.Black, new XPoint(colX[5], y));
+
+                y += rowHeight;
+            }
+
+
+            // ======================= THUÊ VỢT ===============================
+            if (soLuongVot > 0)
+            {
+
+                gfx.DrawString("THUÊ VỢT", fontBold10, XBrushes.Black, new XPoint(leftX, y));
+                y += 14;
+
+                gfx.DrawString("SỐ LƯỢNG: " + soLuongVot, fontSmall, XBrushes.Black, new XPoint(leftX, y));
+                gfx.DrawString("ĐƠN GIÁ: " + donGiaVot.ToString("N0"), fontSmall, XBrushes.Black,
+                    new XPoint(leftX + 140, y));
+                decimal tienVot = soLuongVot * donGiaVot;
+                gfx.DrawString("THÀNH TIỀN: " + tienVot.ToString("N0"), fontSmall, XBrushes.Black,
+                    new XPoint(leftX + 260, y));
+                y += 18;
+            }
+
+
+            // ======================= TỔNG TIỀN & THANH TOÁN =================
+            decimal tongTien = hd.TongTien;
+            decimal tongThanhToan = hd.TongTien; // nếu có giảm giá / COD thì chỉnh lại
+
+            gfx.DrawString("TỔNG GIÁ TRỊ HÓA ĐƠN", fontBold10, XBrushes.Black, new XPoint(tableX, y));
+            gfx.DrawString(tongTien.ToString("N0"), fontBold10, XBrushes.Black,
+                new XPoint(pageWidth - marginRight - 80, y));
+            y += 16;
+
+            gfx.DrawString("TỔNG GIÁ TIỀN THANH TOÁN", fontBold10, XBrushes.Black, new XPoint(tableX, y));
+            gfx.DrawString(tongThanhToan.ToString("N0"), fontBold10, XBrushes.Black,
+                new XPoint(pageWidth - marginRight - 80, y));
+            y += 20;
+
+            // Khách trả / Thối lại (mẫu giống hình, bên phải nhỏ hơn)
+            decimal khachTra = tongThanhToan;              // TODO: gán từ UI
+            decimal tienThoi = khachTra - tongThanhToan;   // TODO: nếu có
+
+            gfx.DrawString("Khách trả: " + khachTra.ToString("N0"),
+                fontItalic9, XBrushes.Black,
+                new XPoint(pageWidth - marginRight - 130, y));
+            y += 12;
+            gfx.DrawString("Thối lại: " + tienThoi.ToString("N0"),
+                fontItalic9, XBrushes.Black,
+                new XPoint(pageWidth - marginRight - 130, y));
+            y += 24;
+
+            // ======================= FOOTER CẢM ƠN ==========================
+            gfx.DrawString("CẢM ƠN VÀ HẸN GẶP LẠI Ở LẦN CHƠI TIẾP THEO!",
+                fontNormal, XBrushes.Black,
+                new XRect(0, y, pageWidth, 20), XStringFormats.TopCenter);
+            y += 18;
+
             string hdCode = $"#HD-{hd.NgayLap:ddMMyyyy}_{hd.SoHD}";
-            gfx.DrawString($"{hd.NgayLap:dd/MM/yyyy HH:mm}   {hdCode}", fontSmall, XBrushes.Black,
+            gfx.DrawString($"{hd.NgayLap:dd/MM/yyyy HH:mm}     {hdCode}",
+                fontSmall, XBrushes.Black,
                 new XRect(0, y, pageWidth, 20), XStringFormats.TopCenter);
 
-            // Lưu file bằng SaveFileDialog
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Title = "Lưu hóa đơn PDF";
-            dlg.Filter = "PDF File|*.pdf";
-            dlg.FileName = $"HoaDon_{hd.SoHD}.pdf";
+            // ======================= LƯU FILE ===============================
+            SaveFileDialog dlg = new SaveFileDialog
+            {
+                Title = "Lưu hóa đơn PDF",
+                Filter = "PDF File|*.pdf",
+                FileName = $"HoaDon_{hd.SoHD}.pdf"
+            };
 
             if (dlg.ShowDialog() == true)
             {
                 document.Save(dlg.FileName);
                 MessageBox.Show("Đã lưu hóa đơn thành công!");
             }
+        }
+
+        /// <summary>
+        /// Helper nhỏ: kiểm tra dynamic có property không để tránh crash
+        /// </summary>
+        private bool HasProperty(dynamic obj, string name)
+        {
+            return obj.GetType().GetProperty(name) != null;
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
