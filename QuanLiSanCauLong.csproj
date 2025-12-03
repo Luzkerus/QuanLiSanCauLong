@@ -229,6 +229,7 @@
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmPhieuThanhToanPOS.xaml.cs">
       <DependentUpon>frmPhieuThanhToanPOS.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LopTrinhBay\ManHinh\KhoPOS\TenHangToImageConverter.cs" />
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\UcKhoDashboard.xaml.cs">
       <DependentUpon>UcKhoDashboard.xaml</DependentUpon>
     </Compile>
@@ -299,7 +300,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LopTrinhBay\ManHinh\XacThuc\" />
-    <Folder Include="LopTrinhBay\TaiNguyen\ThanhToan\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="LopTrinhBay\Controls\ucHeader.xaml">
@@ -445,6 +445,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="LopTrinhBay\TaiNguyen\Logo\khachhang.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\KhachHang1.png" />
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\Khachhangg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LopTrinhBay\TaiNguyen\ThanhToan\momo.jpg" />
+    <Resource Include="LopTrinhBay\TaiNguyen\ThanhToan\nganhang.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

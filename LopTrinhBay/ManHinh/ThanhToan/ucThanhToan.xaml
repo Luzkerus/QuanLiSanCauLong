@@ -74,25 +74,27 @@
         </Style>
 
         <!-- Input bo góc -->
-        <Style x:Key="RoundedInput" TargetType="TextBox">
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border CornerRadius="10"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ScrollViewer x:Name="PART_ContentHost"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+<Style x:Key="RoundedInput" TargetType="TextBox">
+    <Setter Property="Height" Value="38"/>
+    <Setter Property="Padding" Value="10,4"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Background" Value="White"/>
+    <Setter Property="BorderBrush" Value="{StaticResource ColLine}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="TextBox">
+                <Border CornerRadius="10"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <ScrollViewer x:Name="PART_ContentHost"/>
+                </Border>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
+
 
         <!-- Button ghost -->
         <Style x:Key="GrayGhostButton" TargetType="Button">
@@ -365,7 +367,8 @@
                             <TextBox x:Name="txtTenKH"
                                      Style="{StaticResource RoundedInput}"
                                      Text="{Binding TenKH}"
-                                     Margin="0,2,0,0"/>
+                                     Margin="0,2,0,0"
+                                     VerticalContentAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -616,7 +619,7 @@
                     </Border>
 
                     <!-- CỘT PHẢI: THUÊ VỢT + PHƯƠNG THỨC THANH TOÁN -->
-                    <StackPanel Grid.Column="1" Margin="0,0,0,0">
+                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
 
                         <!-- THUÊ VỢT – Layout gọn, Thành tiền to rõ -->
                         <Border
@@ -632,11 +635,11 @@
 
                                 <Grid Margin="0,12,0,0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1.6*" />
+                                        <ColumnDefinition Width="1.4*" />
                                         <!-- Số lượng -->
-                                        <ColumnDefinition Width="1.2*" />
+                                        <ColumnDefinition Width="1.0*" />
                                         <!-- Đơn giá -->
-                                        <ColumnDefinition Width="1.2*" />
+                                        <ColumnDefinition Width="1.5*" />
                                         <!-- Thành tiền -->
                                     </Grid.ColumnDefinitions>
 
@@ -657,12 +660,14 @@
                                             <TextBox x:Name="txtSoLuongVot"
                                                      Text="{Binding SoLuongVot, UpdateSourceTrigger=PropertyChanged}"
                                                      IsReadOnly="True"
-                                                     Width="42" Height="32"
+                                                     Width="48" Height="32"
                                                      Margin="8,0,8,0"
                                                      HorizontalContentAlignment="Center"
+                                                     VerticalContentAlignment="Center"
                                                      BorderBrush="{StaticResource ColLine}"
                                                      BorderThickness="1"
                                                      Background="White"/>
+
 
                                             <Button Style="{StaticResource GrayGhostButton}"
                                                     Width="32" Height="32"
@@ -676,21 +681,25 @@
                                         <TextBlock Text="Đơn giá / cây"
                                                    Foreground="{StaticResource ColSub}" />
                                         <TextBox x:Name="txtDonGiaThueVot"
-                                                 Height="34"
+                                                 Height="32"
                                                  Margin="0,6,0,0"
-                                                 Width="84"
                                                  HorizontalContentAlignment="Right"
-                                                 Style="{StaticResource RoundedInput}"
+                                                 VerticalContentAlignment="Center"
+                                                 Padding="8,0"
+                                                 BorderBrush="{StaticResource ColLine}"
+                                                 BorderThickness="1"
+                                                 Background="White"
                                                  TextChanged="txtDonGiaThueVot_TextChanged"
                                                  ToolTip="VNĐ / cây"/>
                                     </StackPanel>
+
 
                                     <!-- THÀNH TIỀN -->
                                     <Border Grid.Column="2"
                                             Background="#D6FFEA"
                                             CornerRadius="10"
-                                            Padding="6"
-                                            Margin="6,18,0,0"
+                                            Padding="8"
+                                            Margin="8,18,0,0"
                                             BorderBrush="#91D6B5"
                                             BorderThickness="1"
                                             VerticalAlignment="Top">
@@ -731,18 +740,27 @@
                                 <ComboBox x:Name="cbPhuongThuc"
                                           SelectedIndex="0"
                                           Margin="0,8,0,0"
-                                          Height="36">
-                                    <ComboBoxItem Content="Tiền mặt" FontSize="13" FontWeight="Bold"/>
-                                    <ComboBoxItem Content="Momo" FontSize="13" FontWeight="Bold"/>
-                                    <ComboBoxItem Content="Ngân hàng" FontSize="13" FontWeight="Bold"/>
+                                          Height="36"
+                                          FontSize="14"
+                                          Padding="8,0"
+                                          VerticalContentAlignment="Center"
+                                          SelectionChanged="cbPhuongThuc_SelectionChanged">
+                                    <ComboBoxItem Content="Tiền mặt"   FontWeight="SemiBold"/>
+                                    <ComboBoxItem Content="Momo"       FontWeight="SemiBold"/>
+                                    <ComboBoxItem Content="Ngân hàng"  FontWeight="SemiBold"/>
                                 </ComboBox>
 
                                 <StackPanel x:Name="panelQR" Margin="0,12,0,0">
                                     <TextBlock Text="Quét mã để thanh toán"
                                                FontWeight="SemiBold"
                                                Margin="0,0,0,6"/>
-                                    <!-- chỗ hiển thị mã QR -->
+
+                                    <Image x:Name="imgQR"
+                                           Width="260" Height="260"
+                                           Stretch="Uniform"
+                                           HorizontalAlignment="Center"/>
                                 </StackPanel>
+
                             </StackPanel>
                         </Border>
                     </StackPanel>
