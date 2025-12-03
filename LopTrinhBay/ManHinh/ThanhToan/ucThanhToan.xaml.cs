@@ -245,6 +245,35 @@ namespace QuanLiSanCauLong.LopTrinhBay.ManHinh.ThanhToan
             txtTongTien.Text = string.Format("{0:N0} VNĐ", tongTien);
         }
 
+        private void cbPhuongThuc_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!IsLoaded) return;
+
+            var item = cbPhuongThuc.SelectedItem as ComboBoxItem;
+            var text = (item?.Content as string) ?? string.Empty;
+
+            // đổi đường dẫn cho đúng thư mục ảnh của bạn
+            string uri = null;
+
+            if (text == "Momo")
+            {
+                uri = "/LopTrinhBay/TaiNguyen/ThanhToan/momo.jpg";
+            }
+            else if (text == "Ngân hàng")
+            {
+                uri = "/LopTrinhBay/TaiNguyen/ThanhToan/nganhang.jpg";
+            }
+
+            if (uri == null)
+            {
+                imgQR.Source = null;   // Tiền mặt thì không hiện QR
+            }
+            else
+            {
+                imgQR.Source = new BitmapImage(new Uri(uri, UriKind.Relative));
+            }
+        }
+
         private void btnThanhToan_Click(object sender, RoutedEventArgs e)
         {
             
