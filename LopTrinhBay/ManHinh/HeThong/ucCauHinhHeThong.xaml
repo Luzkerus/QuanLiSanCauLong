@@ -133,6 +133,42 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
+        <Style x:Key="RuleCardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="0"
+                              ShadowDepth="0"
+                              Opacity="0"
+                              Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+
+                <!-- Hover → nổi lên -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="14"
+                                      ShadowDepth="0"
+                                      Opacity="0.20"
+                                      Color="#000000"/>
+                        </Setter.Value>
+                    </Setter>
+
+                    <!-- nhấn nền sáng hơn nhẹ -->
+                    <Setter Property="Opacity" Value="0.98"/>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+
+
     </UserControl.Resources>
 
     <Grid Margin="16">
@@ -163,37 +199,247 @@
                     <TextBlock Text="🔑 Đổi mật khẩu" FontSize="14"/>
                 </TabItem.Header>
 
-                <DockPanel Margin="0,8,0,0">
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*"/>
+                        <!-- Đổi mk -->
+                        <ColumnDefinition Width="1.8*"/>
+                        <!-- Ảnh động -->
+                        <ColumnDefinition Width="2.5*"/>
+                        <!-- Nội quy -->
+                    </Grid.ColumnDefinitions>
 
-                    <Button Content="Đổi mật khẩu"
-                            DockPanel.Dock="Bottom"
-                            Width="140" Height="36"
-                            Margin="0,12,0,0"
-                            HorizontalAlignment="Right"
-                            Background="#0FBF84"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Click="btnDoiMK_Click"
-                            Cursor="Hand"/>
+                    <!-- ====================== CỘT 1: ĐỔI MẬT KHẨU ========================== -->
+                    <Border Grid.Column="0"
+                            Style="{StaticResource Card}"
+                            Padding="20"
+                            Margin="0,80,12,110">
 
-                    <Border Style="{StaticResource Card}"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Left"
-                            Width="400"
-                            Padding="20">
                         <StackPanel>
+
+                            <TextBlock Text="Đổi mật khẩu"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource ColText}"
+                                       Margin="0,0,0,10"/>
+
                             <TextBlock Text="Mật khẩu cũ" Style="{StaticResource FieldLabel}"/>
-                            <PasswordBox x:Name="TxtOldPassword" Tag="Mật khẩu cũ"/>
+                            <PasswordBox x:Name="TxtOldPassword"
+                                         Height="32"
+                                         Padding="8"
+                                         BorderBrush="{StaticResource ColBorder}"
+                                         BorderThickness="1"
+                                         Margin="0,0,0,10"/>
 
                             <TextBlock Text="Mật khẩu mới" Style="{StaticResource FieldLabel}"/>
-                            <PasswordBox x:Name="TxtNewPassword" Tag="Mật khẩu mới"/>
+                            <PasswordBox x:Name="TxtNewPassword"
+                                         Height="32"
+                                         Padding="8"
+                                         BorderBrush="{StaticResource ColBorder}"
+                                         BorderThickness="1"
+                                         Margin="0,0,0,10"/>
 
                             <TextBlock Text="Nhập lại mật khẩu mới" Style="{StaticResource FieldLabel}"/>
-                            <PasswordBox x:Name="TxtConfirmNewPassword" Tag="Nhập lại mật khẩu mới"/>
+                            <PasswordBox x:Name="TxtConfirmNewPassword"
+                                         Height="32"
+                                         Padding="8"
+                                         BorderBrush="{StaticResource ColBorder}"
+                                         BorderThickness="1"
+                                         Margin="0,0,0,14"/>
+
+                            <!-- Nút đổi mật khẩu: tròn + hiệu ứng -->
+                            <Button Content="Đổi mật khẩu"
+                                    Width="150" Height="38"
+                                    HorizontalAlignment="Right"
+                                    Cursor="Hand"
+                                    Foreground="White"
+                                    Background="#0FBF84"
+                                    BorderThickness="0"
+                                    Click="btnDoiMK_Click">
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bd"
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="12"
+                                                Padding="10,4">
+
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+
+                                            <!-- Hover nhẹ -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bd" Property="Background" Value="#0DAA78"/>
+                                                <Setter TargetName="bd" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect BlurRadius="6"
+                                                                          ShadowDepth="0"
+                                                                          Opacity="0.18"
+                                                                          Color="#0DAA78"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+
+                                            <!-- Disabled -->
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="bd" Property="Opacity" Value="0.6"/>
+                                            </Trigger>
+
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+
                         </StackPanel>
                     </Border>
-                </DockPanel>
+
+
+                    <!-- ====================== CỘT 2: ẢNH ĐỘNG ========================== -->
+                    <Border Grid.Column="1"
+                            Style="{StaticResource Card}"
+                            Padding="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Margin="0,30,12,0">
+
+                        <!-- Đổi đường dẫn theo ảnh GIF của bạn -->
+                        <Image Source="/LopTrinhBay/TaiNguyen/Logo/Sodosan.png"
+                               Width="auto"
+                               Height="auto"
+                               Stretch="Uniform"/>
+                                </Border>
+
+
+                    <!-- ====================== CỘT 3: NỘI QUY ========================== -->
+                    <Border Grid.Column="2"
+                            Style="{StaticResource Card}"
+                            Padding="22">
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+
+                                <!-- TIÊU ĐỀ LỚN -->
+                                <TextBlock Text="📌 Nội quy &amp; Quy định sân"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource ColText}"
+                                           Margin="0,0,0,14"/>
+
+                                <!-- ========== SECTION: KHÁCH THUÊ SÂN ========== -->
+                                <Border Style="{StaticResource RuleCardStyle}"
+                                        Background="#F6FDF9"
+                                        BorderBrush="{StaticResource ColBorder}"
+                                        BorderThickness="1">
+
+                                    <StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="👥"
+                                                       FontSize="18"
+                                                       Margin="0,0,6,0"/>
+                                            <TextBlock Text="1. Nội quy dành cho khách thuê sân"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource ColText}"/>
+                                        </StackPanel>
+
+                                        <TextBlock Text="• Đến đúng giờ đã đặt; đến trễ vẫn tính giờ đã đặt."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,6,0,0"/>
+
+                                        <TextBlock Text="• Mang giày cầu lông đế mềm; tránh kéo lê giày gây trầy sàn."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"/>
+
+                                        <TextBlock Text="• Không hút thuốc hoặc ăn uống trong khu vực sân."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"/>
+
+                                        <TextBlock Text="• Không tự ý điều chỉnh đèn, quạt hoặc thiết bị kỹ thuật."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"/>
+
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- ========== SECTION: NHÂN VIÊN ========== -->
+                                <Border Style="{StaticResource RuleCardStyle}"
+                                        Background="#FFF8DD"
+                                        BorderBrush="#E6D8A8"
+                                        BorderThickness="1">
+
+                                    <StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🧑‍💼"
+                                                       FontSize="18"
+                                                       Margin="0,0,6,0"/>
+                                            <TextBlock Text="2. Nội quy &amp; Quy định cho nhân viên"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource ColText}"/>
+                                        </StackPanel>
+
+                                        <TextBlock Text="• Có mặt trước ca trực 10–15 phút, mặc đồng phục đầy đủ."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,6,0,0"/>
+
+                                        <TextBlock Text="• Không tự ý đổi ca, giảm giá, hoặc cho mượn sân khi chưa được duyệt."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"/>
+
+                                        <TextBlock Text="• Kiểm tra mặt sân, lưới, quạt và ánh sáng trước khi giao sân."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"/>
+
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- ========== SECTION: VẬN HÀNH & AN TOÀN ========== -->
+                                <Border Style="{StaticResource RuleCardStyle}"
+                                        Background="#F3EAFE"
+                                        BorderBrush="#D7C3F5"
+                                        BorderThickness="1">
+
+                                    <StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🛡️"
+                                                       FontSize="18"
+                                                       Margin="0,0,6,0"/>
+                                            <TextBlock Text="3. Ghi chú vận hành &amp; An toàn"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource ColText}"/>
+                                        </StackPanel>
+
+                                        <TextBlock Text="• Lau khô ngay khi sân có nước hoặc mồ hôi để tránh trơn trượt."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,6,0,0"/>
+
+                                        <TextBlock Text="• Khi có chấn thương, hỗ trợ sơ cứu và báo quản lý ngay."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"/>
+
+                                        <TextBlock Text="• Cuối ca: tổng hợp giờ sân, dịch vụ, tiền mặt/QR và bàn giao ca."
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"/>
+
+                                    </StackPanel>
+                                </Border>
+
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                </Grid>
             </TabItem>
+
+
             <!-- =======================
                  TAB 1: CẤU HÌNH HỆ THỐNG
                  ======================= -->
@@ -274,10 +520,7 @@
                 </DockPanel>
             </TabItem>
 
-            <!-- =======================
-                 TAB 2: PHÂN QUYỀN
-                 ======================= -->
-           
+         
 
         </TabControl>
     </Grid>

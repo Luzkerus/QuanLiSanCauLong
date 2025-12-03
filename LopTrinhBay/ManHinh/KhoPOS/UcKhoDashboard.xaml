@@ -646,101 +646,173 @@
                                 <TextBlock Text="Quản lý kho"/>
                             </TabItem.Header>
 
-                            <Grid Margin="0,8,0,0">
+                            <Grid Margin="0,12,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
-                                    <!-- Tìm kiếm -->
                                     <RowDefinition Height="*"/>
-                                    <!-- DataGrid -->
                                 </Grid.RowDefinitions>
 
-                                <!-- Ô tìm kiếm -->
+                                <!-- ===== Ô tìm kiếm ===== -->
                                 <Border Grid.Row="0"
-                                    Background="White"
-                                    CornerRadius="8"
-                                    BorderBrush="#C7D7D0"
-                                    BorderThickness="1"
-                                    Padding="6"
-                                    Margin="0,0,0,12">
-                                    <TextBox Tag="Tìm theo tên / mã hàng"
-                                         Style="{StaticResource WatermarkTextBox}"
-                                         Background="Transparent"
-                                         BorderThickness="0"
-                                         FontSize="14" x:Name="txtTimKiemKho"
-                                         Height="26"
-                                         VerticalContentAlignment="Center" TextChanged="txtTimKiemKho_TextChanged"
-                                        />
+                                        Background="{StaticResource ColCard}"
+                                        CornerRadius="10"
+                                        BorderBrush="{StaticResource ColBorder}"
+                                        BorderThickness="1"
+                                        Padding="10"
+                                        Margin="0,0,0,12">
+                                    <DockPanel>
+
+                                        <!-- Icon search -->
+                                        <TextBlock Text="🔍"
+                                                   FontSize="16"
+                                                   Foreground="{StaticResource ColSub}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,8,0"/>
+
+                                        <!-- Textbox -->
+                                        <TextBox x:Name="txtTimKiemKho"
+                                                 Tag="Tìm theo tên / mã hàng"
+                                                 Style="{StaticResource WatermarkTextBox}"
+                                                 Background="Transparent"
+                                                 BorderThickness="0"
+                                                 FontSize="14"
+                                                 VerticalContentAlignment="Center"
+                                                 TextChanged="txtTimKiemKho_TextChanged"/>
+                                    </DockPanel>
                                 </Border>
 
-                                <!-- Bảng quản lý kho -->
-                                <DataGrid Grid.Row="1"
-                                      x:Name="dgKho"
-                                      AutoGenerateColumns="False"
-                                      IsReadOnly="True"
-                                      HeadersVisibility="Column"
-                                      GridLinesVisibility="None"
-                                      BorderBrush="{StaticResource ColBorder}"
-                                      BorderThickness="1"
-                                      RowHeight="32"
-                                      CanUserAddRows="False"
-                                      CanUserDeleteRows="False">
-                                    <DataGrid.Resources>
-                                        <Style TargetType="DataGridColumnHeader">
-                                            <Setter Property="Background" Value="#F1F5F9"/>
-                                            <Setter Property="Foreground" Value="{StaticResource ColText}"/>
-                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                            <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
-                                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                            <Setter Property="Padding" Value="8,4"/>
-                                        </Style>
-                                    </DataGrid.Resources>
+                                <!-- ===== Bảng quản lý kho ===== -->
+                                <Border Grid.Row="1"
+                                        Background="{StaticResource ColCard}"
+                                        CornerRadius="10"
+                                        BorderBrush="{StaticResource ColBorder}"
+                                        BorderThickness="1">
+                                    <DataGrid x:Name="dgKho"
+                                              AutoGenerateColumns="False"
+                                              IsReadOnly="True"
+                                              HeadersVisibility="Column"
+                                              GridLinesVisibility="None"
+                                              BorderThickness="0"
+                                              RowHeight="34"
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              Background="{StaticResource ColCard}"
+                                              Foreground="{StaticResource ColText}">
 
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Mã hàng" Binding="{Binding MaHang}" Width="*"/>
-                                        <DataGridTextColumn Header="Tên hàng" Binding="{Binding TenHang}" Width="1*"/>
-                                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DVT}" Width="0.8*"/>
+                                        <!-- Header Style -->
+                                        <DataGrid.Resources>
+                                            <Style TargetType="DataGridColumnHeader">
+                                                <Setter Property="Background" Value="#F3F7F6"/>
+                                                <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
+                                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                <Setter Property="Padding" Value="8,6"/>
+                                                <Setter Property="FontSize" Value="14"/>
+                                            </Style>
 
-                                        <DataGridTextColumn Header="Giá nhập"
-                                                        Binding="{Binding GiaNhap, StringFormat={}{0:N0} đ}"
-                                                        Width="*">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
+                                            <!-- Dòng -->
+                                            <Style TargetType="DataGridRow">
+                                                <Setter Property="Background" Value="{StaticResource ColCard}"/>
+                                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource ColBorder}"/>
+                                                <Setter Property="FontSize" Value="13"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
 
-                                        <DataGridTextColumn Header="Giá bán"
-                                                        Binding="{Binding GiaBan, StringFormat={}{0:N0} đ}"
-                                                        Width="*">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="HorizontalAlignment" Value="Right"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
+                                                <!-- Hover effect -->
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#F1FDF7"/>
+                                                        <!-- nhẹ xanh accent -->
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGrid.Resources>
 
-                                        <DataGridTextColumn Header="Tồn kho" Binding="{Binding TonKho}" Width="*">
-                                            <DataGridTextColumn.ElementStyle>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="HorizontalAlignment" Value="Right"/>
-                                                </Style>
-                                            </DataGridTextColumn.ElementStyle>
-                                        </DataGridTextColumn>
+                                        <!-- ===== Cột ===== -->
+                                        <DataGrid.Columns>
 
-                                        <DataGridTextColumn Header="Lần nhập cuối"
-                                                        Binding="{Binding LanCuoiNhap, StringFormat={}{0:dd/MM/yyyy}}"
-                                                        Width="*"/>
+                                            <DataGridTextColumn Header="Mã hàng"
+                                                                Binding="{Binding MaHang}"
+                                                                Width="1*"/>
 
-                                        <DataGridTextColumn Header="Trạng thái"
-                                                        Binding="{Binding TrangThai}"
-                                                        Width="*"/>
-                                        
-                                    </DataGrid.Columns>
-                                </DataGrid>
+                                            <DataGridTextColumn Header="Tên hàng"
+                                                                Binding="{Binding TenHang}"
+                                                                Width="1.4*"/>
+
+                                            <DataGridTextColumn Header="ĐVT"
+                                                                Binding="{Binding DVT}"
+                                                                Width="0.8*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+
+
+                                            <DataGridTextColumn Header="Giá nhập"
+                                                                Binding="{Binding GiaNhap, StringFormat={}{0:N0} đ}"
+                                                                Width="1*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource ColSub}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn Header="Giá bán"
+                                                                Binding="{Binding GiaBan, StringFormat={}{0:N0} đ}"
+                                                                Width="1*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource ColText}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn Header="Tồn kho"
+                                                                Binding="{Binding TonKho}"
+                                                                Width="0.8*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+
+                                            <DataGridTextColumn Header="Lần nhập cuối"
+                                                                Binding="{Binding LanCuoiNhap, StringFormat={}{0:dd/MM/yyyy}}"
+                                                                Width="1*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+
+
+                                            <DataGridTextColumn Header="Trạng thái"
+                                                                Binding="{Binding TrangThai}"
+                                                                Width="0.8*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+
+                                        </DataGrid.Columns>
+
+                                    </DataGrid>
+                                </Border>
                             </Grid>
                         </TabItem>
+
 
                     </TabControl>
                 </Border>

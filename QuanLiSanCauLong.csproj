@@ -453,5 +453,8 @@
     <Resource Include="LopTrinhBay\TaiNguyen\ThanhToan\momo.jpg" />
     <Resource Include="LopTrinhBay\TaiNguyen\ThanhToan\nganhang.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LopTrinhBay\TaiNguyen\Logo\Sodosan.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
