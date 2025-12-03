@@ -4,7 +4,7 @@
         Title="Cấu hình kết nối CSDL"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Height="440" Width="620"
+        Height="450" Width="620"
         Background="#F6FDF9"
         FontFamily="Segoe UI">
 
