@@ -18,13 +18,31 @@
         <!-- Item đang chọn -->
         <Style x:Key="MenuItemActive" TargetType="Border">
             <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="Background" Value="{StaticResource ColActiveBg}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ColActiveBg}"/>
+            <Setter Property="Background" Value="#0FBF84"/>
+            <Setter Property="BorderBrush" Value="#0FBF84"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Margin" Value="6,4,6,0"/>
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8"
+                              ShadowDepth="0"
+                              Opacity="0.22"
+                              Color="#66B98D"/>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <!-- Hover trên item đang chọn: chỉ đổi hơi đậm -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0DAA78"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
+
+
 
         <!-- Item bình thường -->
         <Style x:Key="MenuItemNormal" TargetType="Border">
@@ -35,12 +53,44 @@
             <Setter Property="Margin" Value="6,4,6,0"/>
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="Cursor" Value="Hand"/>
+
+            <!-- mặc định: không bóng -->
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="0"
+                              ShadowDepth="0"
+                              Opacity="0"/>
+                </Setter.Value>
+            </Setter>
+
             <Style.Triggers>
+                <!-- Hover: nổi nhẹ, nền pastel theo gradient mới -->
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F0FFFA"/>
+                    <Setter Property="BorderBrush" Value="#0FBF84"/>
+
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#E6FFF5" Offset="0"/>
+                                <GradientStop Color="#FFF4C2" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="8"
+                                      ShadowDepth="0"
+                                      Opacity="0.20"
+                                      Color="#88C9A5"/>
+                            <!-- xanh pastel hơi đậm -->
+                        </Setter.Value>
+                    </Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+
 
         <!-- Label menu: ẩn khi thu nhỏ -->
         <Style x:Key="MenuLabelStyle" TargetType="TextBlock">
@@ -83,7 +133,7 @@
             <Setter Property="Background" Value="#FFF7F7"/>
             <Setter Property="BorderBrush" Value="#F5C2C2"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Padding" Value="6,2"/>
             <Setter Property="Cursor" Value="Hand"/>
 
             <Style.Triggers>
@@ -116,9 +166,24 @@
     <!-- ================= Layout chính ================= -->
     <Grid>
         <!-- Thân sidebar -->
-        <Border Background="White"
-                BorderBrush="{StaticResource ColBorder}"
-                BorderThickness="0,0,1,0">
+        <Border BorderBrush="{StaticResource ColBorder}"
+        BorderThickness="0,0,1,0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <!-- Xanh pastel nâng tone -->
+                    <GradientStop Color="#C9FFE9" Offset="0"/>
+                    <!-- Vàng pastel nâng tone -->
+                    <GradientStop Color="#FFF4C2" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <!-- Shadow nhẹ cho sidebar -->
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="18"
+                          ShadowDepth="0"
+                          Opacity="0.18"
+                          Color="#000000"/>
+            </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -162,7 +227,7 @@
                             <TextBlock Text="📊"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Tổng quan"
+                            <TextBlock Text="Tổng quan" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -176,7 +241,7 @@
                             <TextBlock Text="🏆"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Quản lý sân"
+                            <TextBlock Text="Quản lý sân" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -190,7 +255,7 @@
                             <TextBlock Text="📅"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Đặt sân"
+                            <TextBlock Text="Đặt sân" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -204,7 +269,7 @@
                             <TextBlock Text="👤"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Khách hàng"
+                            <TextBlock Text="Khách hàng" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -218,7 +283,7 @@
                             <TextBlock Text="💳"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Thanh toán"
+                            <TextBlock Text="Thanh toán" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -232,7 +297,7 @@
                             <TextBlock Text="🧾"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Kho &amp; POS"
+                            <TextBlock Text="Kho &amp; POS" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -246,7 +311,7 @@
                             <TextBlock Text="🧑‍💼"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Nhân viên"
+                            <TextBlock Text="Nhân viên" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -260,7 +325,7 @@
                             <TextBlock Text="📈"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Báo cáo"
+                            <TextBlock Text="Báo cáo" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -274,7 +339,7 @@
                             <TextBlock Text="⚙"
                                        Margin="4,0,8,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Cài đặt"
+                            <TextBlock Text="Cài đặt" FontSize="15" FontWeight="SemiBold"
                                        Style="{StaticResource MenuLabelStyle}"/>
                         </StackPanel>
                     </Border>
@@ -322,12 +387,14 @@
                                         VerticalAlignment="Center">
                                 <TextBlock Text="{Binding AdminName, ElementName=Root, FallbackValue=Admin User}"
                                            FontWeight="SemiBold"
+                                           FontSize="13"
                                            Style="{StaticResource CollapseWithSidebar}"/>
 
                                 <TextBlock Text="{Binding AdminRole, ElementName=Root, FallbackValue=Admin}"
                                            Foreground="#889"
-                                           FontSize="12"
+                                           FontSize="11"
                                            Style="{StaticResource CollapseWithSidebar}"/>
+
                             </StackPanel>
 
                             <!-- Logout chỉ icon -->
@@ -338,7 +405,7 @@
                                     MouseLeftButtonDown="btnLogOut_Click">
                                 <TextBlock Text="⎋"
                                            Foreground="#E55353"
-                                           FontSize="16"
+                                           FontSize="14"
                                            FontWeight="Bold"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"/>
