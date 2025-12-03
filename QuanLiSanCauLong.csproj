@@ -229,7 +229,6 @@
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\frmPhieuThanhToanPOS.xaml.cs">
       <DependentUpon>frmPhieuThanhToanPOS.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LopTrinhBay\ManHinh\KhoPOS\TenHangToImageConverter.cs" />
     <Compile Include="LopTrinhBay\ManHinh\KhoPOS\UcKhoDashboard.xaml.cs">
       <DependentUpon>UcKhoDashboard.xaml</DependentUpon>
     </Compile>
