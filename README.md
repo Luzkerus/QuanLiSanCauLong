@@ -1,6 +1,9 @@
-**PHẦN MỀM QUẢN LÝ SÂN CẦU LÔNG CỦ CHI**
-*Ứng dụng WPF – C# – SQL Server*
-*📎 Mã nguồn dự án: https://github.com/Luzkerus/QuanLiSanCauLong.git*
+# **PHẦN MỀM QUẢN LÝ SÂN CẦU LÔNG CỦ CHI**  
+**Ứng dụng WPF – C# – SQL Server**
+
+**📎 Mã nguồn dự án:**  
+🔗 https://github.com/Luzkerus/QuanLiSanCauLong.git
+
 
 ## **1. Giới thiệu chung**
 Phần mềm *Quản Lý Sân Cầu Lông Củ Chi* được xây dựng để hỗ trợ tự động hóa các nghiệp vụ vận hành sân cầu lông như đặt sân, quản lý sân, quản lý nhân viên, kho – POS, thanh toán và báo cáo.
