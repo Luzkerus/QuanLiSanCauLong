@@ -21,7 +21,7 @@ Dự án được thiết kế theo mô hình **3 lớp (3-Layer Architecture)**
 | Ngôn ngữ          | C#                   |
 | Cơ sở dữ liệu     | SQL Server           |
 | Kiến trúc         | 3-layer              |
-| Báo cáo & Hóa đơn | PD/ Excel  |
+| Báo cáo & Hóa đơn | PDF/ Excel           |
 | Quản lý mã nguồn  | Git / GitHub         |
 
 ## **3. Các chức năng chính**
