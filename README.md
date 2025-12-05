@@ -44,6 +44,8 @@ Dự án được thiết kế theo mô hình **3 lớp (3-Layer Architecture)**
 * Báo cáo kho
 
 ## **4. Cấu trúc thư mục**
+
+```
 QuanLiSanCauLong/
 │── LopTrinhBay/                # UI WPF
 │── LopNghiepVu/                # Business (BLL)
@@ -53,6 +55,7 @@ QuanLiSanCauLong/
 │── API/                        # Tích hợp (nếu có)
 │── app.config                  # Chuỗi kết nối SQL
 └── README.md                   # Tài liệu mô tả
+```
 
 # **5. Hướng dẫn cài đặt **
 # **Hướng dẫn cấu hình kết nối SQL Server lần đầu**
