@@ -197,15 +197,6 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- Minimize -->
-                <Button Grid.Column="1"
-                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                        Style="{StaticResource WinBtnMin}"
-                        Click="BtnMinimize_Click"
-                        ToolTip="Thu nhỏ">
-                    <TextBlock Text="—" FontSize="14" FontWeight="Bold"/>
-                </Button>
-
                 <!-- Close -->
                 <Button Grid.Column="2" Margin="0,6,10,6"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"

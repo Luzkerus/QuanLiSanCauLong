@@ -144,43 +144,6 @@
                     <TextBlock Text="Tạo đơn đặt sân mới" FontWeight="Bold" FontSize="16"
                                Foreground="{StaticResource ColText}" VerticalAlignment="Center" Margin="12,8"/>
 
-                    <!-- Nút Minimize -->
-                    <Button Grid.Column="1" Width="36" Height="28" Margin="0,6,6,6"
-                            Click="BtnMinimize_Click"
-                            ToolTip="Thu nhỏ"
-                            Cursor="Hand">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="BorderBrush" Value="#CBD5E1"/>
-                                <Setter Property="BorderThickness" Value="1"/>
-                                <Setter Property="Foreground" Value="#334155"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border CornerRadius="6"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    Background="{TemplateBinding Background}">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#E0F2FE"/>
-                                                </Trigger>
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter Property="Background" Value="#BFDBFE"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                        <TextBlock Text="—" FontSize="14" FontWeight="Bold"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Button>
-
                     <!-- Nút Close -->
                     <Button Grid.Column="2" Width="36" Height="28" Margin="0,6,10,6"
                             Click="BtnClose_Click"

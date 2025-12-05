@@ -160,30 +160,6 @@
                                    Foreground="{StaticResource ColSub}"/>
                     </StackPanel>
 
-                    <!-- Minimize (nếu cần) -->
-                    <Button Grid.Column="1" Width="32" Height="26" Margin="0,6,4,6"
-                     
-                            ToolTip="Thu nhỏ"
-                            Cursor="Hand">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="bd" CornerRadius="6"
-                                        Background="Transparent"
-                                        BorderBrush="#CBD5E1"
-                                        BorderThickness="1">
-                                    <TextBlock Text="—" FontSize="12" FontWeight="Bold"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="bd" Property="Background" Value="#E0F2FE"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-
                     <!-- Close -->
                     <Button Grid.Column="2" Width="32" Height="26" Margin="0,6,10,6"
                             Click="BtnClose_Click"
